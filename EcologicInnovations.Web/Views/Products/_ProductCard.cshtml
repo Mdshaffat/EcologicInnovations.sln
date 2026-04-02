@@ -1,0 +1,61 @@
+@model EcologicInnovations.Web.ViewModels.Products.ProductCardViewModel
+@using EcologicInnovations.Web.ViewModels.Shared
+
+<div class="card h-100 border-0 shadow-sm product-card">
+    <a asp-controller="Products" asp-action="Details" asp-route-slug="@Model.Slug" class="text-decoration-none text-reset">
+        <div class="ratio ratio-4x3 product-card-image-wrap bg-light">
+            @if (!string.IsNullOrWhiteSpace(Model.MainImageUrl))
+            {
+                <img asp-smart-image="true"
+                     src="@Model.MainImageUrl"
+                     alt="@Model.Title"
+                     class="w-100 h-100 object-fit-cover rounded-top" />
+            }
+            else
+            {
+                <partial name="_ImagePlaceholder"
+                         model='new ImagePlaceholderViewModel
+                         {
+                             Title = "No product image",
+                             Subtitle = "Image can be added later",
+                             IconCssClass = "bi bi-box-seam",
+                             WrapperCssClass = "h-100 rounded-top"
+                         }' />
+            }
+        </div>
+    </a>
+
+    <div class="card-body d-flex flex-column">
+        @if (!string.IsNullOrWhiteSpace(Model.CategoryName))
+        {
+            <div class="mb-2">
+                <span class="badge text-bg-light border">@Model.CategoryName</span>
+            </div>
+        }
+
+        <h3 class="h6 fw-bold mb-2">
+            <a asp-controller="Products"
+               asp-action="Details"
+               asp-route-slug="@Model.Slug"
+               class="text-decoration-none text-dark">
+                @Model.Title
+            </a>
+        </h3>
+
+        @if (!string.IsNullOrWhiteSpace(Model.ShortDescription))
+        {
+            <p class="text-secondary small mb-3 flex-grow-1">
+                @Model.ShortDescription
+            </p>
+        }
+
+        <div class="mt-auto">
+            <a asp-controller="Products"
+               asp-action="Details"
+               asp-route-slug="@Model.Slug"
+               class="btn btn-outline-primary btn-sm rounded-pill px-3">
+                View Details
+            </a>
+        </div>
+    </div>
+</div>

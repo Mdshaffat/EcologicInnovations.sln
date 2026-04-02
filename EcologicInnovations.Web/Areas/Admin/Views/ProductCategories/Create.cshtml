@@ -1,0 +1,20 @@
+@model EcologicInnovations.Web.ViewModels.Admin.ProductCategoryAdminEditViewModel
+
+<form asp-area="Admin" asp-controller="ProductCategories" asp-action="Create" method="post" novalidate>
+    @Html.AntiForgeryToken()
+    <partial name="_CategoryForm" model="Model" />
+
+    <div class="d-flex flex-wrap gap-2 mt-4">
+        <button type="submit" class="btn btn-primary px-4">
+            <i class="bi bi-save me-1"></i> Create Category
+        </button>
+
+        <a asp-area="Admin" asp-controller="ProductCategories" asp-action="Index" class="btn btn-outline-secondary">
+            Cancel
+        </a>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

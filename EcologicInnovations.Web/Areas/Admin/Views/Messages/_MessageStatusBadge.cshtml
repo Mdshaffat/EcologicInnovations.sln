@@ -1,0 +1,14 @@
+@model EcologicInnovations.Web.Models.Enums.ContactMessageStatus
+
+@{
+    var cssClass = Model switch
+    {
+        EcologicInnovations.Web.Models.Enums.ContactMessageStatus.New => "text-bg-danger",
+        EcologicInnovations.Web.Models.Enums.ContactMessageStatus.Read => "text-bg-primary",
+        EcologicInnovations.Web.Models.Enums.ContactMessageStatus.Replied => "text-bg-success",
+        EcologicInnovations.Web.Models.Enums.ContactMessageStatus.Closed => "text-bg-secondary",
+        _ => "text-bg-light"
+    };
+}
+
+<span class="badge rounded-pill @cssClass">@Model</span>

@@ -1,0 +1,128 @@
+@model EcologicInnovations.Web.ViewModels.About.AboutPageViewModel
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/about.css" asp-append-version="true" />
+}
+
+<section class="about-hero position-relative overflow-hidden">
+    @if (!string.IsNullOrWhiteSpace(Model.BannerImageUrl))
+    {
+        <div class="about-hero-bg">
+            <img src="@Model.BannerImageUrl"
+                 alt="@Model.Title banner"
+                 class="w-100 h-100 object-fit-cover" />
+        </div>
+    }
+
+    <div class="about-hero-overlay"></div>
+
+    <div class="container position-relative">
+        <div class="row min-vh-50 align-items-center">
+            <div class="col-12 col-lg-8">
+                @if (Model.Breadcrumbs?.Count > 0)
+                {
+                    <nav aria-label="breadcrumb" class="mb-3">
+                        <ol class="breadcrumb breadcrumb-light mb-0">
+                            @foreach (var crumb in Model.Breadcrumbs)
+                            {
+                                if (crumb.IsActive || string.IsNullOrWhiteSpace(crumb.Url))
+                                {
+                                    <li class="breadcrumb-item active" aria-current="page">@crumb.Title</li>
+                                }
+                                else
+                                {
+                                    <li class="breadcrumb-item">
+                                        <a href="@crumb.Url">@crumb.Title</a>
+                                    </li>
+                                }
+                            }
+                        </ol>
+                    </nav>
+                }
+
+                <span class="about-hero-kicker">Ecologic Innovations</span>
+                <h1 class="display-5 fw-bold text-white mb-3">@Model.Title</h1>
+
+                @if (!string.IsNullOrWhiteSpace(Model.ShortIntro))
+                {
+                    <p class="lead text-white-50 mb-0">@Model.ShortIntro</p>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="about-main-section py-5 py-lg-6">
+    <div class="container">
+        <div class="row g-4 g-xl-5">
+            <div class="col-12 col-lg-4">
+                <div class="about-side-card card border-0 shadow-sm h-100">
+                    <div class="card-body p-4 p-xl-5">
+                        <span class="about-side-kicker">Who we are</span>
+                        <h2 class="h3 fw-bold mb-3">Building practical eco-technology solutions</h2>
+                        <p class="text-secondary mb-4">
+                            We combine business software, sustainability-focused IoT, and energy-related solutions to help organizations improve clarity, control, and impact.
+                        </p>
+
+                        <div class="about-side-stat-list">
+                            <div class="about-side-stat">
+                                <strong>Software</strong>
+                                <span>Business-ready digital systems</span>
+                            </div>
+                            <div class="about-side-stat">
+                                <strong>IoT</strong>
+                                <span>Sustainability monitoring and smart visibility</span>
+                            </div>
+                            <div class="about-side-stat">
+                                <strong>Energy</strong>
+                                <span>Equipment and solution-driven implementation</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-lg-8">
+                <div class="card border-0 shadow-sm about-content-card">
+                    <div class="card-body p-4 p-xl-5">
+                        @if (!string.IsNullOrWhiteSpace(Model.HtmlContent))
+                        {
+                            <div class="about-rich-content">
+                                @Html.Raw(Model.HtmlContent)
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="text-center py-5">
+                                <h2 class="h4 fw-semibold mb-3">Content is coming soon</h2>
+                                <p class="text-secondary mb-0">
+                                    The About Us page has not been fully updated yet.
+                                </p>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <div class="about-cta-panel mt-4 mt-xl-5">
+                    <div class="row g-3 align-items-center">
+                        <div class="col-lg-8">
+                            <span class="about-side-kicker">Let’s work together</span>
+                            <h2 class="h3 fw-bold mb-2">Need software, sustainability IoT, or energy solutions?</h2>
+                            <p class="text-secondary mb-0">
+                                Explore our products and contact us for business discussion, solution planning, or implementation support.
+                            </p>
+                        </div>
+                        <div class="col-lg-4 text-lg-end">
+                            <a asp-controller="Products" asp-action="Index" class="btn btn-primary btn-lg px-4 me-2 mb-2 mb-lg-0">
+                                View Products
+                            </a>
+                            <a asp-controller="Contact" asp-action="Index" class="btn btn-outline-dark btn-lg px-4">
+                                Contact Us
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

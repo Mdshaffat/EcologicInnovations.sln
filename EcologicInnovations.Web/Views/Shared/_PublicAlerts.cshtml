@@ -1,0 +1,27 @@
+@using EcologicInnovations.Web.Helpers
+
+@{
+    var alerts = TempData.GetUiAlerts();
+}
+
+@if (alerts.Count > 0)
+{
+    <div class="ui-alert-stack mb-4">
+        @foreach (var alert in alerts)
+        {
+            <div class="alert alert-@alert.Type @(alert.Dismissible ? "alert-dismissible fade show" : "") shadow-sm border-0" role="alert">
+                @if (!string.IsNullOrWhiteSpace(alert.Title))
+                {
+                    <div class="fw-bold mb-1">@alert.Title</div>
+                }
+
+                <div>@alert.Message</div>
+
+                @if (alert.Dismissible)
+                {
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                }
+            </div>
+        }
+    </div>
+}

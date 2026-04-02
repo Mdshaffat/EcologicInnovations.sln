@@ -1,0 +1,60 @@
+@model EcologicInnovations.Web.ViewModels.Admin.ProductCategoryAdminEditViewModel
+
+<div asp-validation-summary="ModelOnly" class="alert alert-danger small"></div>
+
+<div class="row g-4">
+    <div class="col-lg-8">
+        <div class="card border-0 shadow-sm admin-card h-100">
+            <div class="card-body p-4">
+                <div class="mb-3">
+                    <label asp-for="Name" class="form-label fw-semibold"></label>
+                    <input asp-for="Name" class="form-control form-control-lg" placeholder="e.g. Energy Equipment" />
+                    <span asp-validation-for="Name" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Slug" class="form-label fw-semibold"></label>
+                    <input asp-for="Slug" class="form-control" placeholder="Leave blank to auto-generate from name" />
+                    <span asp-validation-for="Slug" class="text-danger small"></span>
+                    <div class="form-text">
+                        Use lowercase words separated by hyphens. Example: <code>energy-equipment</code>.
+                        If left blank, the system will generate a unique slug automatically.
+                    </div>
+                </div>
+
+                <div class="mb-0">
+                    <label asp-for="Description" class="form-label fw-semibold"></label>
+                    <textarea asp-for="Description" class="form-control" rows="6" placeholder="Short optional description for admin context and future category SEO."></textarea>
+                    <span asp-validation-for="Description" class="text-danger small"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="card border-0 shadow-sm admin-card h-100">
+            <div class="card-body p-4">
+                <h5 class="mb-3">Category Settings</h5>
+
+                <div class="mb-3">
+                    <label asp-for="SortOrder" class="form-label fw-semibold"></label>
+                    <input asp-for="SortOrder" class="form-control" />
+                    <span asp-validation-for="SortOrder" class="text-danger small"></span>
+                </div>
+
+                <div class="form-check form-switch mb-3">
+                    <input asp-for="IsActive" class="form-check-input" />
+                    <label asp-for="IsActive" class="form-check-label fw-semibold"></label>
+                </div>
+
+                @if (Model.Id > 0)
+                {
+                    <div class="border rounded-3 p-3 bg-light-subtle">
+                        <div class="small text-muted mb-1">Assigned Products</div>
+                        <div class="fw-semibold">@Model.ProductCount</div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

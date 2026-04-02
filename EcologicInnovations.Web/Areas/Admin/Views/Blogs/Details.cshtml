@@ -1,0 +1,81 @@
+@model EcologicInnovations.Web.ViewModels.Admin.BlogAdminDetailsViewModel
+
+<div class="row g-4">
+    <div class="col-lg-8">
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-body p-4">
+                <h2 class="h5 fw-bold mb-3">@Model.Title</h2>
+
+                @if (!string.IsNullOrWhiteSpace(Model.FeatureImageUrl))
+                {
+                    <div class="mb-4">
+                        <img src="@Model.FeatureImageUrl" alt="Feature image" class="img-fluid rounded admin-image-preview" />
+                    </div>
+                }
+
+                <dl class="row mb-0">
+                    <dt class="col-sm-3">Slug</dt>
+                    <dd class="col-sm-9"><code>@Model.Slug</code></dd>
+
+                    <dt class="col-sm-3">Category</dt>
+                    <dd class="col-sm-9">@(Model.CategoryName ?? "—")</dd>
+
+                    <dt class="col-sm-3">Excerpt</dt>
+                    <dd class="col-sm-9">@Model.Excerpt</dd>
+
+                    <dt class="col-sm-3">Published</dt>
+                    <dd class="col-sm-9">@(Model.IsPublished ? "Yes" : "No")</dd>
+
+                    <dt class="col-sm-3">Published At</dt>
+                    <dd class="col-sm-9">@(Model.PublishedAt?.ToString("dd MMM yyyy, hh:mm tt") + " UTC" ?? "—")</dd>
+
+                    <dt class="col-sm-3">Featured</dt>
+                    <dd class="col-sm-9">@(Model.IsFeatured ? "Yes" : "No")</dd>
+
+                    <dt class="col-sm-3">Contact Form</dt>
+                    <dd class="col-sm-9">@(Model.ShowContactForm ? "Enabled" : "Disabled")</dd>
+
+                    <dt class="col-sm-3">Contact Title</dt>
+                    <dd class="col-sm-9">@(Model.ContactFormTitle ?? "—")</dd>
+
+                    <dt class="col-sm-3">Meta Title</dt>
+                    <dd class="col-sm-9">@(Model.MetaTitle ?? "—")</dd>
+
+                    <dt class="col-sm-3">Meta Description</dt>
+                    <dd class="col-sm-9">@(Model.MetaDescription ?? "—")</dd>
+
+                    <dt class="col-sm-3">OG Image</dt>
+                    <dd class="col-sm-9">@(Model.OgImageUrl ?? "—")</dd>
+
+                    <dt class="col-sm-3">Created</dt>
+                    <dd class="col-sm-9">@Model.CreatedAt.ToString("dd MMM yyyy, hh:mm tt") UTC</dd>
+
+                    <dt class="col-sm-3">Updated</dt>
+                    <dd class="col-sm-9">@(Model.UpdatedAt?.ToString("dd MMM yyyy, hh:mm tt") + " UTC" ?? "Not updated yet")</dd>
+                </dl>
+            </div>
+        </div>
+
+        @if (!string.IsNullOrWhiteSpace(Model.HtmlContentPreview))
+        {
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white p-4 border-0">
+                    <h2 class="h6 fw-bold mb-1">HTML Content Preview</h2>
+                    <p class="text-muted small mb-0">Sanitized preview of the saved article content.</p>
+                </div>
+                <div class="card-body p-4 blog-html-preview">
+                    @Html.Raw(Model.HtmlContentPreview)
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="col-lg-4">
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-4 d-grid gap-2">
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit Blog</a>
+                <a asp-action="Index" class="btn btn-outline-secondary">Back to List</a>
+            </div>
+        </div>
+    </div>
+</div>

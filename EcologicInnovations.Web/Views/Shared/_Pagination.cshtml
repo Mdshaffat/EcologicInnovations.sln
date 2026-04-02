@@ -1,0 +1,79 @@
+@model EcologicInnovations.Web.ViewModels.Shared.PaginationRenderViewModel
+@using EcologicInnovations.Web.Helpers
+
+@{
+    if (Model.Pagination.TotalPages <= 1)
+    {
+        return;
+    }
+
+    var currentPage = Model.Pagination.PageNumber;
+    var totalPages = Model.Pagination.TotalPages;
+    var startPage = Math.Max(1, currentPage - Model.SurroundingPageCount);
+    var endPage = Math.Min(totalPages, currentPage + Model.SurroundingPageCount);
+
+    string PageUrl(int page)
+        => QueryStringRouteValueHelper.BuildPageUrl(
+            Model.CurrentPath,
+            Model.Query,
+            page,
+            Model.PageParameterName);
+}
+
+<nav aria-label="Pagination" class="mt-4">
+    <ul class="pagination justify-content-center flex-wrap gap-1">
+        <li class="page-item @(Model.Pagination.HasPreviousPage ? "" : "disabled")">
+            <a class="page-link rounded-pill px-3"
+               href="@(Model.Pagination.HasPreviousPage ? PageUrl(currentPage - 1) : "#")"
+               aria-label="Previous">
+                Previous
+            </a>
+        </li>
+
+        @if (startPage > 1)
+        {
+            <li class="page-item">
+                <a class="page-link rounded-pill" href="@PageUrl(1)">1</a>
+            </li>
+
+            @if (startPage > 2)
+            {
+                <li class="page-item disabled">
+                    <span class="page-link rounded-pill">…</span>
+                </li>
+            }
+        }
+
+        @for (var page = startPage; page <= endPage; page++)
+        {
+            <li class="page-item @(page == currentPage ? "active" : "")">
+                <a class="page-link rounded-pill"
+                   href="@PageUrl(page)">
+                    @page
+                </a>
+            </li>
+        }
+
+        @if (endPage < totalPages)
+        {
+            @if (endPage < totalPages - 1)
+            {
+                <li class="page-item disabled">
+                    <span class="page-link rounded-pill">…</span>
+                </li>
+            }
+
+            <li class="page-item">
+                <a class="page-link rounded-pill" href="@PageUrl(totalPages)">@totalPages</a>
+            </li>
+        }
+
+        <li class="page-item @(Model.Pagination.HasNextPage ? "" : "disabled")">
+            <a class="page-link rounded-pill px-3"
+               href="@(Model.Pagination.HasNextPage ? PageUrl(currentPage + 1) : "#")"
+               aria-label="Next">
+                Next
+            </a>
+        </li>
+    </ul>
+</nav>

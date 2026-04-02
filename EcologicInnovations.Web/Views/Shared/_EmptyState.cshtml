@@ -1,0 +1,26 @@
+@model EcologicInnovations.Web.ViewModels.Shared.EmptyStateViewModel
+
+<div class="empty-state-card text-center p-4 p-lg-5 rounded-4 border @Model.ThemeCssClass">
+    @if (!string.IsNullOrWhiteSpace(Model.IconCssClass))
+    {
+        <div class="empty-state-icon mb-3">
+            <i class="@Model.IconCssClass"></i>
+        </div>
+    }
+
+    <h2 class="h5 fw-bold mb-2">@Model.Title</h2>
+
+    @if (!string.IsNullOrWhiteSpace(Model.Message))
+    {
+        <p class="text-secondary mb-4 mx-auto empty-state-text">
+            @Model.Message
+        </p>
+    }
+
+    @if (!string.IsNullOrWhiteSpace(Model.ButtonText) && !string.IsNullOrWhiteSpace(Model.ButtonUrl))
+    {
+        <a href="@Model.ButtonUrl" class="btn @Model.ButtonCssClass rounded-pill px-4">
+            @Model.ButtonText
+        </a>
+    }
+</div>

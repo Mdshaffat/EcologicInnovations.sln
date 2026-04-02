@@ -1,0 +1,149 @@
+@model EcologicInnovations.Web.ViewModels.Admin.SitePageEditorViewModel
+
+<div class="row g-4">
+    <div class="col-12 col-xl-8">
+        <div class="card border-0 shadow-sm admin-card">
+            <div class="card-body p-4 p-xl-5">
+                <form asp-area="Admin" asp-controller="SitePages" asp-action="EditAboutUs" method="post" novalidate>
+                    @Html.AntiForgeryToken()
+
+                    <input asp-for="Id" type="hidden" />
+                    <input asp-for="PageKey" type="hidden" />
+
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                    <div class="mb-4">
+                        <label asp-for="Title" class="form-label fw-semibold"></label>
+                        <input asp-for="Title" class="form-control form-control-lg" placeholder="About Us" />
+                        <span asp-validation-for="Title" class="text-danger small"></span>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-md-8">
+                            <label asp-for="Slug" class="form-label fw-semibold"></label>
+                            <input asp-for="Slug" class="form-control" placeholder="about-us" />
+                            <div class="form-text">
+                                Stored for SEO consistency and future routing. Current public route remains <code>/about-us</code>.
+                            </div>
+                            <span asp-validation-for="Slug" class="text-danger small"></span>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label asp-for="SortOrder" class="form-label fw-semibold"></label>
+                            <input asp-for="SortOrder" class="form-control" />
+                            <span asp-validation-for="SortOrder" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="mt-4">
+                        <label asp-for="BannerImageUrl" class="form-label fw-semibold"></label>
+                        <input asp-for="BannerImageUrl" class="form-control" placeholder="/uploads/media/pages/about-banner.jpg" />
+                        <div class="form-text">
+                            Upload an image in Media / Uploads, copy the public URL, and paste it here.
+                        </div>
+                        <span asp-validation-for="BannerImageUrl" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mt-4">
+                        <label asp-for="ShortIntro" class="form-label fw-semibold"></label>
+                        <textarea asp-for="ShortIntro" class="form-control" rows="4" placeholder="Short introduction shown below the hero section."></textarea>
+                        <span asp-validation-for="ShortIntro" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mt-4">
+                        <label asp-for="HtmlContent" class="form-label fw-semibold"></label>
+                        <textarea asp-for="HtmlContent" class="form-control font-monospace" rows="20" placeholder="<section><h2>Who We Are</h2><p>...</p></section>"></textarea>
+                        <div class="form-text">
+                            Write structured HTML here. The content will be sanitized before save.
+                        </div>
+                        <span asp-validation-for="HtmlContent" class="text-danger small"></span>
+                    </div>
+
+                    <div class="row g-3 mt-1">
+                        <div class="col-md-6">
+                            <label asp-for="MetaTitle" class="form-label fw-semibold"></label>
+                            <input asp-for="MetaTitle" class="form-control" placeholder="About Us | Ecologic Innovations" />
+                            <span asp-validation-for="MetaTitle" class="text-danger small"></span>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="MetaDescription" class="form-label fw-semibold"></label>
+                            <textarea asp-for="MetaDescription" class="form-control" rows="3" placeholder="Search result summary for the About Us page."></textarea>
+                            <span asp-validation-for="MetaDescription" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-check form-switch mt-4">
+                        <input asp-for="IsPublished" class="form-check-input" />
+                        <label asp-for="IsPublished" class="form-check-label fw-semibold"></label>
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-2 mt-4">
+                        <button type="submit" class="btn btn-primary px-4">
+                            <i class="bi bi-save me-2"></i>Save About Us
+                        </button>
+
+                        <a asp-area="" asp-controller="About" asp-action="Index" class="btn btn-outline-secondary" target="_blank">
+                            <i class="bi bi-box-arrow-up-right me-2"></i>Open Public Page
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-xl-4">
+        <div class="card border-0 shadow-sm admin-card mb-4">
+            <div class="card-body p-4">
+                <h2 class="h5 mb-3">Banner Preview</h2>
+
+                @if (!string.IsNullOrWhiteSpace(Model.BannerImageUrl))
+                {
+                    <img src="@Model.BannerImageUrl"
+                         alt="About Us banner preview"
+                         class="img-fluid rounded-4 border mb-3" />
+                }
+                else
+                {
+                    <div class="rounded-4 border bg-light p-4 text-center text-muted">
+                        No banner image selected
+                    </div>
+                }
+
+                <dl class="row small mb-0">
+                    <dt class="col-5">Page Key</dt>
+                    <dd class="col-7">@Model.PageKey</dd>
+
+                    <dt class="col-5">Updated</dt>
+                    <dd class="col-7">@((Model.UpdatedAt?.ToLocalTime().ToString("dd MMM yyyy hh:mm tt")) ?? "Not saved yet")</dd>
+
+                    <dt class="col-5">Published</dt>
+                    <dd class="col-7">@(Model.IsPublished ? "Yes" : "No")</dd>
+                </dl>
+            </div>
+        </div>
+
+        <div class="card border-0 shadow-sm admin-card">
+            <div class="card-body p-4">
+                <h2 class="h5 mb-3">Sanitized HTML Preview</h2>
+
+                @if (!string.IsNullOrWhiteSpace(Model.PreviewHtml))
+                {
+                    <div class="border rounded-4 p-3 bg-light-subtle about-admin-preview">
+                        @Html.Raw(Model.PreviewHtml)
+                    </div>
+                }
+                else
+                {
+                    <div class="text-muted small">
+                        Preview will appear here after HTML is added.
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

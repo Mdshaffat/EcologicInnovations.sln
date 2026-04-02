@@ -1,0 +1,127 @@
+@model EcologicInnovations.Web.ViewModels.Admin.ProductAdminDetailsViewModel
+
+<div class="row g-4">
+    <div class="col-12 col-xl-8">
+        <div class="card border-0 shadow-sm admin-card">
+            <div class="card-body p-4 p-xl-5">
+                <div class="d-flex flex-wrap justify-content-between gap-3 mb-4">
+                    <div>
+                        <h2 class="h4 mb-1">@Model.Title</h2>
+                        <div class="text-muted small">@Model.Slug</div>
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-2">
+                        <span class="badge @(Model.IsPublished ? "text-bg-success" : "text-bg-warning")">
+                            @(Model.IsPublished ? "Published" : "Draft")
+                        </span>
+                        <span class="badge @(Model.IsActive ? "text-bg-primary" : "text-bg-secondary")">
+                            @(Model.IsActive ? "Active" : "Inactive")
+                        </span>
+                        @if (Model.IsFeatured)
+                        {
+                            <span class="badge text-bg-dark">Featured</span>
+                        }
+                    </div>
+                </div>
+
+                <dl class="row mb-4">
+                    <dt class="col-sm-4">Category</dt>
+                    <dd class="col-sm-8">@Model.CategoryName</dd>
+
+                    <dt class="col-sm-4">List Sort Order</dt>
+                    <dd class="col-sm-8">@Model.ListSortOrder</dd>
+
+                    <dt class="col-sm-4">Show In Product Menu</dt>
+                    <dd class="col-sm-8">@(Model.ShowInProductMenu ? "Yes" : "No")</dd>
+
+                    <dt class="col-sm-4">Menu Sort Order</dt>
+                    <dd class="col-sm-8">@Model.MenuSortOrder</dd>
+
+                    <dt class="col-sm-4">Contact Form Enabled</dt>
+                    <dd class="col-sm-8">@(Model.ContactFormEnabled ? "Yes" : "No")</dd>
+
+                    <dt class="col-sm-4">Contact Form Title</dt>
+                    <dd class="col-sm-8">@(!string.IsNullOrWhiteSpace(Model.ContactFormTitle) ? Model.ContactFormTitle : "—")</dd>
+
+                    <dt class="col-sm-4">Created</dt>
+                    <dd class="col-sm-8">@Model.CreatedAt.ToString("dd MMM yyyy hh:mm tt")</dd>
+
+                    <dt class="col-sm-4">Updated</dt>
+                    <dd class="col-sm-8">@(Model.UpdatedAt.HasValue ? Model.UpdatedAt.Value.ToString("dd MMM yyyy hh:mm tt") : "—")</dd>
+                </dl>
+
+                <div class="mb-4">
+                    <h3 class="h6 text-uppercase text-muted fw-bold">Short Description</h3>
+                    <p class="mb-0">@Model.ShortDescription</p>
+                </div>
+
+                @if (!string.IsNullOrWhiteSpace(Model.HtmlDetailsPreview))
+                {
+                    <div class="mb-0">
+                        <h3 class="h6 text-uppercase text-muted fw-bold">HTML Details Preview</h3>
+                        <div class="border rounded-4 p-4 bg-light-subtle content-html">
+                            @Html.Raw(Model.HtmlDetailsPreview)
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-xl-4">
+        <div class="card border-0 shadow-sm admin-card mb-4">
+            <div class="card-body p-4">
+                <h3 class="h6 text-uppercase text-muted fw-bold mb-3">Images</h3>
+
+                @if (!string.IsNullOrWhiteSpace(Model.MainImageUrl))
+                {
+                    <div class="mb-3">
+                        <div class="small fw-semibold text-muted mb-2">Main Image</div>
+                        <img src="@Model.MainImageUrl" alt="@Model.Title" class="img-fluid rounded-3 border admin-image-preview" />
+                    </div>
+                }
+                else
+                {
+                    <div class="text-muted small mb-3">No main image set.</div>
+                }
+
+                @if (!string.IsNullOrWhiteSpace(Model.OgImageUrl))
+                {
+                    <div>
+                        <div class="small fw-semibold text-muted mb-2">OG Image</div>
+                        <img src="@Model.OgImageUrl" alt="OG image" class="img-fluid rounded-3 border admin-image-preview-sm" />
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="card border-0 shadow-sm admin-card">
+            <div class="card-body p-4">
+                <h3 class="h6 text-uppercase text-muted fw-bold mb-3">SEO</h3>
+
+                <dl class="mb-0">
+                    <dt>Meta Title</dt>
+                    <dd class="text-muted">@(!string.IsNullOrWhiteSpace(Model.MetaTitle) ? Model.MetaTitle : "—")</dd>
+
+                    <dt>Meta Description</dt>
+                    <dd class="text-muted">@(!string.IsNullOrWhiteSpace(Model.MetaDescription) ? Model.MetaDescription : "—")</dd>
+
+                    <dt>OG Image URL</dt>
+                    <dd class="text-muted text-break">@(!string.IsNullOrWhiteSpace(Model.OgImageUrl) ? Model.OgImageUrl : "—")</dd>
+                </dl>
+            </div>
+        </div>
+
+        <div class="d-flex flex-wrap gap-2 mt-4">
+            <a asp-area="Admin" asp-controller="Products" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">
+                Edit Product
+            </a>
+            <a asp-area="Admin" asp-controller="Products" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-danger">
+                Delete
+            </a>
+            <a asp-area="Admin" asp-controller="Products" asp-action="Index" class="btn btn-outline-secondary">
+                Back to List
+            </a>
+        </div>
+    </div>
+</div>

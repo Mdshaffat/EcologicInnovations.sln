@@ -1,0 +1,15 @@
+@using EcologicInnovations.Web.Models.Seo
+
+@{
+    var schemaBlocks = ViewData.GetSchemaBlocks();
+}
+
+@foreach (var block in schemaBlocks)
+{
+    if (!string.IsNullOrWhiteSpace(block.Json))
+    {
+        <script type="application/ld+json">
+@Html.Raw(block.Json)
+        </script>
+    }
+}

@@ -1,0 +1,102 @@
+@model EcologicInnovations.Web.ViewModels.Shared.PublicNavigationViewModel
+
+@{
+    bool IsActive(string path)
+    {
+        if (string.IsNullOrWhiteSpace(Model.CurrentPath))
+        {
+            return false;
+        }
+
+        if (path == "/")
+        {
+            return string.Equals(Model.CurrentPath, "/", StringComparison.OrdinalIgnoreCase);
+        }
+
+        return Model.CurrentPath.StartsWith(path, StringComparison.OrdinalIgnoreCase);
+    }
+
+    var hasProductMenuItems = Model.ProductMenuItems.Any();
+}
+
+<nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom sticky-top shadow-sm public-navbar">
+    <div class="container">
+        <a class="navbar-brand d-flex align-items-center gap-2 fw-bold" asp-controller="Home" asp-action="Index">
+            @if (!string.IsNullOrWhiteSpace(Model.LogoUrl))
+            {
+                <img src="@Model.LogoUrl"
+                     alt="@Model.SiteName"
+                     class="public-navbar-logo" />
+            }
+
+            <span class="public-navbar-brand-text">@Model.SiteName</span>
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#publicNavbar"
+                aria-controls="publicNavbar" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="publicNavbar">
+            <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
+                <li class="nav-item">
+                    <a class="nav-link @(IsActive("/") ? "active" : null)" asp-controller="Home" asp-action="Index">Home</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link @(IsActive("/about-us") ? "active" : null)" asp-controller="About" asp-action="Index">About Us</a>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle @(IsActive("/products") ? "active" : null)"
+                       href="#"
+                       id="productsDropdown"
+                       role="button"
+                       data-bs-toggle="dropdown"
+                       aria-expanded="false">
+                        Products
+                    </a>
+
+                    <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 public-navbar-dropdown"
+                        aria-labelledby="productsDropdown">
+                        <li>
+                            <a class="dropdown-item fw-semibold" asp-controller="Products" asp-action="Index">All Products</a>
+                        </li>
+
+                        @if (hasProductMenuItems)
+                        {
+                            <li><hr class="dropdown-divider" /></li>
+
+                            @foreach (var item in Model.ProductMenuItems)
+                            {
+                                <li>
+                                    <a class="dropdown-item" href="@item.Url">@item.Title</a>
+                                </li>
+                            }
+                        }
+                    </ul>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link @(IsActive("/blog") ? "active" : null)" asp-controller="Blog" asp-action="Index">Blog</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link @(IsActive("/policy") ? "active" : null)" asp-controller="Policy" asp-action="Index">Policy</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link @(IsActive("/contact") ? "active" : null)" asp-controller="Contact" asp-action="Index">Contact</a>
+                </li>
+
+                <li class="nav-item ms-lg-2">
+                    <partial name="_AdminLinkPartial" />
+                </li>
+
+                <li class="nav-item ms-lg-1">
+                    <partial name="_LoginPartial" />
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

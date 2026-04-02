@@ -1,0 +1,116 @@
+@model EcologicInnovations.Web.ViewModels.Policy.PolicyPageViewModel
+
+@{
+    ViewData["Title"] = Model.Seo.Title ?? Model.Title;
+}
+
+<section class="policy-page">
+    @if (!string.IsNullOrWhiteSpace(Model.BannerImageUrl))
+    {
+        <section class="policy-hero position-relative overflow-hidden">
+            <img src="@Model.BannerImageUrl" alt="@Model.Title" class="policy-hero-image" />
+            <div class="policy-hero-overlay"></div>
+
+            <div class="container position-relative">
+                <div class="policy-hero-content">
+                    <nav aria-label="breadcrumb" class="mb-3">
+                        <ol class="breadcrumb policy-breadcrumb">
+                            @foreach (var breadcrumb in Model.Breadcrumbs)
+                            {
+                                if (breadcrumb.IsActive || string.IsNullOrWhiteSpace(breadcrumb.Url))
+                                {
+                                    <li class="breadcrumb-item active" aria-current="page">@breadcrumb.Title</li>
+                                }
+                                else
+                                {
+                                    <li class="breadcrumb-item">
+                                        <a href="@breadcrumb.Url">@breadcrumb.Title</a>
+                                    </li>
+                                }
+                            }
+                        </ol>
+                    </nav>
+
+                    <h1 class="display-5 fw-bold text-white mb-3">@Model.Title</h1>
+
+                    @if (!string.IsNullOrWhiteSpace(Model.UpdatedText))
+                    {
+                        <div class="policy-updated-pill">
+                            <i class="bi bi-clock-history me-2"></i>@Model.UpdatedText
+                        </div>
+                    }
+                </div>
+            </div>
+        </section>
+    }
+    else
+    {
+        <section class="policy-header py-5 bg-light border-bottom">
+            <div class="container">
+                <nav aria-label="breadcrumb" class="mb-3">
+                    <ol class="breadcrumb">
+                        @foreach (var breadcrumb in Model.Breadcrumbs)
+                        {
+                            if (breadcrumb.IsActive || string.IsNullOrWhiteSpace(breadcrumb.Url))
+                            {
+                                <li class="breadcrumb-item active" aria-current="page">@breadcrumb.Title</li>
+                            }
+                            else
+                            {
+                                <li class="breadcrumb-item">
+                                    <a href="@breadcrumb.Url">@breadcrumb.Title</a>
+                                </li>
+                            }
+                        }
+                    </ol>
+                </nav>
+
+                <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
+                    <div>
+                        <h1 class="display-6 fw-bold mb-2">@Model.Title</h1>
+
+                        @if (!string.IsNullOrWhiteSpace(Model.ShortIntro))
+                        {
+                            <p class="lead text-muted mb-0">@Model.ShortIntro</p>
+                        }
+                    </div>
+
+                    @if (!string.IsNullOrWhiteSpace(Model.UpdatedText))
+                    {
+                        <div class="policy-updated-pill policy-updated-pill-light">
+                            <i class="bi bi-clock-history me-2"></i>@Model.UpdatedText
+                        </div>
+                    }
+                </div>
+            </div>
+        </section>
+    }
+
+    <section class="py-5">
+        <div class="container">
+            <div class="row justify-content-center g-4">
+                <div class="col-12 col-xl-10">
+                    @if (!string.IsNullOrWhiteSpace(Model.BannerImageUrl) && !string.IsNullOrWhiteSpace(Model.ShortIntro))
+                    {
+                        <div class="policy-intro-card shadow-sm border-0 mb-4">
+                            <div class="policy-intro-card-body">
+                                <p class="lead mb-0">@Model.ShortIntro</p>
+                            </div>
+                        </div>
+                    }
+
+                    <article class="policy-content shadow-sm">
+                        <div class="policy-content-body content-html">
+                            @Html.Raw(Model.HtmlContent)
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </section>
+</section>
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/content-html.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/policy.css" asp-append-version="true" />
+}

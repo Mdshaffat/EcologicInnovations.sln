@@ -1,0 +1,10 @@
+@model EcologicInnovations.Web.ViewModels.Admin.BlogCategoryAdminEditViewModel
+
+<form asp-action="Create" method="post">
+    @Html.AntiForgeryToken()
+    <partial name="_CategoryForm" model="Model" />
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

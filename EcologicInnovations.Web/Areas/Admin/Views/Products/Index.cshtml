@@ -1,0 +1,301 @@
+@model EcologicInnovations.Web.ViewModels.Admin.ProductAdminListViewModel
+
+<div class="card border-0 shadow-sm admin-card mb-4">
+    <div class="card-body p-4">
+        <div class="d-flex flex-column flex-lg-row justify-content-between gap-3 mb-4">
+            <div>
+                <h2 class="h5 mb-1">Product Management</h2>
+                <p class="text-muted mb-0">Create and manage products, category assignments, HTML content, menu behavior, and SEO fields.</p>
+            </div>
+            <div>
+                <a asp-area="Admin" asp-controller="Products" asp-action="Create" class="btn btn-success">
+                    <i class="bi bi-plus-circle me-1"></i> Create Product
+                </a>
+            </div>
+        </div>
+
+        <div class="row g-3 mb-4">
+            <div class="col-6 col-lg-3">
+                <div class="admin-stat-box rounded-4 border bg-light-subtle p-3 h-100">
+                    <div class="small text-muted">Total Products</div>
+                    <div class="fs-4 fw-bold">@Model.TotalCount</div>
+                </div>
+            </div>
+            <div class="col-6 col-lg-3">
+                <div class="admin-stat-box rounded-4 border bg-light-subtle p-3 h-100">
+                    <div class="small text-muted">Published</div>
+                    <div class="fs-4 fw-bold">@Model.PublishedCount</div>
+                </div>
+            </div>
+            <div class="col-6 col-lg-3">
+                <div class="admin-stat-box rounded-4 border bg-light-subtle p-3 h-100">
+                    <div class="small text-muted">Featured</div>
+                    <div class="fs-4 fw-bold">@Model.FeaturedCount</div>
+                </div>
+            </div>
+            <div class="col-6 col-lg-3">
+                <div class="admin-stat-box rounded-4 border bg-light-subtle p-3 h-100">
+                    <div class="small text-muted">In Product Menu</div>
+                    <div class="fs-4 fw-bold">@Model.MenuProductCount</div>
+                </div>
+            </div>
+        </div>
+
+        <form method="get" asp-area="Admin" asp-controller="Products" asp-action="Index" class="row g-3 align-items-end">
+            <div class="col-md-4">
+                <label class="form-label fw-semibold">Search</label>
+                <input type="text" name="searchTerm" value="@Model.Filter.SearchTerm" class="form-control" placeholder="Title, slug, description, category" />
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label fw-semibold">Category</label>
+                <select name="productCategoryId" class="form-select" asp-items="Model.CategoryOptions"></select>
+            </div>
+
+            <div class="col-md-2">
+                <label class="form-label fw-semibold">Published</label>
+                <select name="isPublished" class="form-select">
+                    <option value="">All</option>
+                    <option value="true" selected="@(Model.Filter.IsPublished == true)">Published</option>
+                    <option value="false" selected="@(Model.Filter.IsPublished == false)">Draft</option>
+                </select>
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label fw-semibold">Sort By</label>
+                <select name="sortBy" class="form-select">
+                    <option value="listsort_asc" selected="@(Model.Filter.SortBy == "listsort_asc")">List Sort (Asc)</option>
+                    <option value="listsort_desc" selected="@(Model.Filter.SortBy == "listsort_desc")">List Sort (Desc)</option>
+                    <option value="title_asc" selected="@(Model.Filter.SortBy == "title_asc")">Title (A-Z)</option>
+                    <option value="title_desc" selected="@(Model.Filter.SortBy == "title_desc")">Title (Z-A)</option>
+                    <option value="menu_asc" selected="@(Model.Filter.SortBy == "menu_asc")">Menu Sort (Asc)</option>
+                    <option value="menu_desc" selected="@(Model.Filter.SortBy == "menu_desc")">Menu Sort (Desc)</option>
+                    <option value="newest" selected="@(Model.Filter.SortBy == "newest")">Newest</option>
+                    <option value="oldest" selected="@(Model.Filter.SortBy == "oldest")">Oldest</option>
+                </select>
+            </div>
+
+            <div class="col-md-2">
+                <label class="form-label fw-semibold">Active</label>
+                <select name="isActive" class="form-select">
+                    <option value="">All</option>
+                    <option value="true" selected="@(Model.Filter.IsActive == true)">Active</option>
+                    <option value="false" selected="@(Model.Filter.IsActive == false)">Inactive</option>
+                </select>
+            </div>
+
+            <div class="col-md-2">
+                <label class="form-label fw-semibold">Featured</label>
+                <select name="isFeatured" class="form-select">
+                    <option value="">All</option>
+                    <option value="true" selected="@(Model.Filter.IsFeatured == true)">Featured</option>
+                    <option value="false" selected="@(Model.Filter.IsFeatured == false)">Not Featured</option>
+                </select>
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label fw-semibold">Product Menu</label>
+                <select name="showInProductMenu" class="form-select">
+                    <option value="">All</option>
+                    <option value="true" selected="@(Model.Filter.ShowInProductMenu == true)">Shown In Menu</option>
+                    <option value="false" selected="@(Model.Filter.ShowInProductMenu == false)">Not In Menu</option>
+                </select>
+            </div>
+
+            <div class="col-md-2">
+                <label class="form-label fw-semibold">Page Size</label>
+                <select name="pageSize" class="form-select">
+                    <option value="10" selected="@(Model.Filter.PageSize == 10)">10</option>
+                    <option value="20" selected="@(Model.Filter.PageSize == 20)">20</option>
+                    <option value="50" selected="@(Model.Filter.PageSize == 50)">50</option>
+                </select>
+            </div>
+
+            <div class="col-12 d-flex flex-wrap gap-2">
+                <button type="submit" class="btn btn-dark">
+                    <i class="bi bi-funnel me-1"></i> Apply Filters
+                </button>
+                <a asp-area="Admin" asp-controller="Products" asp-action="Index" class="btn btn-outline-secondary">
+                    Reset
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@if (Model.EmptyState is not null)
+{
+    <div class="card border-0 shadow-sm admin-card">
+        <div class="card-body text-center py-5">
+            <h3 class="h5">@Model.EmptyState.Title</h3>
+            <p class="text-muted">@Model.EmptyState.Message</p>
+
+            @if (!string.IsNullOrWhiteSpace(Model.EmptyState.ButtonText) && !string.IsNullOrWhiteSpace(Model.EmptyState.ButtonUrl))
+            {
+                <a href="@Model.EmptyState.ButtonUrl" class="btn btn-success">@Model.EmptyState.ButtonText</a>
+            }
+        </div>
+    </div>
+}
+else
+{
+    <div class="card border-0 shadow-sm admin-card">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th style="min-width: 300px;">Product</th>
+                        <th>Category</th>
+                        <th class="text-center">List</th>
+                        <th class="text-center">Menu</th>
+                        <th class="text-center">Flags</th>
+                        <th class="text-center">Created</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Items)
+                    {
+                        <tr>
+                            <td>
+                                <div class="d-flex gap-3 align-items-start">
+                                    <div class="admin-product-thumb">
+                                        @if (!string.IsNullOrWhiteSpace(item.MainImageUrl))
+                                        {
+                                            <img src="@item.MainImageUrl" alt="@item.Title" class="rounded-3 border admin-list-image" />
+                                        }
+                                        else
+                                        {
+                                            <div class="rounded-3 border bg-light d-flex align-items-center justify-content-center admin-list-image-placeholder">
+                                                <i class="bi bi-image text-muted"></i>
+                                            </div>
+                                        }
+                                    </div>
+                                    <div>
+                                        <div class="fw-semibold">@item.Title</div>
+                                        <div class="small text-muted">@item.Slug</div>
+                                        @if (!string.IsNullOrWhiteSpace(item.ShortDescription))
+                                        {
+                                            <div class="small text-secondary mt-1 product-admin-summary">
+                                                @item.ShortDescription
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="badge text-bg-light border">@item.CategoryName</span>
+                            </td>
+                            <td class="text-center">
+                                <span class="badge rounded-pill text-bg-light border">@item.ListSortOrder</span>
+                            </td>
+                            <td class="text-center">
+                                @if (item.ShowInProductMenu)
+                                {
+                                    <div>
+                                        <span class="badge text-bg-success">Yes</span>
+                                        <div class="small text-muted mt-1">Sort: @item.MenuSortOrder</div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <span class="badge text-bg-secondary">No</span>
+                                }
+                            </td>
+                            <td class="text-center">
+                                <div class="d-flex flex-column gap-1 align-items-center">
+                                    <span class="badge @(item.IsPublished ? "text-bg-success" : "text-bg-warning")">
+                                        @(item.IsPublished ? "Published" : "Draft")
+                                    </span>
+                                    <span class="badge @(item.IsActive ? "text-bg-primary" : "text-bg-secondary")">
+                                        @(item.IsActive ? "Active" : "Inactive")
+                                    </span>
+                                    @if (item.IsFeatured)
+                                    {
+                                        <span class="badge text-bg-dark">Featured</span>
+                                    }
+                                </div>
+                            </td>
+                            <td class="text-center small text-muted">
+                                @item.CreatedAt.ToString("dd MMM yyyy")
+                            </td>
+                            <td class="text-end">
+                                <div class="btn-group">
+                                    <a asp-area="Admin" asp-controller="Products" asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-dark">
+                                        Details
+                                    </a>
+                                    <a asp-area="Admin" asp-controller="Products" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary">
+                                        Edit
+                                    </a>
+                                    <a asp-area="Admin" asp-controller="Products" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger">
+                                        Delete
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        @if (Model.Pagination.TotalPages > 1)
+        {
+            <div class="card-footer bg-white">
+                <nav aria-label="Product admin pagination">
+                    <ul class="pagination mb-0 flex-wrap">
+                        <li class="page-item @(Model.Pagination.HasPreviousPage ? "" : "disabled")">
+                            <a class="page-link"
+                               asp-area="Admin"
+                               asp-controller="Products"
+                               asp-action="Index"
+                               asp-route-searchTerm="@Model.Filter.SearchTerm"
+                               asp-route-productCategoryId="@Model.Filter.ProductCategoryId"
+                               asp-route-isPublished="@Model.Filter.IsPublished"
+                               asp-route-isActive="@Model.Filter.IsActive"
+                               asp-route-isFeatured="@Model.Filter.IsFeatured"
+                               asp-route-showInProductMenu="@Model.Filter.ShowInProductMenu"
+                               asp-route-sortBy="@Model.Filter.SortBy"
+                               asp-route-pageSize="@Model.Filter.PageSize"
+                               asp-route-pageNumber="@(Model.Pagination.PageNumber - 1)">Previous</a>
+                        </li>
+
+                        @for (var page = 1; page <= Model.Pagination.TotalPages; page++)
+                        {
+                            <li class="page-item @(page == Model.Pagination.PageNumber ? "active" : "")">
+                                <a class="page-link"
+                                   asp-area="Admin"
+                                   asp-controller="Products"
+                                   asp-action="Index"
+                                   asp-route-searchTerm="@Model.Filter.SearchTerm"
+                                   asp-route-productCategoryId="@Model.Filter.ProductCategoryId"
+                                   asp-route-isPublished="@Model.Filter.IsPublished"
+                                   asp-route-isActive="@Model.Filter.IsActive"
+                                   asp-route-isFeatured="@Model.Filter.IsFeatured"
+                                   asp-route-showInProductMenu="@Model.Filter.ShowInProductMenu"
+                                   asp-route-sortBy="@Model.Filter.SortBy"
+                                   asp-route-pageSize="@Model.Filter.PageSize"
+                                   asp-route-pageNumber="@page">@page</a>
+                            </li>
+                        }
+
+                        <li class="page-item @(Model.Pagination.HasNextPage ? "" : "disabled")">
+                            <a class="page-link"
+                               asp-area="Admin"
+                               asp-controller="Products"
+                               asp-action="Index"
+                               asp-route-searchTerm="@Model.Filter.SearchTerm"
+                               asp-route-productCategoryId="@Model.Filter.ProductCategoryId"
+                               asp-route-isPublished="@Model.Filter.IsPublished"
+                               asp-route-isActive="@Model.Filter.IsActive"
+                               asp-route-isFeatured="@Model.Filter.IsFeatured"
+                               asp-route-showInProductMenu="@Model.Filter.ShowInProductMenu"
+                               asp-route-sortBy="@Model.Filter.SortBy"
+                               asp-route-pageSize="@Model.Filter.PageSize"
+                               asp-route-pageNumber="@(Model.Pagination.PageNumber + 1)">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        }
+    </div>
+}

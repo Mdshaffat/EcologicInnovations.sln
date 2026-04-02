@@ -1,0 +1,200 @@
+@model EcologicInnovations.Web.ViewModels.Admin.BlogAdminListViewModel
+
+<div class="d-flex flex-column flex-lg-row justify-content-between gap-3 align-items-lg-center mb-4">
+    <div class="d-flex gap-3 flex-wrap">
+        <div class="admin-stat-pill">
+            <span class="admin-stat-pill-label">Total</span>
+            <strong>@Model.TotalCount</strong>
+        </div>
+        <div class="admin-stat-pill">
+            <span class="admin-stat-pill-label">Published</span>
+            <strong>@Model.PublishedCount</strong>
+        </div>
+        <div class="admin-stat-pill">
+            <span class="admin-stat-pill-label">Featured</span>
+            <strong>@Model.FeaturedCount</strong>
+        </div>
+        <div class="admin-stat-pill">
+            <span class="admin-stat-pill-label">Contact Form</span>
+            <strong>@Model.ContactEnabledCount</strong>
+        </div>
+    </div>
+
+    <a asp-area="Admin" asp-controller="Blogs" asp-action="Create" class="btn btn-success">
+        <i class="bi bi-plus-circle me-1"></i> Create Blog
+    </a>
+</div>
+
+<div class="card shadow-sm border-0 mb-4">
+    <div class="card-body p-4">
+        <form method="get" class="row g-3">
+            <div class="col-lg-3">
+                <label class="form-label fw-semibold">Search</label>
+                <input type="text" name="searchTerm" value="@Model.Filter.SearchTerm" class="form-control" placeholder="Title, slug, excerpt, category" />
+            </div>
+
+            <div class="col-lg-2">
+                <label class="form-label fw-semibold">Category</label>
+                <select name="blogCategoryId" class="form-select">
+                    @foreach (var item in Model.CategoryOptions)
+                    {
+                        <option value="@item.Value" selected="@(item.Value == Model.Filter.BlogCategoryId?.ToString())">@item.Text</option>
+                    }
+                </select>
+            </div>
+
+            <div class="col-lg-2">
+                <label class="form-label fw-semibold">Published</label>
+                <select name="isPublished" class="form-select">
+                    <option value="">All</option>
+                    <option value="true" selected="@(Model.Filter.IsPublished == true)">Published</option>
+                    <option value="false" selected="@(Model.Filter.IsPublished == false)">Draft</option>
+                </select>
+            </div>
+
+            <div class="col-lg-2">
+                <label class="form-label fw-semibold">Featured</label>
+                <select name="isFeatured" class="form-select">
+                    <option value="">All</option>
+                    <option value="true" selected="@(Model.Filter.IsFeatured == true)">Featured</option>
+                    <option value="false" selected="@(Model.Filter.IsFeatured == false)">Normal</option>
+                </select>
+            </div>
+
+            <div class="col-lg-3">
+                <label class="form-label fw-semibold">Sort By</label>
+                <select name="sortBy" class="form-select">
+                    <option value="published_desc" selected="@(Model.Filter.SortBy == "published_desc")">Published Date (Newest)</option>
+                    <option value="published_asc" selected="@(Model.Filter.SortBy == "published_asc")">Published Date (Oldest)</option>
+                    <option value="featured_first" selected="@(Model.Filter.SortBy == "featured_first")">Featured First</option>
+                    <option value="title_asc" selected="@(Model.Filter.SortBy == "title_asc")">Title (A-Z)</option>
+                    <option value="title_desc" selected="@(Model.Filter.SortBy == "title_desc")">Title (Z-A)</option>
+                    <option value="newest" selected="@(Model.Filter.SortBy == "newest")">Created (Newest)</option>
+                    <option value="oldest" selected="@(Model.Filter.SortBy == "oldest")">Created (Oldest)</option>
+                </select>
+            </div>
+
+            <div class="col-lg-2">
+                <label class="form-label fw-semibold">Contact Form</label>
+                <select name="showContactForm" class="form-select">
+                    <option value="">All</option>
+                    <option value="true" selected="@(Model.Filter.ShowContactForm == true)">Enabled</option>
+                    <option value="false" selected="@(Model.Filter.ShowContactForm == false)">Disabled</option>
+                </select>
+            </div>
+
+            <div class="col-lg-2">
+                <label class="form-label fw-semibold">Has PublishedAt</label>
+                <select name="hasPublishedAt" class="form-select">
+                    <option value="">All</option>
+                    <option value="true" selected="@(Model.Filter.HasPublishedAt == true)">Yes</option>
+                    <option value="false" selected="@(Model.Filter.HasPublishedAt == false)">No</option>
+                </select>
+            </div>
+
+            <div class="col-lg-2">
+                <label class="form-label fw-semibold">Page Size</label>
+                <select name="pageSize" class="form-select">
+                    <option value="10" selected="@(Model.Filter.PageSize == 10)">10</option>
+                    <option value="20" selected="@(Model.Filter.PageSize == 20)">20</option>
+                    <option value="50" selected="@(Model.Filter.PageSize == 50)">50</option>
+                </select>
+            </div>
+
+            <div class="col-12 d-flex gap-2">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-funnel me-1"></i> Apply
+                </button>
+                <a asp-area="Admin" asp-controller="Blogs" asp-action="Index" class="btn btn-outline-secondary">
+                    Reset
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@if (Model.EmptyState is not null)
+{
+    <partial name="~/Views/Shared/_EmptyStatePartial.cshtml" model="Model.EmptyState" />
+}
+else
+{
+    <div class="card shadow-sm border-0">
+        <div class="table-responsive">
+            <table class="table align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Blog</th>
+                        <th>Category</th>
+                        <th>Excerpt</th>
+                        <th>Flags</th>
+                        <th>Published</th>
+                        <th>Created</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var item in Model.Items)
+                {
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center gap-3">
+                                @if (!string.IsNullOrWhiteSpace(item.FeatureImageUrl))
+                                {
+                                    <img src="@item.FeatureImageUrl" alt="Blog thumbnail" class="admin-blog-thumb rounded" />
+                                }
+                                else
+                                {
+                                    <div class="admin-blog-thumb admin-blog-thumb-placeholder rounded d-flex align-items-center justify-content-center">
+                                        <i class="bi bi-image text-muted"></i>
+                                    </div>
+                                }
+
+                                <div>
+                                    <div class="fw-semibold">@item.Title</div>
+                                    <div><code>@item.Slug</code></div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>@(item.CategoryName ?? "—")</td>
+                        <td class="text-muted">@((item.Excerpt ?? string.Empty).Length > 90 ? item.Excerpt![..90] + "..." : item.Excerpt)</td>
+                        <td>
+                            <div class="d-flex flex-wrap gap-1">
+                                @if (item.IsFeatured)
+                                {
+                                    <span class="badge bg-warning-subtle text-warning-emphasis">Featured</span>
+                                }
+                                @if (item.IsPublished)
+                                {
+                                    <span class="badge bg-success-subtle text-success">Published</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary-subtle text-secondary">Draft</span>
+                                }
+                                @if (item.ShowContactForm)
+                                {
+                                    <span class="badge bg-info-subtle text-info-emphasis">Contact Form</span>
+                                }
+                            </div>
+                        </td>
+                        <td>@(item.PublishedAt?.ToString("dd MMM yyyy") ?? "—")</td>
+                        <td>@item.CreatedAt.ToString("dd MMM yyyy")</td>
+                        <td class="text-end">
+                            <div class="btn-group btn-group-sm">
+                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-secondary">Details</a>
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-primary">Edit</a>
+                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger">Delete</a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <partial name="~/Views/Shared/_PaginationPartial.cshtml" model="Model.Pagination" />
+    </div>
+}

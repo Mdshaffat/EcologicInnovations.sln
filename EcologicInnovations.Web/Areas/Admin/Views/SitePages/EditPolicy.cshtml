@@ -1,0 +1,131 @@
+@model EcologicInnovations.Web.ViewModels.Admin.SitePageEditorViewModel
+
+<div class="row g-4">
+    <div class="col-12 col-xl-8">
+        <div class="card border-0 shadow-sm admin-card">
+            <div class="card-body p-4">
+                <form asp-area="Admin" asp-controller="SitePages" asp-action="EditPolicy" method="post" novalidate>
+                    @Html.AntiForgeryToken()
+
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger small"></div>
+
+                    <input asp-for="Id" type="hidden" />
+                    <input asp-for="PageKey" type="hidden" />
+
+                    <div class="mb-3">
+                        <label asp-for="Title" class="form-label fw-semibold"></label>
+                        <input asp-for="Title" class="form-control form-control-lg" placeholder="Policy" />
+                        <span asp-validation-for="Title" class="text-danger small"></span>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label asp-for="Slug" class="form-label fw-semibold"></label>
+                            <input asp-for="Slug" class="form-control" readonly />
+                            <div class="form-text">
+                                The Policy page uses a fixed public route at <code>/policy</code>.
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="SortOrder" class="form-label fw-semibold"></label>
+                            <input asp-for="SortOrder" class="form-control" />
+                            <span asp-validation-for="SortOrder" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="mt-3">
+                        <label asp-for="BannerImageUrl" class="form-label fw-semibold"></label>
+                        <input asp-for="BannerImageUrl" class="form-control" placeholder="/uploads/media/policy-banner.jpg" />
+                        <span asp-validation-for="BannerImageUrl" class="text-danger small"></span>
+                    </div>
+
+                    @if (!string.IsNullOrWhiteSpace(Model.BannerImageUrl))
+                    {
+                        <div class="mt-3">
+                            <div class="small text-muted mb-2">Current Banner Preview</div>
+                            <img src="@Model.BannerImageUrl" alt="Policy Banner" class="img-fluid rounded border" />
+                        </div>
+                    }
+
+                    <div class="mt-3">
+                        <label asp-for="ShortIntro" class="form-label fw-semibold"></label>
+                        <textarea asp-for="ShortIntro" class="form-control" rows="4" placeholder="Short introduction shown above the policy content..."></textarea>
+                        <span asp-validation-for="ShortIntro" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mt-3">
+                        <label asp-for="HtmlContent" class="form-label fw-semibold"></label>
+                        <textarea asp-for="HtmlContent" class="form-control font-monospace" rows="20" placeholder="<section><h2>Policy</h2><p>Your policy content here...</p></section>"></textarea>
+                        <span asp-validation-for="HtmlContent" class="text-danger small"></span>
+                        <div class="form-text">
+                            Write raw HTML for the public Policy page. Content is sanitized before save.
+                        </div>
+                    </div>
+
+                    <hr class="my-4" />
+
+                    <h5 class="mb-3">SEO Settings</h5>
+
+                    <div class="mb-3">
+                        <label asp-for="MetaTitle" class="form-label fw-semibold"></label>
+                        <input asp-for="MetaTitle" class="form-control" placeholder="Policy | Ecologic Innovations" />
+                        <span asp-validation-for="MetaTitle" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="MetaDescription" class="form-label fw-semibold"></label>
+                        <textarea asp-for="MetaDescription" class="form-control" rows="3" placeholder="Short SEO description for the policy page."></textarea>
+                        <span asp-validation-for="MetaDescription" class="text-danger small"></span>
+                    </div>
+
+                    <div class="form-check form-switch mb-4">
+                        <input asp-for="IsPublished" class="form-check-input" />
+                        <label asp-for="IsPublished" class="form-check-label fw-semibold"></label>
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-2">
+                        <button type="submit" class="btn btn-primary px-4">
+                            <i class="bi bi-save me-1"></i> Save Policy
+                        </button>
+
+                        <a asp-area="" asp-controller="Policy" asp-action="Index" class="btn btn-outline-secondary">
+                            <i class="bi bi-eye me-1"></i> View Public Page
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-xl-4">
+        <div class="card border-0 shadow-sm admin-card h-100">
+            <div class="card-body p-4">
+                <h5 class="mb-3">Editor Guidance</h5>
+
+                <div class="small text-muted mb-3">
+                    Use this page to manage the public Policy content shown on the website.
+                </div>
+
+                <ul class="small text-muted ps-3 mb-4">
+                    <li>Use semantic HTML such as headings, paragraphs, lists, and tables.</li>
+                    <li>Upload reusable images first in <strong>Media / Uploads</strong> and paste the public URL into your HTML.</li>
+                    <li>Keep policy language clear and structured.</li>
+                    <li>The public page route remains <code>/policy</code>.</li>
+                </ul>
+
+                <div class="rounded-4 border bg-light p-3">
+                    <div class="fw-semibold mb-2">Example starter block</div>
+                    <pre class="small mb-0"><code>&lt;section class="content-block"&gt;
+    &lt;h2&gt;Introduction&lt;/h2&gt;
+    &lt;p&gt;Your current policy text goes here...&lt;/p&gt;
+&lt;/section&gt;</code></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

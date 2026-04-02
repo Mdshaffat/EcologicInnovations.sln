@@ -1,0 +1,175 @@
+@model EcologicInnovations.Web.ViewModels.Admin.ProductAdminEditViewModel
+
+<div asp-validation-summary="ModelOnly" class="alert alert-danger small"></div>
+
+<div class="row g-4">
+    <div class="col-12 col-xl-8">
+        <div class="card border-0 shadow-sm admin-card">
+            <div class="card-body p-4 p-xl-5">
+                <div class="mb-4">
+                    <label asp-for="Title" class="form-label fw-semibold"></label>
+                    <input asp-for="Title" class="form-control form-control-lg" placeholder="Smart Energy Monitor" />
+                    <span asp-validation-for="Title" class="text-danger small"></span>
+                </div>
+
+                <div class="row g-3">
+                    <div class="col-md-8">
+                        <label asp-for="Slug" class="form-label fw-semibold"></label>
+                        <input asp-for="Slug" class="form-control" placeholder="smart-energy-monitor" />
+                        <div class="form-text">
+                            Leave blank to auto-generate a unique slug from the product title.
+                        </div>
+                        <span asp-validation-for="Slug" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label asp-for="ProductCategoryId" class="form-label fw-semibold"></label>
+                        <select asp-for="ProductCategoryId" asp-items="Model.CategoryOptions" class="form-select">
+                            <option value="">Select category</option>
+                        </select>
+                        <span asp-validation-for="ProductCategoryId" class="text-danger small"></span>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <label asp-for="ShortDescription" class="form-label fw-semibold"></label>
+                    <textarea asp-for="ShortDescription" class="form-control" rows="4" placeholder="Short description used in product cards and previews."></textarea>
+                    <span asp-validation-for="ShortDescription" class="text-danger small"></span>
+                </div>
+
+                <div class="mt-4">
+                    <label asp-for="MainImageUrl" class="form-label fw-semibold"></label>
+                    <input asp-for="MainImageUrl" class="form-control" placeholder="/uploads/media/product/example.jpg" />
+                    <div class="form-text">
+                        Upload the image from Media / Uploads, copy the public URL, and paste it here.
+                    </div>
+                    <span asp-validation-for="MainImageUrl" class="text-danger small"></span>
+                </div>
+
+                @if (!string.IsNullOrWhiteSpace(Model.MainImageUrl))
+                {
+                    <div class="mt-3">
+                        <div class="product-image-preview border rounded-4 p-3 bg-light-subtle">
+                            <div class="small fw-semibold text-muted mb-2">Main Image Preview</div>
+                            <img src="@Model.MainImageUrl" alt="Product main image preview" class="img-fluid rounded-3 shadow-sm admin-image-preview" />
+                        </div>
+                    </div>
+                }
+
+                <div class="mt-4">
+                    <label asp-for="HtmlDetails" class="form-label fw-semibold"></label>
+                    <textarea asp-for="HtmlDetails" class="form-control font-monospace html-editor-textarea" rows="18" placeholder="<section><h2>Product Overview</h2><p>Write your HTML here.</p></section>"></textarea>
+                    <div class="form-text">
+                        Write structured HTML for the public product details page. Images can be inserted using URLs from Media / Uploads.
+                    </div>
+                    <span asp-validation-for="HtmlDetails" class="text-danger small"></span>
+                </div>
+
+                @if (!string.IsNullOrWhiteSpace(Model.HtmlDetailsPreview))
+                {
+                    <div class="mt-4">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-header bg-white fw-semibold">
+                                Sanitized HTML Preview
+                            </div>
+                            <div class="card-body product-html-preview content-html">
+                                @Html.Raw(Model.HtmlDetailsPreview)
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-xl-4">
+        <div class="card border-0 shadow-sm admin-card mb-4">
+            <div class="card-body p-4">
+                <h3 class="h6 text-uppercase text-muted fw-bold mb-3">Visibility & Placement</h3>
+
+                <div class="form-check form-switch mb-3">
+                    <input asp-for="IsPublished" class="form-check-input" />
+                    <label asp-for="IsPublished" class="form-check-label fw-semibold"></label>
+                </div>
+
+                <div class="form-check form-switch mb-3">
+                    <input asp-for="IsActive" class="form-check-input" />
+                    <label asp-for="IsActive" class="form-check-label fw-semibold"></label>
+                </div>
+
+                <div class="form-check form-switch mb-3">
+                    <input asp-for="IsFeatured" class="form-check-input" />
+                    <label asp-for="IsFeatured" class="form-check-label fw-semibold"></label>
+                </div>
+
+                <div class="form-check form-switch mb-3">
+                    <input asp-for="ShowInProductMenu" class="form-check-input" />
+                    <label asp-for="ShowInProductMenu" class="form-check-label fw-semibold"></label>
+                </div>
+
+                <div class="row g-3 mt-1">
+                    <div class="col-6">
+                        <label asp-for="MenuSortOrder" class="form-label fw-semibold"></label>
+                        <input asp-for="MenuSortOrder" class="form-control" />
+                        <span asp-validation-for="MenuSortOrder" class="text-danger small"></span>
+                    </div>
+                    <div class="col-6">
+                        <label asp-for="ListSortOrder" class="form-label fw-semibold"></label>
+                        <input asp-for="ListSortOrder" class="form-control" />
+                        <span asp-validation-for="ListSortOrder" class="text-danger small"></span>
+                    </div>
+                </div>
+
+                <hr class="my-4" />
+
+                <h3 class="h6 text-uppercase text-muted fw-bold mb-3">Contact Form</h3>
+
+                <div class="form-check form-switch mb-3">
+                    <input asp-for="ContactFormEnabled" class="form-check-input" />
+                    <label asp-for="ContactFormEnabled" class="form-check-label fw-semibold"></label>
+                </div>
+
+                <div>
+                    <label asp-for="ContactFormTitle" class="form-label fw-semibold"></label>
+                    <input asp-for="ContactFormTitle" class="form-control" placeholder="Contact Us About This Product" />
+                    <span asp-validation-for="ContactFormTitle" class="text-danger small"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card border-0 shadow-sm admin-card">
+            <div class="card-body p-4">
+                <h3 class="h6 text-uppercase text-muted fw-bold mb-3">SEO Metadata</h3>
+
+                <div class="mb-3">
+                    <label asp-for="MetaTitle" class="form-label fw-semibold"></label>
+                    <input asp-for="MetaTitle" class="form-control" placeholder="Meta title for this product page" />
+                    <span asp-validation-for="MetaTitle" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="MetaDescription" class="form-label fw-semibold"></label>
+                    <textarea asp-for="MetaDescription" class="form-control" rows="4" placeholder="Meta description for search engine results."></textarea>
+                    <span asp-validation-for="MetaDescription" class="text-danger small"></span>
+                </div>
+
+                <div>
+                    <label asp-for="OgImageUrl" class="form-label fw-semibold"></label>
+                    <input asp-for="OgImageUrl" class="form-control" placeholder="/uploads/media/product/example-og.jpg" />
+                    <div class="form-text">
+                        Optional Open Graph image. Leave blank to allow fallback behavior later.
+                    </div>
+                    <span asp-validation-for="OgImageUrl" class="text-danger small"></span>
+                </div>
+
+                @if (!string.IsNullOrWhiteSpace(Model.OgImageUrl))
+                {
+                    <div class="mt-3">
+                        <div class="small fw-semibold text-muted mb-2">OG Image Preview</div>
+                        <img src="@Model.OgImageUrl" alt="OG image preview" class="img-fluid rounded-3 border admin-image-preview-sm" />
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

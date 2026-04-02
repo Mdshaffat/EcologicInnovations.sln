@@ -1,0 +1,8 @@
+@model EcologicInnovations.Web.Models.Seo.SchemaMarkupResult
+
+@if (Model is not null && !string.IsNullOrWhiteSpace(Model.Json))
+{
+    <script type="application/ld+json">
+@Html.Raw(Model.Json)
+    </script>
+}

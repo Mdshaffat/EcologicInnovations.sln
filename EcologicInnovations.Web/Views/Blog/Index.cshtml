@@ -1,0 +1,142 @@
+@model EcologicInnovations.Web.ViewModels.Blog.BlogListViewModel
+
+@{
+    ViewData["Title"] = Model.Seo.Title ?? Model.PageTitle;
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/blog-list.css" asp-append-version="true" />
+}
+
+<section class="blog-page py-5">
+    <div class="container">
+        <nav aria-label="breadcrumb" class="mb-4">
+            <ol class="breadcrumb small">
+                @foreach (var item in Model.Breadcrumbs)
+                {
+                    if (item.IsActive)
+                    {
+                        <li class="breadcrumb-item active" aria-current="page">@item.Title</li>
+                    }
+                    else
+                    {
+                        <li class="breadcrumb-item"><a href="@item.Url">@item.Title</a></li>
+                    }
+                }
+            </ol>
+        </nav>
+
+        <div class="row g-4 g-xl-5">
+            <aside class="col-lg-4 col-xl-3">
+                <div class="blog-sidebar card border-0 shadow-sm rounded-4 sticky-lg-top sidebar-sticky-offset">
+                    <div class="card-body p-4">
+                        <h2 class="h5 mb-3">Find Articles</h2>
+
+                        <form method="get" asp-controller="Blog" asp-action="Index" class="d-grid gap-3">
+                            <div>
+                                <label for="q" class="form-label fw-semibold">Search</label>
+                                <input id="q" name="q" value="@Model.Sidebar.SearchTerm" class="form-control" placeholder="Search articles..." />
+                            </div>
+
+                            <div>
+                                <label for="sort" class="form-label fw-semibold">Sort By</label>
+                                <select id="sort" name="sort" class="form-select" asp-items="Model.Sidebar.SortOptions"></select>
+                            </div>
+
+                            @if (!string.IsNullOrWhiteSpace(Model.Sidebar.SelectedCategorySlug))
+                            {
+                                <input type="hidden" name="category" value="@Model.Sidebar.SelectedCategorySlug" />
+                            }
+
+                            <div class="d-flex gap-2 flex-wrap">
+                                <button type="submit" class="btn btn-primary rounded-pill px-4">Apply</button>
+                                <a href="@Model.Sidebar.ClearFilterUrl" class="btn btn-outline-secondary rounded-pill px-4">Reset</a>
+                            </div>
+                        </form>
+
+                        <hr class="my-4" />
+
+                        <h3 class="h6 text-uppercase text-muted mb-3">Categories</h3>
+
+                        <div class="list-group list-group-flush blog-category-list">
+                            <a asp-controller="Blog" asp-action="Index"
+                               asp-route-q="@Model.Sidebar.SearchTerm"
+                               asp-route-sort="@Model.Sidebar.SortBy"
+                               class="list-group-item list-group-item-action d-flex justify-content-between align-items-center @(string.IsNullOrWhiteSpace(Model.Sidebar.SelectedCategorySlug) ? "active" : "")">
+                                <span>All Articles</span>
+                            </a>
+
+                            @foreach (var category in Model.Sidebar.Categories)
+                            {
+                                <a asp-controller="Blog" asp-action="Index"
+                                   asp-route-category="@category.Slug"
+                                   asp-route-q="@Model.Sidebar.SearchTerm"
+                                   asp-route-sort="@Model.Sidebar.SortBy"
+                                   class="list-group-item list-group-item-action d-flex justify-content-between align-items-center @(category.IsSelected ? "active" : "")">
+                                    <span>@category.Name</span>
+                                    <span class="badge text-bg-light rounded-pill">@category.BlogCount</span>
+                                </a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <div class="col-lg-8 col-xl-9">
+                <div class="blog-page-header mb-4">
+                    <h1 class="display-6 fw-bold mb-3">@Model.PageTitle</h1>
+                    @if (!string.IsNullOrWhiteSpace(Model.IntroText))
+                    {
+                        <p class="lead text-muted mb-3">@Model.IntroText</p>
+                    }
+                    <p class="small text-muted mb-0">@Model.ResultCount article(s) found</p>
+                </div>
+
+                @if (Model.EmptyState is not null)
+                {
+                    <div class="card border-0 shadow-sm rounded-4">
+                        <div class="card-body p-5 text-center">
+                            <h2 class="h4 mb-3">@Model.EmptyState.Title</h2>
+                            <p class="text-muted mb-4">@Model.EmptyState.Message</p>
+                            @if (!string.IsNullOrWhiteSpace(Model.EmptyState.ButtonText) && !string.IsNullOrWhiteSpace(Model.EmptyState.ButtonUrl))
+                            {
+                                <a href="@Model.EmptyState.ButtonUrl" class="btn btn-primary rounded-pill px-4">@Model.EmptyState.ButtonText</a>
+                            }
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="row row-cols-1 row-cols-md-2 row-cols-xxl-3 g-4">
+                        @foreach (var post in Model.Posts)
+                        {
+                            <div class="col">
+                                <partial name="_BlogCard" model="post" />
+                            </div>
+                        }
+                    </div>
+
+                    @if (Model.Pagination.TotalPages > 1)
+                    {
+                        <nav class="mt-5" aria-label="Blog pagination">
+                            <ul class="pagination justify-content-center flex-wrap gap-2">
+                                @for (var i = 1; i <= Model.Pagination.TotalPages; i++)
+                                {
+                                    <li class="page-item @(i == Model.Pagination.PageNumber ? "active" : "")">
+                                        <a class="page-link rounded-pill"
+                                           asp-controller="Blog"
+                                           asp-action="Index"
+                                           asp-route-category="@Model.Sidebar.SelectedCategorySlug"
+                                           asp-route-q="@Model.Sidebar.SearchTerm"
+                                           asp-route-sort="@Model.Sidebar.SortBy"
+                                           asp-route-page="@i">@i</a>
+                                    </li>
+                                }
+                            </ul>
+                        </nav>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</section>

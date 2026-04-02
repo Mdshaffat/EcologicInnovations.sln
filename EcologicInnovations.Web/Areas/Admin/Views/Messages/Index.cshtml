@@ -1,0 +1,204 @@
+@model EcologicInnovations.Web.ViewModels.Admin.MessageAdminListViewModel
+
+@{
+    ViewData["Title"] = "Messages";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/admin-messages.css" asp-append-version="true" />
+}
+
+<div class="card border-0 shadow-sm rounded-4 mb-4">
+    <div class="card-body p-4">
+        <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3 mb-4">
+            <div>
+                <h2 class="h4 mb-1">Unified Message Inbox</h2>
+                <p class="text-secondary mb-0">
+                    Review messages from the contact page, product inquiries, and blog inquiries.
+                </p>
+            </div>
+
+            <div class="d-flex flex-wrap gap-2">
+                <span class="badge text-bg-danger-subtle border border-danger-subtle px-3 py-2 rounded-pill">
+                    New: @Model.NewCount
+                </span>
+                <span class="badge text-bg-light border px-3 py-2 rounded-pill">
+                    Total: @Model.TotalCount
+                </span>
+            </div>
+        </div>
+
+        <form method="get" asp-action="Index" asp-controller="Messages" asp-area="Admin" class="row g-3 align-items-end">
+            <div class="col-lg-4">
+                <label class="form-label">Search</label>
+                <input name="searchTerm" value="@Model.Filter.SearchTerm" class="form-control" placeholder="Name, email, source title, or message..." />
+            </div>
+
+            <div class="col-lg-2">
+                <label class="form-label">Status</label>
+                <select name="status" class="form-select" asp-items="Model.StatusOptions"></select>
+            </div>
+
+            <div class="col-lg-2">
+                <label class="form-label">Source</label>
+                <select name="sourceType" class="form-select" asp-items="Model.SourceTypeOptions"></select>
+            </div>
+
+            <div class="col-lg-2">
+                <label class="form-label">Sort</label>
+                <select name="sortBy" class="form-select">
+                    <option value="newest" selected="@(Model.Filter.SortBy == "newest")">Newest</option>
+                    <option value="oldest" selected="@(Model.Filter.SortBy == "oldest")">Oldest</option>
+                    <option value="status_asc" selected="@(Model.Filter.SortBy == "status_asc")">Status A-Z</option>
+                    <option value="status_desc" selected="@(Model.Filter.SortBy == "status_desc")">Status Z-A</option>
+                    <option value="name_asc" selected="@(Model.Filter.SortBy == "name_asc")">Name A-Z</option>
+                    <option value="name_desc" selected="@(Model.Filter.SortBy == "name_desc")">Name Z-A</option>
+                </select>
+            </div>
+
+            <div class="col-lg-2 d-grid">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-funnel me-2"></i>Apply
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@if (Model.EmptyState is not null)
+{
+    <div class="card border-0 shadow-sm rounded-4">
+        <div class="card-body p-5 text-center">
+            <div class="display-6 mb-3 text-secondary">
+                <i class="bi bi-inbox"></i>
+            </div>
+            <h3 class="h4 mb-2">@Model.EmptyState.Title</h3>
+            <p class="text-secondary mb-4">@Model.EmptyState.Message</p>
+            @if (!string.IsNullOrWhiteSpace(Model.EmptyState.ButtonUrl))
+            {
+                <a href="@Model.EmptyState.ButtonUrl" class="btn btn-outline-primary">
+                    @Model.EmptyState.ButtonText
+                </a>
+            }
+        </div>
+    </div>
+}
+else
+{
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0 admin-messages-table">
+                <thead class="table-light">
+                    <tr>
+                        <th>Sender</th>
+                        <th>Contact</th>
+                        <th>Source</th>
+                        <th>Status</th>
+                        <th>Received</th>
+                        <th class="text-end">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Items)
+                    {
+                        <tr>
+                            <td>
+                                <div class="fw-semibold">@item.Name</div>
+                                @if (!string.IsNullOrWhiteSpace(item.Subject))
+                                {
+                                    <div class="small text-secondary">@item.Subject</div>
+                                }
+                            </td>
+                            <td>
+                                <div>@item.Email</div>
+                                <div class="small text-secondary">@item.Phone</div>
+                            </td>
+                            <td>
+                                <div class="fw-semibold">@item.SourceType</div>
+                                @if (!string.IsNullOrWhiteSpace(item.SourceTitle))
+                                {
+                                    <div class="small text-secondary">@item.SourceTitle</div>
+                                }
+                            </td>
+                            <td>
+                                <partial name="_MessageStatusBadge" model="item.Status" />
+                            </td>
+                            <td>
+                                <div>@item.CreatedAt.ToLocalTime().ToString("dd MMM yyyy")</div>
+                                <div class="small text-secondary">@item.CreatedAt.ToLocalTime().ToString("hh:mm tt")</div>
+                            </td>
+                            <td class="text-end">
+                                <a asp-action="Details" asp-controller="Messages" asp-area="Admin" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary">
+                                    View
+                                </a>
+                            </td>
+                        </tr>
+
+                        @if (!string.IsNullOrWhiteSpace(item.MessagePreview))
+                        {
+                            <tr class="message-preview-row">
+                                <td colspan="6" class="pt-0">
+                                    <div class="small text-secondary ps-1 pb-2">@item.MessagePreview</div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        @if (Model.Pagination.TotalPages > 1)
+        {
+            <div class="card-footer bg-white border-top-0 py-3">
+                <nav aria-label="Messages pagination">
+                    <ul class="pagination justify-content-center mb-0">
+                        <li class="page-item @(Model.Pagination.HasPreviousPage ? "" : "disabled")">
+                            <a class="page-link"
+                               asp-action="Index"
+                               asp-controller="Messages"
+                               asp-area="Admin"
+                               asp-route-searchTerm="@Model.Filter.SearchTerm"
+                               asp-route-status="@Model.Filter.Status"
+                               asp-route-sourceType="@Model.Filter.SourceType"
+                               asp-route-sortBy="@Model.Filter.SortBy"
+                               asp-route-pageNumber="@(Model.Pagination.PageNumber - 1)">
+                                Previous
+                            </a>
+                        </li>
+
+                        @for (var page = 1; page <= Model.Pagination.TotalPages; page++)
+                        {
+                            <li class="page-item @(page == Model.Pagination.PageNumber ? "active" : "")">
+                                <a class="page-link"
+                                   asp-action="Index"
+                                   asp-controller="Messages"
+                                   asp-area="Admin"
+                                   asp-route-searchTerm="@Model.Filter.SearchTerm"
+                                   asp-route-status="@Model.Filter.Status"
+                                   asp-route-sourceType="@Model.Filter.SourceType"
+                                   asp-route-sortBy="@Model.Filter.SortBy"
+                                   asp-route-pageNumber="@page">
+                                    @page
+                                </a>
+                            </li>
+                        }
+
+                        <li class="page-item @(Model.Pagination.HasNextPage ? "" : "disabled")">
+                            <a class="page-link"
+                               asp-action="Index"
+                               asp-controller="Messages"
+                               asp-area="Admin"
+                               asp-route-searchTerm="@Model.Filter.SearchTerm"
+                               asp-route-status="@Model.Filter.Status"
+                               asp-route-sourceType="@Model.Filter.SourceType"
+                               asp-route-sortBy="@Model.Filter.SortBy"
+                               asp-route-pageNumber="@(Model.Pagination.PageNumber + 1)">
+                                Next
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        }
+    </div>
+}

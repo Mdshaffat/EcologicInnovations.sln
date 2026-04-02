@@ -1,0 +1,152 @@
+@model EcologicInnovations.Web.ViewModels.Admin.BlogAdminEditViewModel
+
+<div class="row g-4">
+    <div class="col-lg-8">
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-body p-4">
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                <div class="mb-3">
+                    <label asp-for="Title" class="form-label fw-semibold"></label>
+                    <input asp-for="Title" class="form-control" placeholder="Blog title" />
+                    <span asp-validation-for="Title" class="text-danger small"></span>
+                </div>
+
+                <div class="row g-3">
+                    <div class="col-lg-7">
+                        <label asp-for="Slug" class="form-label fw-semibold"></label>
+                        <input asp-for="Slug" class="form-control" placeholder="Auto-generate if left blank" />
+                        <span asp-validation-for="Slug" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-lg-5">
+                        <label asp-for="BlogCategoryId" class="form-label fw-semibold"></label>
+                        <select asp-for="BlogCategoryId" asp-items="Model.CategoryOptions" class="form-select"></select>
+                        <span asp-validation-for="BlogCategoryId" class="text-danger small"></span>
+                    </div>
+                </div>
+
+                <div class="mt-3">
+                    <label asp-for="FeatureImageUrl" class="form-label fw-semibold"></label>
+                    <input asp-for="FeatureImageUrl" class="form-control" placeholder="/uploads/media/example.jpg" />
+                    <div class="form-text">Use a Media / Uploads URL or a trusted public image URL.</div>
+                    <span asp-validation-for="FeatureImageUrl" class="text-danger small"></span>
+                </div>
+
+                @if (!string.IsNullOrWhiteSpace(Model.FeatureImageUrl))
+                {
+                    <div class="mt-3">
+                        <div class="border rounded-3 overflow-hidden bg-light text-center p-3">
+                            <img src="@Model.FeatureImageUrl" alt="Feature image preview" class="img-fluid rounded admin-image-preview" />
+                        </div>
+                    </div>
+                }
+
+                <div class="mt-3">
+                    <label asp-for="Excerpt" class="form-label fw-semibold"></label>
+                    <textarea asp-for="Excerpt" class="form-control" rows="4" placeholder="Short summary used on the blog list page"></textarea>
+                    <span asp-validation-for="Excerpt" class="text-danger small"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-header bg-white p-4 border-0">
+                <h2 class="h6 fw-bold mb-1">HTML Content</h2>
+                <p class="text-muted small mb-0">Write the blog body using HTML tags. The content will be sanitized before save.</p>
+            </div>
+            <div class="card-body p-4">
+                <label asp-for="HtmlContent" class="form-label fw-semibold"></label>
+                <textarea asp-for="HtmlContent" class="form-control font-monospace" rows="18" placeholder="<section><h2>Blog heading</h2><p>Article content...</p></section>"></textarea>
+                <span asp-validation-for="HtmlContent" class="text-danger small"></span>
+            </div>
+        </div>
+
+        @if (!string.IsNullOrWhiteSpace(Model.HtmlContentPreview))
+        {
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white p-4 border-0">
+                    <h2 class="h6 fw-bold mb-1">Sanitized Preview</h2>
+                    <p class="text-muted small mb-0">Preview of the current HTML after sanitization.</p>
+                </div>
+                <div class="card-body p-4 blog-html-preview">
+                    @Html.Raw(Model.HtmlContentPreview)
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="col-lg-4">
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-body p-4">
+                <h2 class="h6 fw-bold mb-3">Publication</h2>
+
+                <div class="form-check form-switch mb-3">
+                    <input asp-for="IsPublished" class="form-check-input" />
+                    <label asp-for="IsPublished" class="form-check-label"></label>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="PublishedAt" class="form-label fw-semibold"></label>
+                    <input asp-for="PublishedAt" type="datetime-local" class="form-control" />
+                    <div class="form-text">If blank and Published is on, current UTC time can be set automatically.</div>
+                    <span asp-validation-for="PublishedAt" class="text-danger small"></span>
+                </div>
+
+                <div class="form-check form-switch mb-3">
+                    <input asp-for="IsFeatured" class="form-check-input" />
+                    <label asp-for="IsFeatured" class="form-check-label"></label>
+                </div>
+
+                <div class="form-check form-switch">
+                    <input asp-for="ShowContactForm" class="form-check-input" />
+                    <label asp-for="ShowContactForm" class="form-check-label"></label>
+                </div>
+
+                <div class="mt-3">
+                    <label asp-for="ContactFormTitle" class="form-label fw-semibold"></label>
+                    <input asp-for="ContactFormTitle" class="form-control" placeholder="Optional custom form title" />
+                    <span asp-validation-for="ContactFormTitle" class="text-danger small"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-body p-4">
+                <h2 class="h6 fw-bold mb-3">SEO</h2>
+
+                <div class="mb-3">
+                    <label asp-for="MetaTitle" class="form-label fw-semibold"></label>
+                    <input asp-for="MetaTitle" class="form-control" />
+                    <span asp-validation-for="MetaTitle" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="MetaDescription" class="form-label fw-semibold"></label>
+                    <textarea asp-for="MetaDescription" class="form-control" rows="4"></textarea>
+                    <span asp-validation-for="MetaDescription" class="text-danger small"></span>
+                </div>
+
+                <div>
+                    <label asp-for="OgImageUrl" class="form-label fw-semibold"></label>
+                    <input asp-for="OgImageUrl" class="form-control" />
+                    <span asp-validation-for="OgImageUrl" class="text-danger small"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-4">
+                <h2 class="h6 fw-bold mb-3">Actions</h2>
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-success">
+                        <i class="bi bi-check2-circle me-1"></i> Save Blog
+                    </button>
+                    <a asp-area="Admin" asp-controller="Blogs" asp-action="Index" class="btn btn-outline-secondary">
+                        Cancel
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

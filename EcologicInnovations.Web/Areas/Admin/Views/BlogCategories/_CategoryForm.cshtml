@@ -1,0 +1,71 @@
+@model EcologicInnovations.Web.ViewModels.Admin.BlogCategoryAdminEditViewModel
+
+<div class="row g-4">
+    <div class="col-lg-8">
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-4">
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                <div class="mb-3">
+                    <label asp-for="Name" class="form-label fw-semibold"></label>
+                    <input asp-for="Name" class="form-control" placeholder="Example: Sustainability Insights" />
+                    <span asp-validation-for="Name" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Slug" class="form-label fw-semibold"></label>
+                    <input asp-for="Slug" class="form-control" placeholder="Auto-generate if left blank" />
+                    <div class="form-text">Use lowercase words separated by hyphens.</div>
+                    <span asp-validation-for="Slug" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Description" class="form-label fw-semibold"></label>
+                    <textarea asp-for="Description" class="form-control" rows="5" placeholder="Optional description"></textarea>
+                    <span asp-validation-for="Description" class="text-danger small"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-body p-4">
+                <h2 class="h6 fw-bold mb-3">Status</h2>
+
+                <div class="mb-3">
+                    <label asp-for="SortOrder" class="form-label fw-semibold"></label>
+                    <input asp-for="SortOrder" class="form-control" />
+                    <span asp-validation-for="SortOrder" class="text-danger small"></span>
+                </div>
+
+                <div class="form-check form-switch">
+                    <input asp-for="IsActive" class="form-check-input" />
+                    <label asp-for="IsActive" class="form-check-label"></label>
+                </div>
+
+                @if (Model.Id > 0)
+                {
+                    <hr />
+                    <div class="small text-muted">
+                        Assigned blogs: <strong>@Model.BlogCount</strong>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-4">
+                <h2 class="h6 fw-bold mb-3">Actions</h2>
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-success">
+                        <i class="bi bi-check2-circle me-1"></i> Save Category
+                    </button>
+                    <a asp-area="Admin" asp-controller="BlogCategories" asp-action="Index" class="btn btn-outline-secondary">
+                        Cancel
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

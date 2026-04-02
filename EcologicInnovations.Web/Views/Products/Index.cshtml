@@ -1,0 +1,213 @@
+@model EcologicInnovations.Web.ViewModels.Products.ProductListViewModel
+
+@{
+    ViewData["Title"] = Model.Seo?.Title ?? Model.PageTitle;
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/products-list.css" asp-append-version="true" />
+}
+
+<div class="products-page py-5">
+    <div class="container">
+        <nav aria-label="breadcrumb" class="mb-4">
+            <ol class="breadcrumb small mb-0">
+                @for (var i = 0; i < Model.Breadcrumbs.Count; i++)
+                {
+                    var item = Model.Breadcrumbs[i];
+
+                    if (item.IsActive)
+                    {
+                        <li class="breadcrumb-item active" aria-current="page">@item.Title</li>
+                    }
+                    else
+                    {
+                        <li class="breadcrumb-item">
+                            <a href="@item.Url">@item.Title</a>
+                        </li>
+                    }
+                }
+
+                @if (!string.IsNullOrWhiteSpace(Model.SelectedCategoryName))
+                {
+                    <li class="breadcrumb-item active" aria-current="page">@Model.SelectedCategoryName</li>
+                }
+            </ol>
+        </nav>
+
+        <div class="products-hero card border-0 shadow-sm mb-4">
+            <div class="card-body p-4 p-lg-5">
+                <div class="row align-items-center g-4">
+                    <div class="col-lg-8">
+                        <span class="products-hero-kicker">Ecologic Innovations Catalog</span>
+                        <h1 class="display-6 fw-bold mb-3">@Model.PageTitle</h1>
+                        @if (!string.IsNullOrWhiteSpace(Model.IntroText))
+                        {
+                            <p class="lead text-muted mb-0">@Model.IntroText</p>
+                        }
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="products-hero-stats">
+                            <div class="products-hero-stat-card">
+                                <span class="products-hero-stat-number">@Model.ResultCount</span>
+                                <span class="products-hero-stat-label">Matching Products</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <aside class="col-lg-3">
+                <div class="card border-0 shadow-sm filter-sidebar-card sticky-lg-top">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center justify-content-between mb-3">
+                            <h2 class="h6 text-uppercase fw-bold mb-0">Browse Categories</h2>
+                            <a href="@Model.Sidebar.ClearFilterUrl" class="small text-decoration-none">Clear</a>
+                        </div>
+
+                        <div class="list-group list-group-flush category-filter-list">
+                            <a href="@Url.Action("Index", "Products", new { q = Model.Sidebar.SearchTerm, sort = Model.Sidebar.SortBy })"
+                               class="list-group-item list-group-item-action d-flex justify-content-between align-items-center @(string.IsNullOrWhiteSpace(Model.Sidebar.SelectedCategorySlug) ? "active" : "")">
+                                <span>All Products</span>
+                                <span class="badge text-bg-light rounded-pill">@Model.Sidebar.Categories.Sum(x => x.ProductCount)</span>
+                            </a>
+
+                            @foreach (var category in Model.Sidebar.Categories)
+                            {
+                                <a href="@Url.Action("Index", "Products", new { category = category.Slug, q = Model.Sidebar.SearchTerm, sort = Model.Sidebar.SortBy })"
+                                   class="list-group-item list-group-item-action d-flex justify-content-between align-items-center @(category.IsSelected ? "active" : "")">
+                                    <span>@category.Name</span>
+                                    <span class="badge text-bg-light rounded-pill">@category.ProductCount</span>
+                                </a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <div class="col-lg-9">
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-body p-4">
+                        <form method="get" asp-controller="Products" asp-action="Index" class="row g-3 align-items-end">
+                            <input type="hidden" name="category" value="@Model.Sidebar.SelectedCategorySlug" />
+
+                            <div class="col-md-7">
+                                <label for="q" class="form-label fw-semibold">Search Products</label>
+                                <input id="q"
+                                       name="q"
+                                       value="@Model.Sidebar.SearchTerm"
+                                       class="form-control"
+                                       placeholder="Search by title, category, or keyword" />
+                            </div>
+
+                            <div class="col-md-3">
+                                <label for="sort" class="form-label fw-semibold">Sort By</label>
+                                <select id="sort" name="sort" class="form-select" asp-items="Model.Sidebar.SortOptions"></select>
+                            </div>
+
+                            <div class="col-md-2 d-grid">
+                                <button type="submit" class="btn btn-primary">
+                                    Apply
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mb-4">
+                    <div>
+                        <h2 class="h5 mb-1">Available Products</h2>
+                        <p class="text-muted mb-0">
+                            Showing @Model.Products.Count item(s) on this page
+                            @if (Model.ResultCount > 0)
+                            {
+                                <span>from @Model.ResultCount total match(es).</span>
+                            }
+                        </p>
+                    </div>
+
+                    @if (!string.IsNullOrWhiteSpace(Model.SelectedCategoryName) || !string.IsNullOrWhiteSpace(Model.Sidebar.SearchTerm))
+                    {
+                        <div class="d-flex flex-wrap gap-2">
+                            @if (!string.IsNullOrWhiteSpace(Model.SelectedCategoryName))
+                            {
+                                <span class="badge rounded-pill text-bg-light border px-3 py-2">
+                                    Category: @Model.SelectedCategoryName
+                                </span>
+                            }
+
+                            @if (!string.IsNullOrWhiteSpace(Model.Sidebar.SearchTerm))
+                            {
+                                <span class="badge rounded-pill text-bg-light border px-3 py-2">
+                                    Search: @Model.Sidebar.SearchTerm
+                                </span>
+                            }
+                        </div>
+                    }
+                </div>
+
+                @if (Model.EmptyState is not null)
+                {
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body p-5 text-center">
+                            <h3 class="h4 mb-3">@Model.EmptyState.Title</h3>
+                            @if (!string.IsNullOrWhiteSpace(Model.EmptyState.Message))
+                            {
+                                <p class="text-muted mb-4">@Model.EmptyState.Message</p>
+                            }
+
+                            @if (!string.IsNullOrWhiteSpace(Model.EmptyState.ButtonText) && !string.IsNullOrWhiteSpace(Model.EmptyState.ButtonUrl))
+                            {
+                                <a href="@Model.EmptyState.ButtonUrl" class="btn btn-outline-primary">
+                                    @Model.EmptyState.ButtonText
+                                </a>
+                            }
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
+                        @foreach (var product in Model.Products)
+                        {
+                            <partial name="_ProductCard" model="product" />
+                        }
+                    </div>
+
+                    @if (Model.Pagination.TotalPages > 1)
+                    {
+                        <nav aria-label="Products pagination" class="mt-5">
+                            <ul class="pagination justify-content-center flex-wrap gap-2">
+                                <li class="page-item @(Model.Pagination.HasPreviousPage ? "" : "disabled")">
+                                    <a class="page-link"
+                                       href="@Url.Action("Index", "Products", new { category = Model.Sidebar.SelectedCategorySlug, q = Model.Sidebar.SearchTerm, sort = Model.Sidebar.SortBy, page = Model.Pagination.PageNumber - 1 })">
+                                        Previous
+                                    </a>
+                                </li>
+
+                                @for (var i = 1; i <= Model.Pagination.TotalPages; i++)
+                                {
+                                    <li class="page-item @(i == Model.Pagination.PageNumber ? "active" : "")">
+                                        <a class="page-link"
+                                           href="@Url.Action("Index", "Products", new { category = Model.Sidebar.SelectedCategorySlug, q = Model.Sidebar.SearchTerm, sort = Model.Sidebar.SortBy, page = i })">
+                                            @i
+                                        </a>
+                                    </li>
+                                }
+
+                                <li class="page-item @(Model.Pagination.HasNextPage ? "" : "disabled")">
+                                    <a class="page-link"
+                                       href="@Url.Action("Index", "Products", new { category = Model.Sidebar.SelectedCategorySlug, q = Model.Sidebar.SearchTerm, sort = Model.Sidebar.SortBy, page = Model.Pagination.PageNumber + 1 })">
+                                        Next
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>

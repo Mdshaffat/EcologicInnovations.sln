@@ -1,0 +1,16 @@
+@model EcologicInnovations.Web.ViewModels.Shared.ImagePlaceholderViewModel
+
+<div class="image-placeholder @Model.WrapperCssClass @Model.ThemeCssClass">
+    <div class="image-placeholder-inner">
+        <div class="image-placeholder-icon mb-2">
+            <i class="@Model.IconCssClass"></i>
+        </div>
+
+        <div class="fw-semibold">@Model.Title</div>
+
+        @if (!string.IsNullOrWhiteSpace(Model.Subtitle))
+        {
+            <div class="small text-secondary mt-1">@Model.Subtitle</div>
+        }
+    </div>
+</div>

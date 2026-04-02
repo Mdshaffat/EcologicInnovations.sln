@@ -1,0 +1,40 @@
+@model EcologicInnovations.Web.ViewModels.Shared.ErrorPageViewModel
+
+<section class="status-page-shell py-5">
+    <div class="container">
+        <div class="status-page-card p-4 p-lg-5 text-center mx-auto" style="max-width: 760px;">
+            <div class="status-page-icon mb-4">
+                <i class="@Model.IconCssClass"></i>
+            </div>
+
+            <div class="text-uppercase small fw-semibold text-secondary mb-2">
+                Error @(Model.StatusCode?.ToString() ?? "404")
+            </div>
+
+            <h1 class="display-6 fw-bold mb-3">@Model.Title</h1>
+
+            @if (!string.IsNullOrWhiteSpace(Model.Message))
+            {
+                <p class="lead text-secondary mb-4">
+                    @Model.Message
+                </p>
+            }
+
+            <div class="d-flex flex-wrap justify-content-center gap-2">
+                @if (!string.IsNullOrWhiteSpace(Model.PrimaryButtonText) && !string.IsNullOrWhiteSpace(Model.PrimaryButtonUrl))
+                {
+                    <a href="@Model.PrimaryButtonUrl" class="btn btn-primary rounded-pill px-4">
+                        @Model.PrimaryButtonText
+                    </a>
+                }
+
+                @if (!string.IsNullOrWhiteSpace(Model.SecondaryButtonText) && !string.IsNullOrWhiteSpace(Model.SecondaryButtonUrl))
+                {
+                    <a href="@Model.SecondaryButtonUrl" class="btn btn-outline-secondary rounded-pill px-4">
+                        @Model.SecondaryButtonText
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+</section>

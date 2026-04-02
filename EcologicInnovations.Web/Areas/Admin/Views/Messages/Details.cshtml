@@ -1,0 +1,127 @@
+@model EcologicInnovations.Web.ViewModels.Admin.MessageAdminDetailViewModel
+
+@{
+    ViewData["Title"] = $"Message #{Model.Id}";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/admin-messages.css" asp-append-version="true" />
+}
+
+<div class="row g-4">
+    <div class="col-xl-8">
+        <div class="card border-0 shadow-sm rounded-4">
+            <div class="card-body p-4 p-lg-5">
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-start gap-3 mb-4">
+                    <div>
+                        <h2 class="h3 mb-1">@Model.Name</h2>
+                        <p class="text-secondary mb-0">Message received on @Model.CreatedAt.ToLocalTime().ToString("dd MMM yyyy, hh:mm tt")</p>
+                    </div>
+
+                    <div>
+                        <partial name="_MessageStatusBadge" model="Model.Status" />
+                    </div>
+                </div>
+
+                <div class="row g-3 mb-4">
+                    <div class="col-md-6">
+                        <div class="small text-uppercase text-secondary">Email</div>
+                        <div class="fw-semibold">@Model.Email</div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="small text-uppercase text-secondary">Phone</div>
+                        <div class="fw-semibold">@Model.Phone</div>
+                    </div>
+
+                    @if (!string.IsNullOrWhiteSpace(Model.Company))
+                    {
+                        <div class="col-md-6">
+                            <div class="small text-uppercase text-secondary">Company</div>
+                            <div class="fw-semibold">@Model.Company</div>
+                        </div>
+                    }
+
+                    @if (!string.IsNullOrWhiteSpace(Model.Subject))
+                    {
+                        <div class="col-md-6">
+                            <div class="small text-uppercase text-secondary">Subject</div>
+                            <div class="fw-semibold">@Model.Subject</div>
+                        </div>
+                    }
+
+                    <div class="col-md-6">
+                        <div class="small text-uppercase text-secondary">Source Type</div>
+                        <div class="fw-semibold">@Model.SourceType</div>
+                    </div>
+
+                    @if (!string.IsNullOrWhiteSpace(Model.SourceTitle))
+                    {
+                        <div class="col-md-6">
+                            <div class="small text-uppercase text-secondary">Source Title</div>
+                            <div class="fw-semibold">@Model.SourceTitle</div>
+                        </div>
+                    }
+
+                    @if (!string.IsNullOrWhiteSpace(Model.PageUrl))
+                    {
+                        <div class="col-12">
+                            <div class="small text-uppercase text-secondary">Source Page URL</div>
+                            <div class="fw-semibold">
+                                <a href="@Model.PageUrl" target="_blank" rel="noopener noreferrer">@Model.PageUrl</a>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <hr class="my-4" />
+
+                <div>
+                    <h3 class="h5 mb-3">Message Body</h3>
+                    <div class="message-body-box rounded-4 p-4 bg-light-subtle border">
+                        @Html.Raw(Html.Encode(Model.Message).Replace("\n", "<br />"))
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-4">
+        <div class="card border-0 shadow-sm rounded-4">
+            <div class="card-body p-4">
+                <h3 class="h5 mb-3">Update Workflow</h3>
+
+                <form asp-action="UpdateStatus" asp-controller="Messages" asp-area="Admin" method="post">
+                    @Html.AntiForgeryToken()
+                    <input asp-for="UpdateForm.Id" type="hidden" />
+
+                    <div class="mb-3">
+                        <label asp-for="UpdateForm.Status" class="form-label"></label>
+                        <select asp-for="UpdateForm.Status" asp-items="Model.StatusOptions" class="form-select"></select>
+                        <span asp-validation-for="UpdateForm.Status" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="UpdateForm.AdminNote" class="form-label"></label>
+                        <textarea asp-for="UpdateForm.AdminNote" rows="8" class="form-control"></textarea>
+                        <span asp-validation-for="UpdateForm.AdminNote" class="text-danger small"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100">
+                        Save Status & Note
+                    </button>
+                </form>
+
+                <hr class="my-4" />
+
+                <div class="small text-secondary mb-2">Last Updated</div>
+                <div class="fw-semibold">
+                    @(Model.UpdatedAt.HasValue ? Model.UpdatedAt.Value.ToLocalTime().ToString("dd MMM yyyy, hh:mm tt") : "Not updated yet")
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

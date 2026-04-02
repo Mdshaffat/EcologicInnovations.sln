@@ -1,0 +1,228 @@
+@model AdminDashboardViewModel
+
+@{
+    var summaryCards = Model.SummaryCards ?? new List<AdminDashboardSummaryCardViewModel>();
+    string BadgeClass(ContactMessageStatus status) => status switch
+    {
+        ContactMessageStatus.New => "bg-danger-subtle text-danger-emphasis",
+        ContactMessageStatus.Read => "bg-primary-subtle text-primary-emphasis",
+        ContactMessageStatus.Replied => "bg-success-subtle text-success-emphasis",
+        ContactMessageStatus.Closed => "bg-secondary-subtle text-secondary-emphasis",
+        _ => "bg-light text-dark"
+    };
+}
+
+<div class="row g-4 mb-4">
+    @foreach (var card in summaryCards)
+    {
+        <div class="col-12 col-sm-6 col-xxl-3">
+            <a href="@card.Url" class="text-decoration-none">
+                <div class="card admin-stat-card h-100 border-0 shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex align-items-start justify-content-between gap-3">
+                            <div>
+                                <div class="admin-stat-label text-uppercase">@card.Title</div>
+                                <div class="admin-stat-value">@card.Count</div>
+                            </div>
+                            <div class="admin-stat-icon bg-@card.ColorClass-subtle text-@card.ColorClass-emphasis">
+                                <i class="@card.IconCssClass"></i>
+                            </div>
+                        </div>
+                        <div class="admin-stat-footer mt-3">
+                            <span class="small text-muted">Open module</span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    }
+</div>
+
+<div class="row g-4 mb-4">
+    <div class="col-12 col-xl-8">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-white border-0 pb-0">
+                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                    <div>
+                        <h2 class="h5 mb-1">Recent Messages</h2>
+                        <p class="text-muted mb-0">Latest inquiries submitted from contact, product, or blog forms.</p>
+                    </div>
+                    <a asp-area="Admin" asp-controller="Messages" asp-action="Index" class="btn btn-outline-primary btn-sm">
+                        View All Messages
+                    </a>
+                </div>
+            </div>
+
+            <div class="card-body">
+                @if (Model.RecentMessages.Count == 0)
+                {
+                    <div class="admin-empty-state">
+                        <div class="admin-empty-icon"><i class="bi bi-inbox"></i></div>
+                        <h3 class="h6 mb-2">No messages yet</h3>
+                        <p class="text-muted mb-0">When users contact you from the website, the latest inquiries will appear here.</p>
+                    </div>
+                }
+                else
+                {
+                    <div class="table-responsive">
+                        <table class="table align-middle admin-table mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Source</th>
+                                    <th>Regarding</th>
+                                    <th>Status</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.RecentMessages)
+                                {
+                                    <tr>
+                                        <td>
+                                            <a asp-area="Admin" asp-controller="Messages" asp-action="Details" asp-route-id="@item.Id" class="fw-semibold text-decoration-none">
+                                                @item.Name
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <span class="badge rounded-pill bg-light text-dark border">
+                                                @item.SourceType
+                                            </span>
+                                        </td>
+                                        <td>
+                                            @if (!string.IsNullOrWhiteSpace(item.SourceTitle))
+                                            {
+                                                <span>@item.SourceTitle</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="text-muted">General inquiry</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            <span class="badge rounded-pill @BadgeClass(item.Status)">
+                                                @item.Status
+                                            </span>
+                                        </td>
+                                        <td class="text-muted">
+                                            @item.CreatedAt.ToLocalTime().ToString("dd MMM yyyy, hh:mm tt")
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-xl-4">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-white border-0 pb-0">
+                <h2 class="h5 mb-1">Quick Insights</h2>
+                <p class="text-muted mb-0">At-a-glance operational status.</p>
+            </div>
+
+            <div class="card-body">
+                <div class="admin-insight-list">
+                    <div class="admin-insight-item">
+                        <div class="admin-insight-icon bg-danger-subtle text-danger-emphasis">
+                            <i class="bi bi-bell"></i>
+                        </div>
+                        <div>
+                            <div class="fw-semibold">@Model.NewMessageCount New Messages</div>
+                            <div class="text-muted small">Need review or response</div>
+                        </div>
+                    </div>
+
+                    <div class="admin-insight-item">
+                        <div class="admin-insight-icon bg-primary-subtle text-primary-emphasis">
+                            <i class="bi bi-box-seam"></i>
+                        </div>
+                        <div>
+                            <div class="fw-semibold">@Model.PublishedProductCount Published Products</div>
+                            <div class="text-muted small">Visible on the public site</div>
+                        </div>
+                    </div>
+
+                    <div class="admin-insight-item">
+                        <div class="admin-insight-icon bg-success-subtle text-success-emphasis">
+                            <i class="bi bi-journal-check"></i>
+                        </div>
+                        <div>
+                            <div class="fw-semibold">@Model.PublishedBlogCount Published Blogs</div>
+                            <div class="text-muted small">Available on the blog page</div>
+                        </div>
+                    </div>
+
+                    <div class="admin-insight-item">
+                        <div class="admin-insight-icon bg-info-subtle text-info-emphasis">
+                            <i class="bi bi-images"></i>
+                        </div>
+                        <div>
+                            <div class="fw-semibold">@Model.ActiveMediaCount Media Files</div>
+                            <div class="text-muted small">Reusable inside HTML content</div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr />
+
+                <div class="d-grid gap-2">
+                    <a asp-area="Admin" asp-controller="Products" asp-action="Create" class="btn btn-primary">
+                        <i class="bi bi-plus-circle me-1"></i> Add New Product
+                    </a>
+                    <a asp-area="Admin" asp-controller="Blogs" asp-action="Create" class="btn btn-outline-success">
+                        <i class="bi bi-plus-circle me-1"></i> Add New Blog
+                    </a>
+                    <a asp-area="Admin" asp-controller="Media" asp-action="Upload" class="btn btn-outline-secondary">
+                        <i class="bi bi-upload me-1"></i> Upload Media
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body">
+        <div class="row g-3">
+            <div class="col-12 col-md-4">
+                <div class="admin-mini-panel">
+                    <div class="admin-mini-panel-icon bg-primary-subtle text-primary-emphasis">
+                        <i class="bi bi-file-earmark-text"></i>
+                    </div>
+                    <div>
+                        <div class="fw-semibold">CMS-Driven Pages</div>
+                        <div class="text-muted small">Manage About Us and Policy from admin HTML content.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-4">
+                <div class="admin-mini-panel">
+                    <div class="admin-mini-panel-icon bg-success-subtle text-success-emphasis">
+                        <i class="bi bi-menu-button-wide"></i>
+                    </div>
+                    <div>
+                        <div class="fw-semibold">Dynamic Product Menu</div>
+                        <div class="text-muted small">Products marked for menu dropdown can be controlled from admin.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-4">
+                <div class="admin-mini-panel">
+                    <div class="admin-mini-panel-icon bg-warning-subtle text-warning-emphasis">
+                        <i class="bi bi-envelope-paper"></i>
+                    </div>
+                    <div>
+                        <div class="fw-semibold">Inquiry Tracking</div>
+                        <div class="text-muted small">Messages preserve whether the user came from General, Product, or Blog.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

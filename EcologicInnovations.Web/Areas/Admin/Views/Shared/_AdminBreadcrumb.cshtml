@@ -1,0 +1,26 @@
+@using EcologicInnovations.Web.ViewModels.Shared
+
+@{
+    var crumbs = ViewData["AdminBreadcrumbs"] as List<BreadcrumbItemViewModel> ?? new List<BreadcrumbItemViewModel>();
+}
+
+@if (crumbs.Count > 0)
+{
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb admin-breadcrumb mb-0">
+            @foreach (var crumb in crumbs)
+            {
+                if (crumb.IsActive || string.IsNullOrWhiteSpace(crumb.Url))
+                {
+                    <li class="breadcrumb-item active" aria-current="page">@crumb.Title</li>
+                }
+                else
+                {
+                    <li class="breadcrumb-item">
+                        <a href="@crumb.Url">@crumb.Title</a>
+                    </li>
+                }
+            }
+        </ol>
+    </nav>
+}

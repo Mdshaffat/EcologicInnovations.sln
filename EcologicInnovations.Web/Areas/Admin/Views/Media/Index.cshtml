@@ -1,0 +1,145 @@
+@model EcologicInnovations.Web.ViewModels.Admin.MediaLibraryViewModel
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/admin-media.css" asp-append-version="true" />
+}
+
+<div class="row g-4">
+    <div class="col-12">
+        <partial name="_UploadForm" model="Model.UploadModel" />
+    </div>
+
+    <div class="col-12">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+                    <div>
+                        <h2 class="h5 mb-1">Media Library</h2>
+                        <p class="text-muted mb-0">
+                            @Model.TotalCount item(s), @Model.ActiveCount active · Max upload: @((Model.MaxUploadBytes / 1024d / 1024d).ToString("0.#")) MB
+                        </p>
+                    </div>
+                    <div class="small text-muted">
+                        Allowed: @string.Join(", ", Model.AllowedExtensions)
+                    </div>
+                </div>
+
+                <form method="get" asp-area="Admin" asp-controller="Media" asp-action="Index" class="row g-3 mb-4">
+                    <div class="col-md-4">
+                        <label class="form-label fw-semibold">Search</label>
+                        <input type="text" name="keyword" value="@Model.Filter.Keyword" class="form-control" placeholder="File name, title, alt, or URL" />
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label fw-semibold">Media Group</label>
+                        <select name="mediaGroup" class="form-select">
+                            <option value="">All Groups</option>
+                            @foreach (var option in Model.MediaGroupOptions)
+                            {
+                                <option value="@option.Value" selected="@option.Selected">@option.Text</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="col-md-2">
+                        <label class="form-label fw-semibold">Status</label>
+                        <select name="isActive" class="form-select">
+                            <option value="">All</option>
+                            <option value="true" selected="@(Model.Filter.IsActive == true)">Active</option>
+                            <option value="false" selected="@(Model.Filter.IsActive == false)">Inactive</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-2">
+                        <label class="form-label fw-semibold">Sort</label>
+                        <select name="sortBy" class="form-select">
+                            <option value="newest" selected="@(Model.Filter.SortBy == "newest")">Newest</option>
+                            <option value="oldest" selected="@(Model.Filter.SortBy == "oldest")">Oldest</option>
+                            <option value="group_asc" selected="@(Model.Filter.SortBy == "group_asc")">Group A-Z</option>
+                            <option value="group_desc" selected="@(Model.Filter.SortBy == "group_desc")">Group Z-A</option>
+                            <option value="title_asc" selected="@(Model.Filter.SortBy == "title_asc")">Title A-Z</option>
+                            <option value="title_desc" selected="@(Model.Filter.SortBy == "title_desc")">Title Z-A</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-1 d-flex align-items-end">
+                        <button type="submit" class="btn btn-primary w-100">Go</button>
+                    </div>
+                </form>
+
+                @if (Model.Items.Count == 0)
+                {
+                    <div class="media-empty-state text-center py-5">
+                        <div class="display-6 mb-3 text-muted"><i class="bi bi-images"></i></div>
+                        <h3 class="h5 mb-2">@Model.EmptyState?.Title</h3>
+                        <p class="text-muted mb-0">@Model.EmptyState?.Message</p>
+                    </div>
+                }
+                else
+                {
+                    <div class="row g-4">
+                        @foreach (var item in Model.Items)
+                        {
+                            <partial name="_MediaCard" model="item" />
+                        }
+                    </div>
+
+                    @if (Model.Pagination.TotalPages > 1)
+                    {
+                        <nav class="mt-4" aria-label="Media pagination">
+                            <ul class="pagination justify-content-center flex-wrap gap-2">
+                                <li class="page-item @(Model.Pagination.HasPreviousPage ? string.Empty : "disabled")">
+                                    <a class="page-link"
+                                       asp-area="Admin"
+                                       asp-controller="Media"
+                                       asp-action="Index"
+                                       asp-route-keyword="@Model.Filter.Keyword"
+                                       asp-route-mediaGroup="@Model.Filter.MediaGroup"
+                                       asp-route-isActive="@Model.Filter.IsActive"
+                                       asp-route-sortBy="@Model.Filter.SortBy"
+                                       asp-route-pageNumber="@(Model.Pagination.PageNumber - 1)">
+                                        Previous
+                                    </a>
+                                </li>
+
+                                @for (var i = 1; i <= Model.Pagination.TotalPages; i++)
+                                {
+                                    <li class="page-item @(i == Model.Pagination.PageNumber ? "active" : string.Empty)">
+                                        <a class="page-link"
+                                           asp-area="Admin"
+                                           asp-controller="Media"
+                                           asp-action="Index"
+                                           asp-route-keyword="@Model.Filter.Keyword"
+                                           asp-route-mediaGroup="@Model.Filter.MediaGroup"
+                                           asp-route-isActive="@Model.Filter.IsActive"
+                                           asp-route-sortBy="@Model.Filter.SortBy"
+                                           asp-route-pageNumber="@i">@i</a>
+                                    </li>
+                                }
+
+                                <li class="page-item @(Model.Pagination.HasNextPage ? string.Empty : "disabled")">
+                                    <a class="page-link"
+                                       asp-area="Admin"
+                                       asp-controller="Media"
+                                       asp-action="Index"
+                                       asp-route-keyword="@Model.Filter.Keyword"
+                                       asp-route-mediaGroup="@Model.Filter.MediaGroup"
+                                       asp-route-isActive="@Model.Filter.IsActive"
+                                       asp-route-sortBy="@Model.Filter.SortBy"
+                                       asp-route-pageNumber="@(Model.Pagination.PageNumber + 1)">
+                                        Next
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/admin-media.js" asp-append-version="true"></script>
+    <partial name="_ValidationScriptsPartial" />
+}

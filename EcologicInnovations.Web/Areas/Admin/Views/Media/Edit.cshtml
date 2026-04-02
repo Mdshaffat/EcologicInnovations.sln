@@ -1,0 +1,77 @@
+@model EcologicInnovations.Web.ViewModels.Admin.MediaEditInputModel
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/admin-media.css" asp-append-version="true" />
+}
+
+<div class="row justify-content-center">
+    <div class="col-12 col-xl-8">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body p-4 p-lg-5">
+                <form asp-area="Admin" asp-controller="Media" asp-action="Edit" method="post" class="row g-4">
+                    @Html.AntiForgeryToken()
+                    <input asp-for="Id" type="hidden" />
+
+                    <div class="col-12">
+                        <label asp-for="Title" class="form-label fw-semibold"></label>
+                        <input asp-for="Title" class="form-control" />
+                        <span asp-validation-for="Title" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-12">
+                        <label asp-for="AltText" class="form-label fw-semibold"></label>
+                        <input asp-for="AltText" class="form-control" />
+                        <span asp-validation-for="AltText" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-md-8">
+                        <label asp-for="MediaGroup" class="form-label fw-semibold"></label>
+                        <input asp-for="MediaGroup" class="form-control" />
+                        <span asp-validation-for="MediaGroup" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-md-4 d-flex align-items-end">
+                        <div class="form-check form-switch mb-2">
+                            <input asp-for="IsActive" class="form-check-input" />
+                            <label asp-for="IsActive" class="form-check-label fw-semibold"></label>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <label class="form-label fw-semibold">Public URL</label>
+                        <div class="input-group">
+                            <input class="form-control" value="@Model.PublicUrl" readonly />
+                            <button type="button" class="btn btn-outline-primary js-copy-text" data-copy-text="@Model.PublicUrl">Copy URL</button>
+                        </div>
+                    </div>
+
+                    @if (!string.IsNullOrWhiteSpace(Model.CopyHtmlSnippet))
+                    {
+                        <div class="col-12">
+                            <label class="form-label fw-semibold">Reusable HTML Snippet</label>
+                            <div class="input-group">
+                                <textarea class="form-control" rows="4" readonly>@Model.CopyHtmlSnippet</textarea>
+                                <button type="button" class="btn btn-outline-success js-copy-text" data-copy-text="@Model.CopyHtmlSnippet">Copy HTML</button>
+                            </div>
+                        </div>
+                    }
+
+                    <div class="col-12 d-flex justify-content-between flex-wrap gap-2">
+                        <a asp-area="Admin" asp-controller="Media" asp-action="Index" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left me-1"></i> Back to Library
+                        </a>
+
+                        <button type="submit" class="btn btn-primary px-4">
+                            <i class="bi bi-check2-circle me-1"></i> Save Changes
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/admin-media.js" asp-append-version="true"></script>
+    <partial name="_ValidationScriptsPartial" />
+}

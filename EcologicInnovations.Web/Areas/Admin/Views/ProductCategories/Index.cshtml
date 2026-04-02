@@ -1,0 +1,204 @@
+@model EcologicInnovations.Web.ViewModels.Admin.ProductCategoryAdminListViewModel
+
+@{
+    string BuildSortUrl(string sortBy)
+    {
+        return Url.Action("Index", "ProductCategories", new
+        {
+            area = "Admin",
+            searchTerm = Model.Filter.SearchTerm,
+            isActive = Model.Filter.IsActive,
+            sortBy,
+            pageNumber = 1,
+            pageSize = Model.Filter.PageSize
+        }) ?? "#";
+    }
+
+    string BuildPageUrl(int pageNumber)
+    {
+        return Url.Action("Index", "ProductCategories", new
+        {
+            area = "Admin",
+            searchTerm = Model.Filter.SearchTerm,
+            isActive = Model.Filter.IsActive,
+            sortBy = Model.Filter.SortBy,
+            pageNumber,
+            pageSize = Model.Filter.PageSize
+        }) ?? "#";
+    }
+}
+
+<link rel="stylesheet" href="~/css/admin-product-categories.css" asp-append-version="true" />
+
+<div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3 mb-4">
+    <div class="d-flex flex-wrap gap-3">
+        <div class="admin-stat-chip">
+            <span class="admin-stat-chip-label">Total Categories</span>
+            <strong>@Model.TotalCount</strong>
+        </div>
+        <div class="admin-stat-chip">
+            <span class="admin-stat-chip-label">Active</span>
+            <strong>@Model.ActiveCount</strong>
+        </div>
+    </div>
+
+    <a asp-area="Admin" asp-controller="ProductCategories" asp-action="Create" class="btn btn-primary">
+        <i class="bi bi-plus-circle me-1"></i> Create Category
+    </a>
+</div>
+
+<div class="card border-0 shadow-sm admin-card mb-4">
+    <div class="card-body p-4">
+        <form asp-area="Admin" asp-controller="ProductCategories" asp-action="Index" method="get" class="row g-3 align-items-end">
+            <div class="col-lg-4">
+                <label class="form-label fw-semibold" for="searchTerm">Search</label>
+                <input type="text" name="searchTerm" id="searchTerm" value="@Model.Filter.SearchTerm" class="form-control" placeholder="Search name, slug, or description" />
+            </div>
+
+            <div class="col-lg-2">
+                <label class="form-label fw-semibold" for="isActive">Status</label>
+                <select name="isActive" id="isActive" class="form-select">
+                    <option value="">All</option>
+                    <option value="true" selected="@(Model.Filter.IsActive == true)">Active</option>
+                    <option value="false" selected="@(Model.Filter.IsActive == false)">Inactive</option>
+                </select>
+            </div>
+
+            <div class="col-lg-2">
+                <label class="form-label fw-semibold" for="sortBy">Sort By</label>
+                <select name="sortBy" id="sortBy" class="form-select">
+                    <option value="sort_asc" selected="@(Model.Filter.SortBy == "sort_asc")">Sort Order ↑</option>
+                    <option value="sort_desc" selected="@(Model.Filter.SortBy == "sort_desc")">Sort Order ↓</option>
+                    <option value="name_asc" selected="@(Model.Filter.SortBy == "name_asc")">Name A–Z</option>
+                    <option value="name_desc" selected="@(Model.Filter.SortBy == "name_desc")">Name Z–A</option>
+                    <option value="newest" selected="@(Model.Filter.SortBy == "newest")">Newest</option>
+                    <option value="oldest" selected="@(Model.Filter.SortBy == "oldest")">Oldest</option>
+                </select>
+            </div>
+
+            <div class="col-lg-2">
+                <label class="form-label fw-semibold" for="pageSize">Page Size</label>
+                <select name="pageSize" id="pageSize" class="form-select">
+                    <option value="10" selected="@(Model.Filter.PageSize == 10)">10</option>
+                    <option value="20" selected="@(Model.Filter.PageSize == 20)">20</option>
+                    <option value="50" selected="@(Model.Filter.PageSize == 50)">50</option>
+                </select>
+            </div>
+
+            <div class="col-lg-2 d-flex gap-2">
+                <button type="submit" class="btn btn-dark flex-fill">
+                    <i class="bi bi-funnel me-1"></i> Apply
+                </button>
+
+                <a asp-area="Admin" asp-controller="ProductCategories" asp-action="Index" class="btn btn-outline-secondary">
+                    Reset
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@if (Model.EmptyState is not null)
+{
+    <div class="card border-0 shadow-sm admin-card">
+        <div class="card-body p-5 text-center">
+            <div class="display-6 text-muted mb-3">
+                <i class="bi bi-diagram-3"></i>
+            </div>
+            <h3 class="h5 mb-2">@Model.EmptyState.Title</h3>
+            <p class="text-muted mb-4">@Model.EmptyState.Message</p>
+
+            @if (!string.IsNullOrWhiteSpace(Model.EmptyState.ButtonText) && !string.IsNullOrWhiteSpace(Model.EmptyState.ButtonUrl))
+            {
+                <a href="@Model.EmptyState.ButtonUrl" class="btn btn-primary">@Model.EmptyState.ButtonText</a>
+            }
+        </div>
+    </div>
+}
+else
+{
+    <div class="card border-0 shadow-sm admin-card">
+        <div class="table-responsive">
+            <table class="table align-middle mb-0 admin-table">
+                <thead>
+                    <tr>
+                        <th>
+                            <a href="@BuildSortUrl("name_asc")" class="table-sort-link">Name</a>
+                        </th>
+                        <th>Slug</th>
+                        <th>Description</th>
+                        <th>
+                            <a href="@BuildSortUrl("sort_asc")" class="table-sort-link">Sort Order</a>
+                        </th>
+                        <th>Status</th>
+                        <th>Products</th>
+                        <th>
+                            <a href="@BuildSortUrl("newest")" class="table-sort-link">Created</a>
+                        </th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Items)
+                    {
+                        <tr>
+                            <td>
+                                <div class="fw-semibold">@item.Name</div>
+                            </td>
+                            <td>
+                                <code>@item.Slug</code>
+                            </td>
+                            <td>
+                                <div class="text-muted admin-line-clamp-2">@item.Description</div>
+                            </td>
+                            <td>@item.SortOrder</td>
+                            <td>
+                                @if (item.IsActive)
+                                {
+                                    <span class="badge text-bg-success">Active</span>
+                                }
+                                else
+                                {
+                                    <span class="badge text-bg-secondary">Inactive</span>
+                                }
+                            </td>
+                            <td>@item.ProductCount</td>
+                            <td>@item.CreatedAt.ToLocalTime().ToString("dd MMM yyyy")</td>
+                            <td class="text-end">
+                                <div class="d-inline-flex gap-2 flex-wrap justify-content-end">
+                                    <a asp-area="Admin" asp-controller="ProductCategories" asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-secondary">Details</a>
+                                    <a asp-area="Admin" asp-controller="ProductCategories" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary">Edit</a>
+                                    <a asp-area="Admin" asp-controller="ProductCategories" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger">Delete</a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        @if (Model.Pagination.TotalPages > 1)
+        {
+            <div class="card-footer bg-white border-0 pt-0 pb-4">
+                <nav aria-label="Category pagination">
+                    <ul class="pagination justify-content-center mb-0">
+                        <li class="page-item @(Model.Pagination.HasPreviousPage ? string.Empty : "disabled")">
+                            <a class="page-link" href="@(Model.Pagination.HasPreviousPage ? BuildPageUrl(Model.Pagination.PageNumber - 1) : "#")">Previous</a>
+                        </li>
+
+                        @for (var i = 1; i <= Model.Pagination.TotalPages; i++)
+                        {
+                            <li class="page-item @(i == Model.Pagination.PageNumber ? "active" : string.Empty)">
+                                <a class="page-link" href="@BuildPageUrl(i)">@i</a>
+                            </li>
+                        }
+
+                        <li class="page-item @(Model.Pagination.HasNextPage ? string.Empty : "disabled")">
+                            <a class="page-link" href="@(Model.Pagination.HasNextPage ? BuildPageUrl(Model.Pagination.PageNumber + 1) : "#")">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        }
+    </div>
+}

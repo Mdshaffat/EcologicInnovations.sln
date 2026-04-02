@@ -1,0 +1,146 @@
+@model EcologicInnovations.Web.ViewModels.Blog.BlogDetailsViewModel
+
+@{
+    ViewData["Title"] = Model.Seo.Title ?? Model.Title;
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/blog-details.css" asp-append-version="true" />
+}
+
+<section class="blog-details-page py-5">
+    <div class="container">
+        <nav aria-label="breadcrumb" class="mb-4">
+            <ol class="breadcrumb small">
+                @foreach (var item in Model.Breadcrumbs)
+                {
+                    if (item.IsActive)
+                    {
+                        <li class="breadcrumb-item active" aria-current="page">@item.Title</li>
+                    }
+                    else
+                    {
+                        <li class="breadcrumb-item"><a href="@item.Url">@item.Title</a></li>
+                    }
+                }
+            </ol>
+        </nav>
+
+        <div class="row g-5">
+            <div class="col-lg-8">
+                <article class="blog-article">
+                    @if (!string.IsNullOrWhiteSpace(Model.CategoryName) || Model.PublishedAt.HasValue)
+                    {
+                        <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
+                            @if (!string.IsNullOrWhiteSpace(Model.CategoryName))
+                            {
+                                <span class="badge rounded-pill text-bg-light border">@Model.CategoryName</span>
+                            }
+                            @if (Model.PublishedAt.HasValue)
+                            {
+                                <span class="text-muted small">Published on @Model.PublishedAt.Value.ToString("dd MMM yyyy")</span>
+                            }
+                        </div>
+                    }
+
+                    <h1 class="display-6 fw-bold mb-3">@Model.Title</h1>
+
+                    @if (!string.IsNullOrWhiteSpace(Model.Excerpt))
+                    {
+                        <p class="lead text-muted mb-4">@Model.Excerpt</p>
+                    }
+
+                    @if (!string.IsNullOrWhiteSpace(Model.FeatureImageUrl))
+                    {
+                        <div class="blog-feature-image-wrapper mb-4">
+                            <img src="@Model.FeatureImageUrl" alt="@Model.Title" class="img-fluid rounded-4 shadow-sm w-100 blog-feature-image" />
+                        </div>
+                    }
+
+                    <div class="blog-article-body cms-content">
+                        @Html.Raw(Model.HtmlContent)
+                    </div>
+                </article>
+
+                @if (Model.ShowContactForm)
+                {
+                    <section class="blog-inquiry-section mt-5 pt-4 border-top">
+                        <div class="mb-4">
+                            <h2 class="h3 mb-2">@(string.IsNullOrWhiteSpace(Model.ContactFormTitle) ? "Contact Us About This Article" : Model.ContactFormTitle)</h2>
+                            <p class="text-muted mb-0">Send us your question, discussion point, or service inquiry related to this article.</p>
+                        </div>
+
+                        @if (Model.InquirySubmittedSuccessfully)
+                        {
+                            <div class="alert alert-success rounded-4">@Model.SuccessMessage</div>
+                        }
+
+                        <form asp-controller="Blog" asp-action="Inquiry" asp-route-slug="@Model.Slug" method="post">
+                            <partial name="_BlogInquiryForm" model="Model.InquiryForm" />
+                        </form>
+                    </section>
+                }
+            </div>
+
+            <div class="col-lg-4">
+                <aside class="blog-details-sidebar sticky-lg-top sidebar-sticky-offset">
+                    <div class="card border-0 shadow-sm rounded-4 mb-4">
+                        <div class="card-body p-4">
+                            <h2 class="h5 mb-3">Article Snapshot</h2>
+                            @if (!string.IsNullOrWhiteSpace(Model.CategoryName))
+                            {
+                                <div class="mb-3">
+                                    <div class="small text-muted text-uppercase">Category</div>
+                                    <div class="fw-semibold">@Model.CategoryName</div>
+                                </div>
+                            }
+                            @if (Model.PublishedAt.HasValue)
+                            {
+                                <div>
+                                    <div class="small text-muted text-uppercase">Published</div>
+                                    <div class="fw-semibold">@Model.PublishedAt.Value.ToString("dd MMM yyyy")</div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    @if (Model.RelatedPosts.Any())
+                    {
+                        <div class="card border-0 shadow-sm rounded-4">
+                            <div class="card-body p-4">
+                                <h2 class="h5 mb-3">Related Articles</h2>
+                                <div class="d-grid gap-3">
+                                    @foreach (var item in Model.RelatedPosts)
+                                    {
+                                        <a asp-controller="Blog" asp-action="Details" asp-route-slug="@item.Slug" class="related-blog-link text-decoration-none">
+                                            <div class="d-flex gap-3">
+                                                <img src="@(string.IsNullOrWhiteSpace(item.FeatureImageUrl) ? "/images/placeholders/blog-card.jpg" : item.FeatureImageUrl)"
+                                                     alt="@item.Title"
+                                                     class="related-blog-image rounded-3" />
+                                                <div>
+                                                    <div class="fw-semibold text-dark mb-1">@item.Title</div>
+                                                    @if (item.PublishedAt.HasValue)
+                                                    {
+                                                        <div class="small text-muted mb-1">@item.PublishedAt.Value.ToString("dd MMM yyyy")</div>
+                                                    }
+                                                    @if (!string.IsNullOrWhiteSpace(item.Excerpt))
+                                                    {
+                                                        <div class="small text-muted related-blog-excerpt">@item.Excerpt</div>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </a>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </aside>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

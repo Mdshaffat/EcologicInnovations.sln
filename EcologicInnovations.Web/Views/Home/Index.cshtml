@@ -1,8 +1,465 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+@model EcologicInnovations.Web.ViewModels.Home.HomePageViewModel
+
+@{
+    ViewData["Title"] = Model.Seo.Title ?? "Ecologic Innovations";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+@section Styles {
+    <link rel="stylesheet" href="~/css/home.css" asp-append-version="true" />
+}
+
+<div class="home-page">
+
+    <!-- Hero -->
+    <section class="hero-section py-5 py-lg-6">
+        <div class="container">
+            <div class="row align-items-center g-4 g-lg-5">
+                <div class="col-lg-6">
+                    <span class="hero-kicker text-uppercase fw-semibold">Ecologic Innovations</span>
+                    <h1 class="display-5 fw-bold hero-title mt-3 mb-3">
+                        @Model.Hero.Title
+                    </h1>
+                    @if (!string.IsNullOrWhiteSpace(Model.Hero.Subtitle))
+                    {
+                        <p class="lead hero-subtitle mb-4">
+                            @Model.Hero.Subtitle
+                        </p>
+                    }
+
+                    <div class="d-flex flex-wrap gap-3">
+                        @if (!string.IsNullOrWhiteSpace(Model.Hero.PrimaryButtonText) && !string.IsNullOrWhiteSpace(Model.Hero.PrimaryButtonUrl))
+                        {
+                            <a href="@Model.Hero.PrimaryButtonUrl" class="btn btn-success btn-lg px-4">
+                                @Model.Hero.PrimaryButtonText
+                            </a>
+                        }
+
+                        @if (!string.IsNullOrWhiteSpace(Model.Hero.SecondaryButtonText) && !string.IsNullOrWhiteSpace(Model.Hero.SecondaryButtonUrl))
+                        {
+                            <a href="@Model.Hero.SecondaryButtonUrl" class="btn btn-outline-light btn-lg px-4 hero-secondary-btn">
+                                @Model.Hero.SecondaryButtonText
+                            </a>
+                        }
+                    </div>
+
+                    <div class="hero-tags d-flex flex-wrap gap-2 mt-4">
+                        <span class="badge rounded-pill text-bg-light">Software Solutions</span>
+                        <span class="badge rounded-pill text-bg-light">Sustainability IoT</span>
+                        <span class="badge rounded-pill text-bg-light">Energy Equipment</span>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    @if (!string.IsNullOrWhiteSpace(Model.Hero.ImageUrl))
+                    {
+                        <div class="hero-image-wrap">
+                            <img src="@Model.Hero.ImageUrl"
+                                 alt="@Model.SiteName"
+                                 class="img-fluid rounded-4 shadow-lg hero-image" />
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="hero-placeholder-card shadow-lg rounded-4">
+                            <div class="row g-3">
+                                <div class="col-sm-6">
+                                    <div class="hero-mini-card">
+                                        <div class="hero-mini-icon"><i class="bi bi-laptop"></i></div>
+                                        <h3>Software</h3>
+                                        <p>Business systems for digital operations and control.</p>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="hero-mini-card">
+                                        <div class="hero-mini-icon"><i class="bi bi-cpu"></i></div>
+                                        <h3>IoT Devices</h3>
+                                        <p>Connected monitoring solutions for sustainability data.</p>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="hero-mini-card">
+                                        <div class="hero-mini-icon"><i class="bi bi-lightning-charge"></i></div>
+                                        <h3>Energy</h3>
+                                        <p>Equipment and tools for smarter efficiency work.</p>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="hero-mini-card">
+                                        <div class="hero-mini-icon"><i class="bi bi-graph-up-arrow"></i></div>
+                                        <h3>Impact</h3>
+                                        <p>Actionable solutions built around operational results.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Preview -->
+    <section class="py-5 bg-white border-top">
+        <div class="container">
+            <div class="row align-items-center g-4 g-lg-5">
+                <div class="col-lg-5 order-lg-2">
+                    @if (!string.IsNullOrWhiteSpace(Model.AboutImageUrl))
+                    {
+                        <img src="@Model.AboutImageUrl"
+                             alt="@Model.AboutTitle"
+                             class="img-fluid rounded-4 shadow-sm about-preview-image" />
+                    }
+                    else
+                    {
+                        <div class="about-placeholder rounded-4 shadow-sm d-flex align-items-center justify-content-center">
+                            <div class="text-center px-4">
+                                <i class="bi bi-buildings fs-1 mb-3 d-block"></i>
+                                <h3 class="h5 mb-2">@Model.SiteName</h3>
+                                <p class="mb-0 text-muted">Business technology focused on sustainability, monitoring, and smarter energy decisions.</p>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <div class="col-lg-7 order-lg-1">
+                    <span class="section-kicker text-uppercase fw-semibold">About Us</span>
+                    <h2 class="section-title mt-2 mb-3">@Model.AboutTitle</h2>
+                    <p class="section-text mb-4">
+                        @Model.AboutSummary
+                    </p>
+
+                    <div class="d-flex flex-wrap gap-3">
+                        <a asp-controller="About" asp-action="Index" class="btn btn-outline-success px-4">
+                            Learn More
+                        </a>
+                        <a asp-controller="Contact" asp-action="Index" class="btn btn-link text-decoration-none fw-semibold">
+                            Talk to Us <i class="bi bi-arrow-right-short"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Products -->
+    <section class="py-5 bg-light-subtle border-top">
+        <div class="container">
+            <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-end gap-3 mb-4">
+                <div>
+                    <span class="section-kicker text-uppercase fw-semibold">Products</span>
+                    <h2 class="section-title mt-2 mb-2">Featured Solutions</h2>
+                    <p class="section-text mb-0">
+                        Explore software, sustainability IoT devices, and energy equipment from Ecologic Innovations.
+                    </p>
+                </div>
+                <div>
+                    <a asp-controller="Products" asp-action="Index" class="btn btn-outline-dark">
+                        View All Products
+                    </a>
+                </div>
+            </div>
+
+            @if (Model.FeaturedProducts.Any())
+            {
+                <div class="row g-4">
+                    @foreach (var product in Model.FeaturedProducts)
+                    {
+                        <div class="col-md-6 col-xl-4">
+                            <article class="card h-100 border-0 shadow-sm product-showcase-card">
+                                @if (!string.IsNullOrWhiteSpace(product.MainImageUrl))
+                                {
+                                    <img src="@product.MainImageUrl"
+                                         class="card-img-top product-showcase-image"
+                                         alt="@product.Title" />
+                                }
+                                else
+                                {
+                                    <div class="product-showcase-placeholder d-flex align-items-center justify-content-center">
+                                        <i class="bi bi-box-seam fs-1"></i>
+                                    </div>
+                                }
+
+                                <div class="card-body d-flex flex-column">
+                                    @if (!string.IsNullOrWhiteSpace(product.CategoryName))
+                                    {
+                                        <span class="badge text-bg-success-subtle text-success-emphasis align-self-start mb-3">
+                                            @product.CategoryName
+                                        </span>
+                                    }
+
+                                    <h3 class="h5 card-title">@product.Title</h3>
+
+                                    @if (!string.IsNullOrWhiteSpace(product.ShortDescription))
+                                    {
+                                        <p class="card-text text-muted product-card-summary">
+                                            @product.ShortDescription
+                                        </p>
+                                    }
+
+                                    <div class="mt-auto pt-3">
+                                        <a href="@product.DetailsUrl" class="btn btn-success w-100">
+                                            View Details
+                                        </a>
+                                    </div>
+                                </div>
+                            </article>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="row g-4">
+                    @for (var i = 0; i < 3; i++)
+                    {
+                        <div class="col-md-6 col-xl-4">
+                            <div class="card h-100 border-0 shadow-sm placeholder-card">
+                                <div class="placeholder-block placeholder-image"></div>
+                                <div class="card-body">
+                                    <span class="placeholder col-4 mb-3 d-inline-block"></span>
+                                    <h3 class="h5 placeholder col-8 mb-3"></h3>
+                                    <p class="placeholder-glow mb-2">
+                                        <span class="placeholder col-12"></span>
+                                    </p>
+                                    <p class="placeholder-glow mb-4">
+                                        <span class="placeholder col-10"></span>
+                                    </p>
+                                    <span class="btn btn-outline-secondary disabled w-100">Products coming soon</span>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    </section>
+
+    <!-- Value Section -->
+    <section class="py-5 bg-white border-top">
+        <div class="container">
+            <div class="text-center mb-5">
+                <span class="section-kicker text-uppercase fw-semibold">Why Choose Us</span>
+                <h2 class="section-title mt-2 mb-2">Focused on practical business value</h2>
+                <p class="section-text mx-auto value-intro">
+                    We combine software thinking, sustainability relevance, and operational practicality to deliver solutions businesses can actually use.
+                </p>
+            </div>
+
+            <div class="row g-4">
+                @foreach (var value in Model.ValuePoints)
+                {
+                    <div class="col-md-6 col-xl-3">
+                        <div class="card h-100 border-0 shadow-sm value-card">
+                            <div class="card-body">
+                                @if (!string.IsNullOrWhiteSpace(value.IconCssClass))
+                                {
+                                    <div class="value-icon mb-3">
+                                        <i class="@value.IconCssClass"></i>
+                                    </div>
+                                }
+                                <h3 class="h5">@value.Title</h3>
+                                <p class="text-muted mb-0">@value.Description</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+
+    <!-- Latest Blog Posts -->
+    <section class="py-5 bg-light-subtle border-top">
+        <div class="container">
+            <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-end gap-3 mb-4">
+                <div>
+                    <span class="section-kicker text-uppercase fw-semibold">Insights</span>
+                    <h2 class="section-title mt-2 mb-2">Latest Articles</h2>
+                    <p class="section-text mb-0">
+                        Stay updated with practical insights on sustainability, energy performance, and applied technology.
+                    </p>
+                </div>
+                <div>
+                    <a asp-controller="Blog" asp-action="Index" class="btn btn-outline-dark">
+                        Read the Blog
+                    </a>
+                </div>
+            </div>
+
+            @if (Model.LatestBlogs.Any())
+            {
+                <div class="row g-4">
+                    @foreach (var post in Model.LatestBlogs)
+                    {
+                        <div class="col-md-6 col-xl-4">
+                            <article class="card h-100 border-0 shadow-sm blog-showcase-card">
+                                @if (!string.IsNullOrWhiteSpace(post.FeatureImageUrl))
+                                {
+                                    <img src="@post.FeatureImageUrl"
+                                         class="card-img-top blog-showcase-image"
+                                         alt="@post.Title" />
+                                }
+                                else
+                                {
+                                    <div class="blog-showcase-placeholder d-flex align-items-center justify-content-center">
+                                        <i class="bi bi-journal-richtext fs-1"></i>
+                                    </div>
+                                }
+
+                                <div class="card-body d-flex flex-column">
+                                    <div class="d-flex flex-wrap gap-2 mb-3">
+                                        @if (!string.IsNullOrWhiteSpace(post.CategoryName))
+                                        {
+                                            <span class="badge text-bg-dark-subtle text-dark-emphasis">
+                                                @post.CategoryName
+                                            </span>
+                                        }
+                                        @if (post.PublishedAt.HasValue)
+                                        {
+                                            <span class="small text-muted">
+                                                @post.PublishedAt.Value.ToString("dd MMM yyyy")
+                                            </span>
+                                        }
+                                    </div>
+
+                                    <h3 class="h5 card-title">@post.Title</h3>
+
+                                    @if (!string.IsNullOrWhiteSpace(post.Excerpt))
+                                    {
+                                        <p class="card-text text-muted blog-card-summary">
+                                            @post.Excerpt
+                                        </p>
+                                    }
+
+                                    <div class="mt-auto pt-3">
+                                        <a href="@post.DetailsUrl" class="btn btn-outline-success w-100">
+                                            Read Article
+                                        </a>
+                                    </div>
+                                </div>
+                            </article>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="row g-4">
+                    @for (var i = 0; i < 3; i++)
+                    {
+                        <div class="col-md-6 col-xl-4">
+                            <div class="card h-100 border-0 shadow-sm placeholder-card">
+                                <div class="placeholder-block placeholder-image"></div>
+                                <div class="card-body">
+                                    <span class="placeholder col-5 mb-3 d-inline-block"></span>
+                                    <h3 class="h5 placeholder col-9 mb-3"></h3>
+                                    <p class="placeholder-glow mb-2">
+                                        <span class="placeholder col-12"></span>
+                                    </p>
+                                    <p class="placeholder-glow mb-4">
+                                        <span class="placeholder col-10"></span>
+                                    </p>
+                                    <span class="btn btn-outline-secondary disabled w-100">Articles coming soon</span>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    </section>
+
+    <!-- Empty State -->
+    @if (Model.EmptyState is not null)
+    {
+        <section class="py-5 bg-white border-top">
+            <div class="container">
+                <div class="empty-state-box rounded-4 shadow-sm p-4 p-lg-5 text-center">
+                    <h2 class="h3 mb-3">@Model.EmptyState.Title</h2>
+                    @if (!string.IsNullOrWhiteSpace(Model.EmptyState.Message))
+                    {
+                        <p class="text-muted mb-4">@Model.EmptyState.Message</p>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(Model.EmptyState.ButtonText) && !string.IsNullOrWhiteSpace(Model.EmptyState.ButtonUrl))
+                    {
+                        <a href="@Model.EmptyState.ButtonUrl" class="btn btn-success px-4">
+                            @Model.EmptyState.ButtonText
+                        </a>
+                    }
+                </div>
+            </div>
+        </section>
+    }
+
+    <!-- CTA -->
+    <section class="py-5 cta-section text-white">
+        <div class="container">
+            <div class="row align-items-center g-4">
+                <div class="col-lg-8">
+                    <span class="section-kicker text-uppercase fw-semibold text-white-50">Get Started</span>
+                    <h2 class="section-title text-white mt-2 mb-3">
+                        @Model.CtaTitle
+                    </h2>
+                    <p class="lead mb-0 cta-text">
+                        @Model.CtaText
+                    </p>
+                </div>
+                <div class="col-lg-4 text-lg-end">
+                    <a href="@Model.CtaButtonUrl" class="btn btn-light btn-lg px-4">
+                        @Model.CtaButtonText
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer-ready business block -->
+    <section class="py-4 bg-dark text-white border-top footer-info-section">
+        <div class="container">
+            <div class="row g-4 align-items-start">
+                <div class="col-lg-5">
+                    <h2 class="h5 mb-2">@Model.SiteName</h2>
+                    @if (!string.IsNullOrWhiteSpace(Model.SiteTagline))
+                    {
+                        <p class="text-white-50 mb-0">@Model.SiteTagline</p>
+                    }
+                </div>
+
+                <div class="col-sm-6 col-lg-3">
+                    <h3 class="h6 text-uppercase small text-white-50 mb-3">Quick Links</h3>
+                    <ul class="list-unstyled mb-0 footer-links">
+                        <li><a asp-controller="About" asp-action="Index">About Us</a></li>
+                        <li><a asp-controller="Products" asp-action="Index">Products</a></li>
+                        <li><a asp-controller="Blog" asp-action="Index">Blog</a></li>
+                        <li><a asp-controller="Policy" asp-action="Index">Policy</a></li>
+                        <li><a asp-controller="Contact" asp-action="Index">Contact</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-sm-6 col-lg-4">
+                    <h3 class="h6 text-uppercase small text-white-50 mb-3">Contact</h3>
+                    <ul class="list-unstyled mb-0 footer-contact">
+                        @if (!string.IsNullOrWhiteSpace(Model.SupportEmail))
+                        {
+                            <li><strong>Support:</strong> @Model.SupportEmail</li>
+                        }
+                        @if (!string.IsNullOrWhiteSpace(Model.SalesEmail))
+                        {
+                            <li><strong>Sales:</strong> @Model.SalesEmail</li>
+                        }
+                        @if (!string.IsNullOrWhiteSpace(Model.Phone))
+                        {
+                            <li><strong>Phone:</strong> @Model.Phone</li>
+                        }
+                    </ul>
+                </div>
+            </div>
+
+            @if (!string.IsNullOrWhiteSpace(Model.FooterHtml))
+            {
+                <div class="home-footer-html mt-4 pt-4 border-top border-secondary-subtle">
+                    @Html.Raw(Model.FooterHtml)
+                </div>
+            }
+        </div>
+    </section>
 </div>

@@ -1,0 +1,35 @@
+@model EcologicInnovations.Web.ViewModels.Admin.BlogCategoryAdminDetailsViewModel
+
+<div class="card shadow-sm border-0">
+    <div class="card-body p-4">
+        <h2 class="h5 text-danger mb-3">Delete Blog Category</h2>
+        <p class="text-muted">
+            You are about to delete <strong>@Model.Name</strong>.
+            This action is blocked if blog posts are assigned to the category.
+        </p>
+
+        <dl class="row mb-4">
+            <dt class="col-sm-3">Slug</dt>
+            <dd class="col-sm-9"><code>@Model.Slug</code></dd>
+
+            <dt class="col-sm-3">Assigned Blogs</dt>
+            <dd class="col-sm-9">@Model.BlogCount</dd>
+        </dl>
+
+        <form asp-action="Delete" method="post" class="d-flex gap-2">
+            @Html.AntiForgeryToken()
+            <input asp-for="Id" type="hidden" />
+            <button type="submit" class="btn btn-danger" @(Model.BlogCount > 0 ? "disabled" : null)>
+                Confirm Delete
+            </button>
+            <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+        </form>
+
+        @if (Model.BlogCount > 0)
+        {
+            <div class="alert alert-warning mt-3 mb-0">
+                This category cannot be deleted because blog posts are assigned to it.
+            </div>
+        }
+    </div>
+</div>
