@@ -89,4 +89,9 @@ public class ProductDetailsViewModel
     /// Optional success message shown above the inquiry form.
     /// </summary>
     public string? SuccessMessage { get; set; }
+
+    /// <summary>
+    /// Company phone number from site settings, shown on the product contact section.
+    /// </summary>
+    public string? CompanyPhone { get; set; }
 }

@@ -234,7 +234,7 @@ public class BlogController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Inquiry(
         string slug,
-        ContactFormInputModel input,
+        [Bind(Prefix = "InquiryForm")] ContactFormInputModel input,
         CancellationToken cancellationToken = default)
     {
         if (string.IsNullOrWhiteSpace(slug))

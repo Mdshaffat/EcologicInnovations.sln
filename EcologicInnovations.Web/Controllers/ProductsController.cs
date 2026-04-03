@@ -239,7 +239,7 @@ public class ProductsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> SendInquiry(
         string slug,
-        ContactFormInputModel input,
+        [Bind(Prefix = "InquiryForm")] ContactFormInputModel input,
         CancellationToken cancellationToken = default)
     {
         if (string.IsNullOrWhiteSpace(slug))
@@ -379,6 +379,7 @@ public class ProductsController : Controller
             Breadcrumbs = BreadcrumbBuilder.CreateForProductDetails(product.Title),
             InquirySubmittedSuccessfully = !string.IsNullOrWhiteSpace(successMessage),
             SuccessMessage = successMessage,
+            CompanyPhone = siteSettings.Phone,
             Seo = new SeoMetaViewModel
             {
                 Title = string.IsNullOrWhiteSpace(product.MetaTitle)

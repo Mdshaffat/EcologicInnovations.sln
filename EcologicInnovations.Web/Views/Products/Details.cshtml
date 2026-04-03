@@ -27,6 +27,14 @@
                 <p class="lead">@Model.ShortDescription</p>
             }
 
+            @if (!string.IsNullOrWhiteSpace(Model.CompanyPhone))
+            {
+                <div class="mb-3">
+                    <strong>Phone:</strong>
+                    <a href="tel:@Model.CompanyPhone">@Model.CompanyPhone</a>
+                </div>
+            }
+
             @if (Model.ContactFormEnabled)
             {
                 <a class="btn btn-primary" href="#inquiry-form">@Model.ContactFormTitle</a>
