@@ -101,7 +101,8 @@
                 {
                     <img src="@Model.BannerImageUrl"
                          alt="About Us banner preview"
-                         class="img-fluid rounded-4 border mb-3" />
+                         class="img-fluid rounded-4 border mb-3" onerror="this.style.display='none'; document.getElementById('bannerFallback').style.display='block';" />
+                    <div id="bannerFallback" class="rounded-4 border bg-light p-4 text-center text-muted" style="display:none">No banner image available</div>
                 }
                 else
                 {

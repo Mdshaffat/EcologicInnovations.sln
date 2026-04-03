@@ -36,6 +36,11 @@ public static class ServiceCollectionExtensions
         // Canonical URL service used by controllers and views
         services.AddSingleton<ICanonicalUrlService, CanonicalUrlService>();
 
+        // Sitemap service used to expose sitemap.xml
+        services.AddScoped<ISitemapService, SitemapService>();
+        // Robots service used to expose robots.txt
+        services.AddScoped<IRobotsService, RobotsService>();
+
         return services;
     }
 }

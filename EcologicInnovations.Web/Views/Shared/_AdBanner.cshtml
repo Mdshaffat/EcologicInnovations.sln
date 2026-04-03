@@ -1,0 +1,17 @@
+@{
+    var area = Context.Request.RouteValues["area"]?.ToString();
+    if (!string.IsNullOrEmpty(area) && area.Equals("Admin", System.StringComparison.OrdinalIgnoreCase))
+    {
+        <text></text>
+        return;
+    }
+}
+<div class="ad-banner text-center my-3">
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-3600494668304950"
+         data-ad-slot="YOUR_SLOT_ID"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>

@@ -98,5 +98,7 @@ public class SitePageEditorViewModel
     /// Optional preview HTML used by the admin view after sanitization.
     /// </summary>
     public string? PreviewHtml { get; set; }
-    public SeoMetaViewModel Seo { get; internal set; }
+    // Make Seo nullable so model binding does not require it on POST when the admin form
+    // does not post nested SEO fields directly. Controller will populate this for display.
+    public SeoMetaViewModel? Seo { get; internal set; }
 }

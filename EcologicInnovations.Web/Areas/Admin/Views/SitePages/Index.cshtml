@@ -1,0 +1,15 @@
+@{
+    ViewData["Title"] = "Site Pages";
+}
+
+<div class="card shadow-sm border-0">
+    <div class="card-body p-4">
+        <h2 class="h5 mb-3">Site Pages</h2>
+        <p class="text-muted">Edit core site pages used for SEO and public content.</p>
+
+        <div class="d-flex gap-2 mt-3">
+            <a asp-area="Admin" asp-controller="SitePages" asp-action="EditAboutUs" class="btn btn-primary">Edit About Us</a>
+            <a asp-area="Admin" asp-controller="SitePages" asp-action="EditPolicy" class="btn btn-outline-secondary">Edit Policy</a>
+        </div>
+    </div>
+</div>

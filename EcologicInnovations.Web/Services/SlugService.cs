@@ -69,17 +69,60 @@ namespace EcologicInnovations.Web.Services
 
         public Task<string> GenerateUniqueProductSlugAsync(string v, CancellationToken cancellationToken, int ignoreId)
         {
-            throw new NotImplementedException();
+            return GenerateUniqueProductSlugAsync(v, cancellationToken, (int?)ignoreId);
         }
 
         public Task<string> GenerateUniqueProductSlugAsync(string v, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            return GenerateUniqueProductSlugAsync(v, cancellationToken, (int?)null);
         }
 
-        public Task<string> GenerateUniqueSitePageSlugAsync(string v, object value, CancellationToken cancellationToken)
+        private async Task<string> GenerateUniqueProductSlugAsync(string source, CancellationToken cancellationToken, int? ignoreId)
         {
-            throw new NotImplementedException();
+            var baseSlug = SlugTextHelper.NormalizeToSlug(source);
+            var slug = baseSlug;
+            var counter = 2;
+
+            while (await _dbContext.Products
+                .AsNoTracking()
+                .AnyAsync(x => x.Slug == slug && (!ignoreId.HasValue || x.Id != ignoreId.Value), cancellationToken))
+            {
+                slug = $"{baseSlug}-{counter}";
+                counter++;
+            }
+
+            return slug;
+        }
+
+        public async Task<string> GenerateUniqueSitePageSlugAsync(string source, object value, CancellationToken cancellationToken)
+        {
+            var baseSlug = SlugTextHelper.NormalizeToSlug(source);
+            var slug = baseSlug;
+            var counter = 2;
+
+            int? ignoreId = null;
+            switch (value)
+            {
+                case int i:
+                    ignoreId = i;
+                    break;
+                case long l:
+                    ignoreId = (int)l;
+                    break;
+                case null:
+                    ignoreId = null;
+                    break;
+            }
+
+            while (await _dbContext.SitePages
+                .AsNoTracking()
+                .AnyAsync(x => x.Slug == slug && (!ignoreId.HasValue || x.Id != ignoreId.Value), cancellationToken))
+            {
+                slug = $"{baseSlug}-{counter}";
+                counter++;
+            }
+
+            return slug;
         }
     }
 }

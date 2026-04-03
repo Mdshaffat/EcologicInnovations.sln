@@ -29,6 +29,16 @@ public class SitePagesController : AdminControllerBase
     }
 
     [HttpGet]
+    public IActionResult Index()
+    {
+        ViewData["AdminPageTitle"] = "Site Pages";
+        ViewData["AdminPageDescription"] = "Edit singleton site pages such as About Us and Policy.";
+        ViewData["AdminBreadcrumbs"] = BuildAdminBreadcrumbs("Site Pages");
+
+        return View();
+    }
+
+
     public async Task<IActionResult> EditAboutUs(CancellationToken cancellationToken)
     {
         var page = await GetOrCreateSystemPageAsync(SitePageKey.AboutUs, cancellationToken);
@@ -68,6 +78,18 @@ public class SitePagesController : AdminControllerBase
 
         if (!ModelState.IsValid)
         {
+            // Collect validation errors for easier debugging in the UI/alerts
+            var errors = ModelState.Values
+                .SelectMany(v => v.Errors)
+                .Select(e => string.IsNullOrWhiteSpace(e.ErrorMessage) ? e.Exception?.Message : e.ErrorMessage)
+                .Where(m => !string.IsNullOrWhiteSpace(m))
+                .ToList();
+
+            if (errors.Any())
+            {
+                TempData["AdminErrorMessage"] = string.Join("<br/>", errors);
+            }
+
             ViewData["AdminPageTitle"] = "About Us";
             ViewData["AdminPageDescription"] = "Edit the public About Us page content and metadata.";
             ViewData["AdminBreadcrumbs"] = BuildAdminBreadcrumbs("About Us");
@@ -146,6 +168,17 @@ public class SitePagesController : AdminControllerBase
 
         if (!ModelState.IsValid)
         {
+            var errors = ModelState.Values
+                .SelectMany(v => v.Errors)
+                .Select(e => string.IsNullOrWhiteSpace(e.ErrorMessage) ? e.Exception?.Message : e.ErrorMessage)
+                .Where(m => !string.IsNullOrWhiteSpace(m))
+                .ToList();
+
+            if (errors.Any())
+            {
+                TempData["AdminErrorMessage"] = string.Join("<br/>", errors);
+            }
+
             ViewData["AdminPageTitle"] = "Policy";
             ViewData["AdminPageDescription"] = "Edit the public Policy page content and metadata.";
             ViewData["AdminBreadcrumbs"] = BuildAdminBreadcrumbs("Policy");

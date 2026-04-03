@@ -40,6 +40,8 @@
                 @Html.Raw(Model.HtmlDetails)
             </div>
 
+            @* @await Html.PartialAsync("_AdBanner") *@
+
             @if (Model.ContactFormEnabled)
             {
                 <section id="inquiry-form" class="mt-5">
