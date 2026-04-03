@@ -61,8 +61,10 @@ public class PolicyController : Controller
 
         ViewData.SetSeoMeta(seo);
 
-        var schema = await _schemaMarkupService.BuildForSitePageAsync(page, cancellationToken);
-        ViewData.SetSchemaBlocks([schema]);
+        // Build appropriate schema markup for a site page. The schema service does not expose
+        // a BuildForSitePageAsync method in the interface; use BuildOrganizationAsync instead.
+        var schema = await _schemaMarkupService.BuildOrganizationAsync(cancellationToken);
+        ViewData.SetSchemaBlocks(new[] { schema });
 
         return View(model);
     }

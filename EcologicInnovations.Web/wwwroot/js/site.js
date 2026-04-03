@@ -1,4 +1,11 @@
-﻿// Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+document.addEventListener("DOMContentLoaded", function () {
+    const currentYearElements = document.querySelectorAll("[data-current-year]");
+    currentYearElements.forEach(function (element) {
+        element.textContent = new Date().getFullYear().toString();
+    });
 
-// Write your JavaScript code.
+    const autoFocusInvalid = document.querySelector(".input-validation-error");
+    if (autoFocusInvalid) {
+        autoFocusInvalid.focus();
+    }
+});

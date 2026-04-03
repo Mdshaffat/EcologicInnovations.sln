@@ -1,4 +1,5 @@
 using EcologicInnovations.Web.ViewModels.Shared;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 

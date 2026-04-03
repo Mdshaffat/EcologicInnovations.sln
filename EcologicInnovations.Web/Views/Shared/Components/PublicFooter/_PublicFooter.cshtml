@@ -1,0 +1,98 @@
+@model EcologicInnovations.Web.ViewModels.Shared.PublicFooterViewModel
+
+<footer class="public-footer border-top mt-5">
+    <div class="container py-5">
+        <div class="row g-4">
+            <div class="col-lg-4">
+                <div class="d-flex align-items-center gap-2 mb-3">
+                    @if (!string.IsNullOrWhiteSpace(Model.LogoUrl))
+                    {
+                        <img src="@Model.LogoUrl"
+                             alt="@Model.SiteName"
+                             class="public-footer-logo" />
+                    }
+
+                    <h3 class="h5 mb-0 fw-bold">@Model.SiteName</h3>
+                </div>
+
+                @if (!string.IsNullOrWhiteSpace(Model.Tagline))
+                {
+                    <p class="text-secondary mb-3">@Model.Tagline</p>
+                }
+
+                @if (!string.IsNullOrWhiteSpace(Model.FooterHtml))
+                {
+                    <div class="html-content footer-html-content">
+                        @Html.Raw(Model.FooterHtml)
+                    </div>
+                }
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <h4 class="h6 text-uppercase fw-bold mb-3">Quick Links</h4>
+                <ul class="list-unstyled d-grid gap-2 footer-links">
+                    <li><a asp-controller="Home" asp-action="Index">Home</a></li>
+                    <li><a asp-controller="About" asp-action="Index">About Us</a></li>
+                    <li><a asp-controller="Products" asp-action="Index">Products</a></li>
+                    <li><a asp-controller="Blog" asp-action="Index">Blog</a></li>
+                    <li><a asp-controller="Policy" asp-action="Index">Policy</a></li>
+                    <li><a asp-controller="Contact" asp-action="Index">Contact</a></li>
+                </ul>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <h4 class="h6 text-uppercase fw-bold mb-3">Contact</h4>
+
+                <ul class="list-unstyled d-grid gap-2 text-secondary footer-contact-list">
+                    @if (!string.IsNullOrWhiteSpace(Model.SupportEmail))
+                    {
+                        <li><i class="bi bi-envelope me-2"></i><a href="mailto:@Model.SupportEmail">@Model.SupportEmail</a></li>
+                    }
+
+                    @if (!string.IsNullOrWhiteSpace(Model.SalesEmail))
+                    {
+                        <li><i class="bi bi-envelope-paper me-2"></i><a href="mailto:@Model.SalesEmail">@Model.SalesEmail</a></li>
+                    }
+
+                    @if (!string.IsNullOrWhiteSpace(Model.Phone))
+                    {
+                        <li><i class="bi bi-telephone me-2"></i><a href="tel:@Model.Phone">@Model.Phone</a></li>
+                    }
+
+                    @if (!string.IsNullOrWhiteSpace(Model.Address))
+                    {
+                        <li><i class="bi bi-geo-alt me-2"></i><span>@Model.Address</span></li>
+                    }
+                </ul>
+
+                <div class="d-flex gap-2 mt-3 public-social-links">
+                    @if (!string.IsNullOrWhiteSpace(Model.FacebookUrl))
+                    {
+                        <a class="btn btn-outline-secondary btn-sm rounded-circle" href="@Model.FacebookUrl" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+                            <i class="bi bi-facebook"></i>
+                        </a>
+                    }
+
+                    @if (!string.IsNullOrWhiteSpace(Model.LinkedInUrl))
+                    {
+                        <a class="btn btn-outline-secondary btn-sm rounded-circle" href="@Model.LinkedInUrl" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                            <i class="bi bi-linkedin"></i>
+                        </a>
+                    }
+
+                    @if (!string.IsNullOrWhiteSpace(Model.YouTubeUrl))
+                    {
+                        <a class="btn btn-outline-secondary btn-sm rounded-circle" href="@Model.YouTubeUrl" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+                            <i class="bi bi-youtube"></i>
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="pt-4 mt-4 border-top text-secondary small d-flex flex-column flex-md-row justify-content-between gap-2">
+            <span>&copy; @Model.CurrentYear @Model.SiteName. All rights reserved.</span>
+            <span>Built for software, sustainability IoT devices, and energy equipment solutions.</span>
+        </div>
+    </div>
+</footer>

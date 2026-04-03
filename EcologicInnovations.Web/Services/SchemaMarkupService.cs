@@ -73,7 +73,7 @@ public class SchemaMarkupService : ISchemaMarkupService
             ["description"] = blogPost.Excerpt,
             ["image"] = string.IsNullOrWhiteSpace(blogPost.FeatureImageUrl) ? null : new[] { blogPost.FeatureImageUrl },
             ["datePublished"] = blogPost.PublishedAt?.ToString("yyyy-MM-dd"),
-            ["dateModified"] = (blogPost.UpdatedAt ?? blogPost.PublishedAt ?? blogPost.CreatedAt)?.ToString("yyyy-MM-dd"),
+            ["dateModified"] = (blogPost.UpdatedAt ?? blogPost.PublishedAt ?? blogPost.CreatedAt).ToString("yyyy-MM-dd"),
             ["mainEntityOfPage"] = absoluteUrl,
             ["articleSection"] = blogPost.BlogCategory?.Name
         };

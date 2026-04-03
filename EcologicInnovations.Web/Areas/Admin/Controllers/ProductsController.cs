@@ -138,29 +138,27 @@ public class ProductsController : AdminControllerBase
 
         var categoryOptions = await GetCategorySelectListAsync(filter.ProductCategoryId, cancellationToken, includeAllOption: true);
 
-        var publishedCountTask = _dbContext.Products
+        // Execute aggregate counts sequentially to avoid concurrent operations on the same DbContext.
+        var publishedCount = await _dbContext.Products
             .AsNoTracking()
             .CountAsync(x => x.IsPublished, cancellationToken);
 
-        var featuredCountTask = _dbContext.Products
+        var featuredCount = await _dbContext.Products
             .AsNoTracking()
             .CountAsync(x => x.IsFeatured, cancellationToken);
 
-        var menuProductCountTask = _dbContext.Products
+        var menuProductCount = await _dbContext.Products
             .AsNoTracking()
             .CountAsync(x => x.ShowInProductMenu, cancellationToken);
-
-        await Task.WhenAll(publishedCountTask, featuredCountTask, menuProductCountTask);
-
         var model = new ProductAdminListViewModel
         {
             Filter = filter,
             Items = items,
             CategoryOptions = categoryOptions,
             TotalCount = totalCount,
-            PublishedCount = publishedCountTask.Result,
-            FeaturedCount = featuredCountTask.Result,
-            MenuProductCount = menuProductCountTask.Result,
+            PublishedCount = publishedCount,
+            FeaturedCount = featuredCount,
+            MenuProductCount = menuProductCount,
             Pagination = new PaginationViewModel
             {
                 PageNumber = filter.PageNumber,

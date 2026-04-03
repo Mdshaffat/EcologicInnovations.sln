@@ -11,10 +11,12 @@ namespace EcologicInnovations.Web.Services;
 public class CanonicalUrlService : ICanonicalUrlService
 {
     private readonly SeoOptions _seoOptions;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public CanonicalUrlService(IOptions<SeoOptions> seoOptions)
+    public CanonicalUrlService(IOptions<SeoOptions> seoOptions, IHttpContextAccessor httpContextAccessor)
     {
         _seoOptions = seoOptions.Value;
+        _httpContextAccessor = httpContextAccessor;
     }
 
     public string BuildFromCurrentRequest(HttpRequest request, bool includeQueryString = true)
@@ -62,5 +64,29 @@ public class CanonicalUrlService : ICanonicalUrlService
         }
 
         return $"{request.Scheme}://{request.Host.Value}".TrimEnd('/');
+    }
+
+    public string BuildCanonicalUrl(string v)
+    {
+        // Normalize the provided value using the current request if available
+        var request = _httpContextAccessor.HttpContext?.Request;
+        return NormalizeCanonical(v, request);
+    }
+
+    public string BuildAbsoluteCurrentUrl(HttpRequest request)
+    {
+        return BuildFromCurrentRequest(request, includeQueryString: true);
+    }
+
+    public string BuildCanonicalUrl()
+    {
+        var request = _httpContextAccessor.HttpContext?.Request;
+
+        if (request is null)
+        {
+            return (_seoOptions.BaseUrl ?? string.Empty).TrimEnd('/');
+        }
+
+        return BuildFromCurrentRequest(request, includeQueryString: true);
     }
 }

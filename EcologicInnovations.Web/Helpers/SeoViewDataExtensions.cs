@@ -1,6 +1,7 @@
 using EcologicInnovations.Web.Models.Seo;
 using EcologicInnovations.Web.ViewModels.Shared;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using System.Linq;
 
 namespace EcologicInnovations.Web.Helpers;
 
@@ -30,10 +31,11 @@ public static class SeoViewDataExtensions
 
     /// <summary>
     /// Stores structured data blocks in ViewData.
+    /// Accepts any enumerable and stores a concrete List for retrieval compatibility.
     /// </summary>
-    public static void SetSchemaBlocks(this ViewDataDictionary viewData, List<SchemaMarkupResult> schemaBlocks)
+    public static void SetSchemaBlocks(this ViewDataDictionary viewData, IEnumerable<SchemaMarkupResult> schemaBlocks)
     {
-        viewData[SchemaBlocksKey] = schemaBlocks;
+        viewData[SchemaBlocksKey] = schemaBlocks?.ToList() ?? new List<SchemaMarkupResult>();
     }
 
     /// <summary>

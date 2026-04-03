@@ -1,5 +1,8 @@
 using EcologicInnovations.Web.Configuration;
 using EcologicInnovations.Web.Services.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
+using EcologicInnovations.Web.Services;
+using EcologicInnovations.Web.Services.Interfaces;
 
 namespace EcologicInnovations.Web.Services;
 
@@ -12,6 +15,9 @@ public static class ServiceCollectionExtensions
     {
         services.AddHttpContextAccessor();
 
+        // Memory cache required by SiteSettingsService
+        services.AddMemoryCache();
+
         services.Configure<MediaOptions>(configuration.GetSection("Media"));
 
         services.AddScoped<ISlugService, SlugService>();
@@ -20,6 +26,15 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IFileUploadService, FileUploadService>();
         services.AddScoped<ICurrentPageSourceService, CurrentPageSourceService>();
         services.AddScoped<IProductMenuService, ProductMenuService>();
+
+        // Schema markup generation service used for SEO structured data
+        services.AddScoped<ISchemaMarkupService, SchemaMarkupService>();
+
+        // Site settings service used by controllers and views
+        services.AddScoped<ISiteSettingsService, SiteSettingsService>();
+
+        // Canonical URL service used by controllers and views
+        services.AddSingleton<ICanonicalUrlService, CanonicalUrlService>();
 
         return services;
     }

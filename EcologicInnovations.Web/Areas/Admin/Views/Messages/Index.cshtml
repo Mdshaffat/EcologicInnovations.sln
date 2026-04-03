@@ -177,8 +177,8 @@ else
                                    asp-route-status="@Model.Filter.Status"
                                    asp-route-sourceType="@Model.Filter.SourceType"
                                    asp-route-sortBy="@Model.Filter.SortBy"
-                                   asp-route-pageNumber="@page">
-                                    @page
+                                   asp-route-pageNumber="@(page)">
+                                    @(page)
                                 </a>
                             </li>
                         }

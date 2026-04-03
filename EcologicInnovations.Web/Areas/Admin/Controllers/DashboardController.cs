@@ -2,6 +2,7 @@ using EcologicInnovations.Web.Data;
 using EcologicInnovations.Web.Models.Enums;
 using EcologicInnovations.Web.ViewModels.Admin;
 using EcologicInnovations.Web.ViewModels.Shared;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace EcologicInnovations.Web.Areas.Admin.Controllers;
@@ -23,35 +24,38 @@ public class DashboardController : AdminControllerBase
     [HttpGet]
     public async Task<IActionResult> Index(CancellationToken cancellationToken)
     {
-        var totalProductsTask = _dbContext.Products
+
+        // Do not execute multiple EF Core queries concurrently on the same DbContext.
+        // Execute each query sequentially to avoid InvalidOperationException.
+        var totalProducts = await _dbContext.Products
             .AsNoTracking()
             .CountAsync(cancellationToken);
 
-        var publishedProductsTask = _dbContext.Products
+        var publishedProducts = await _dbContext.Products
             .AsNoTracking()
             .CountAsync(x => x.IsPublished && x.IsActive, cancellationToken);
 
-        var totalBlogsTask = _dbContext.BlogPosts
+        var totalBlogs = await _dbContext.BlogPosts
             .AsNoTracking()
             .CountAsync(cancellationToken);
 
-        var publishedBlogsTask = _dbContext.BlogPosts
+        var publishedBlogs = await _dbContext.BlogPosts
             .AsNoTracking()
             .CountAsync(x => x.IsPublished, cancellationToken);
 
-        var totalMessagesTask = _dbContext.ContactMessages
+        var totalMessages = await _dbContext.ContactMessages
             .AsNoTracking()
             .CountAsync(cancellationToken);
 
-        var newMessagesTask = _dbContext.ContactMessages
+        var newMessages = await _dbContext.ContactMessages
             .AsNoTracking()
             .CountAsync(x => x.Status == ContactMessageStatus.New, cancellationToken);
 
-        var totalMediaTask = _dbContext.MediaFiles
+        var totalMedia = await _dbContext.MediaFiles
             .AsNoTracking()
             .CountAsync(x => x.IsActive, cancellationToken);
 
-        var recentMessagesTask = _dbContext.ContactMessages
+        var recentMessages = await _dbContext.ContactMessages
             .AsNoTracking()
             .OrderByDescending(x => x.CreatedAt)
             .Take(8)
@@ -66,29 +70,19 @@ public class DashboardController : AdminControllerBase
             })
             .ToListAsync(cancellationToken);
 
-        await Task.WhenAll(
-            totalProductsTask,
-            publishedProductsTask,
-            totalBlogsTask,
-            publishedBlogsTask,
-            totalMessagesTask,
-            newMessagesTask,
-            totalMediaTask,
-            recentMessagesTask);
-
         var model = new AdminDashboardViewModel
         {
-            PublishedProductCount = publishedProductsTask.Result,
-            PublishedBlogCount = publishedBlogsTask.Result,
-            NewMessageCount = newMessagesTask.Result,
-            ActiveMediaCount = totalMediaTask.Result,
-            RecentMessages = recentMessagesTask.Result,
+            PublishedProductCount = publishedProducts,
+            PublishedBlogCount = publishedBlogs,
+            NewMessageCount = newMessages,
+            ActiveMediaCount = totalMedia,
+            RecentMessages = recentMessages,
             SummaryCards =
             [
                 new AdminDashboardSummaryCardViewModel
                 {
                     Title = "Products",
-                    Count = totalProductsTask.Result,
+                    Count = totalProducts,
                     IconCssClass = "bi bi-box-seam",
                     ColorClass = "primary",
                     Url = Url.Action("Index", "Products", new { area = "Admin" })
@@ -96,7 +90,7 @@ public class DashboardController : AdminControllerBase
                 new AdminDashboardSummaryCardViewModel
                 {
                     Title = "Blogs",
-                    Count = totalBlogsTask.Result,
+                    Count = totalBlogs,
                     IconCssClass = "bi bi-journal-richtext",
                     ColorClass = "success",
                     Url = Url.Action("Index", "Blogs", new { area = "Admin" })
@@ -104,7 +98,7 @@ public class DashboardController : AdminControllerBase
                 new AdminDashboardSummaryCardViewModel
                 {
                     Title = "Messages",
-                    Count = totalMessagesTask.Result,
+                    Count = totalMessages,
                     IconCssClass = "bi bi-chat-dots",
                     ColorClass = "warning",
                     Url = Url.Action("Index", "Messages", new { area = "Admin" })
@@ -112,7 +106,7 @@ public class DashboardController : AdminControllerBase
                 new AdminDashboardSummaryCardViewModel
                 {
                     Title = "Media",
-                    Count = totalMediaTask.Result,
+                    Count = totalMedia,
                     IconCssClass = "bi bi-images",
                     ColorClass = "info",
                     Url = Url.Action("Index", "Media", new { area = "Admin" })

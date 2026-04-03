@@ -21,4 +21,7 @@ public interface ICanonicalUrlService
     /// Normalizes a path-like canonical value to a clean absolute URL.
     /// </summary>
     string NormalizeCanonical(string? value, HttpRequest? request = null);
+    string BuildCanonicalUrl(string v);
+    string BuildAbsoluteCurrentUrl(HttpRequest request);
+    string BuildCanonicalUrl();
 }

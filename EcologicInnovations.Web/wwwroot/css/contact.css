@@ -1,0 +1,40 @@
+.contact-page {
+    background: linear-gradient(180deg, #f8fbff 0%, #ffffff 100%);
+}
+
+.contact-hero-card {
+    border-radius: 1.5rem;
+    background:
+        radial-gradient(circle at top right, rgba(13, 110, 253, 0.10), transparent 28%),
+        radial-gradient(circle at bottom left, rgba(25, 135, 84, 0.10), transparent 30%),
+        #ffffff;
+}
+
+.contact-info-item {
+    align-items: flex-start;
+}
+
+.contact-info-icon {
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 1rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(13, 110, 253, 0.10);
+    color: #0d6efd;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
+
+.contact-page .form-control,
+.contact-page textarea {
+    border-radius: 1rem;
+    border-color: #dbe4f0;
+}
+
+.contact-page .form-control:focus,
+.contact-page textarea:focus {
+    box-shadow: 0 0 0 .2rem rgba(13, 110, 253, 0.12);
+    border-color: #0d6efd;
+}

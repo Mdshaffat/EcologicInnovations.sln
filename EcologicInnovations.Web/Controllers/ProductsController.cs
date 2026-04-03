@@ -157,7 +157,7 @@ public class ProductsController : Controller
             Description = selectedCategory is not null
                 ? $"Browse {selectedCategory.Name.ToLowerInvariant()} products from {siteSettings.CompanyName}."
                 : siteSettings.MetaDescriptionDefault ?? "Browse products from Ecologic Innovations.",
-            CanonicalUrl = _canonicalUrlService.BuildCanonicalUrl(BuildCanonicalPath(selectedCategorySlug, searchTerm, sortBy, page)),
+            CanonicalUrl = _canonicalUrlService.BuildAbsolute(BuildCanonicalPath(selectedCategorySlug, searchTerm, sortBy, page)),
             OgTitle = selectedCategory is not null
                 ? $"{selectedCategory.Name} Products"
                 : "Products",
@@ -387,7 +387,7 @@ public class ProductsController : Controller
                 Description = string.IsNullOrWhiteSpace(product.MetaDescription)
                     ? product.ShortDescription
                     : product.MetaDescription,
-                CanonicalUrl = _canonicalUrlService.BuildCanonicalUrl($"/products/{product.Slug}"),
+                CanonicalUrl = _canonicalUrlService.BuildAbsolute($"/products/{product.Slug}"),
                 OgTitle = product.Title,
                 OgDescription = string.IsNullOrWhiteSpace(product.MetaDescription)
                     ? product.ShortDescription

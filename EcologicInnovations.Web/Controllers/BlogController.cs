@@ -256,7 +256,7 @@ public class BlogController : Controller
         input.BlogPostId = post.Id;
         input.SourceTitle = post.Title;
         input.RegardingBlogTitle = post.Title;
-        input.PageUrl = _currentPageSourceService.GetRelativePathAndQuery() ?? $"/blog/{post.Slug}";
+        input.PageUrl = _currentPageSourceService.GetCurrentRelativeUrl() ?? $"/blog/{post.Slug}";
 
         if (!ModelState.IsValid)
         {

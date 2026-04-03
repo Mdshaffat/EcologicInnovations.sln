@@ -1,11 +1,55 @@
+@{
+    bool IsActive(string name)
+    {
+        var current = (ViewContext.RouteData.Values["controller"] ?? string.Empty).ToString();
+        return string.Equals(current, name, StringComparison.OrdinalIgnoreCase);
+    }
+}
+
+<a asp-area="Admin" asp-controller="Dashboard" asp-action="Index"
+   class="admin-nav-link @(IsActive("Dashboard") ? "active" : null)">
+    <i class="bi bi-speedometer2"></i>
+    <span>Dashboard</span>
+</a>
+
+<a asp-area="Admin" asp-controller="Products" asp-action="Index"
+   class="admin-nav-link @(IsActive("Products") ? "active" : null)">
+    <i class="bi bi-box-seam"></i>
+    <span>Products</span>
+</a>
+
+<a asp-area="Admin" asp-controller="ProductCategories" asp-action="Index"
+   class="admin-nav-link @(IsActive("ProductCategories") ? "active" : null)">
+    <i class="bi bi-list-ul"></i>
+    <span>Product Categories</span>
+</a>
+
 <a asp-area="Admin" asp-controller="Blogs" asp-action="Index"
-   class="admin-nav-link @IsActive("Blogs")">
+   class="admin-nav-link @(IsActive("Blogs") ? "active" : null)">
     <i class="bi bi-journal-richtext"></i>
     <span>Blogs</span>
 </a>
 
 <a asp-area="Admin" asp-controller="BlogCategories" asp-action="Index"
-   class="admin-nav-link @IsActive("BlogCategories")">
+   class="admin-nav-link @(IsActive("BlogCategories") ? "active" : null)">
     <i class="bi bi-tags"></i>
     <span>Blog Categories</span>
+</a>
+
+<a asp-area="Admin" asp-controller="Messages" asp-action="Index"
+   class="admin-nav-link @(IsActive("Messages") ? "active" : null)">
+    <i class="bi bi-chat-dots"></i>
+    <span>Messages</span>
+</a>
+
+<a asp-area="Admin" asp-controller="Media" asp-action="Index"
+   class="admin-nav-link @(IsActive("Media") ? "active" : null)">
+    <i class="bi bi-images"></i>
+    <span>Media</span>
+</a>
+
+<a asp-area="Admin" asp-controller="SitePages" asp-action="Index"
+   class="admin-nav-link @(IsActive("SitePages") ? "active" : null)">
+    <i class="bi bi-file-earmark-text"></i>
+    <span>Site Pages</span>
 </a>

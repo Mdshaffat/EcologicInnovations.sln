@@ -1,3 +1,98 @@
+@model EcologicInnovations.Web.ViewModels.Products.ProductDetailsViewModel
+
+<div class="container">
+    <nav aria-label="breadcrumb" class="mb-3">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+            <li class="breadcrumb-item"><a asp-controller="Products" asp-action="Index">Products</a></li>
+            @if (!string.IsNullOrWhiteSpace(Model.CategorySlug) && !string.IsNullOrWhiteSpace(Model.CategoryName))
+            {
+                <li class="breadcrumb-item"><a asp-controller="Products" asp-action="Index" asp-route-category="@Model.CategorySlug">@Model.CategoryName</a></li>
+            }
+            <li class="breadcrumb-item active" aria-current="page">@Model.Title</li>
+        </ol>
+    </nav>
+
+    <div class="row mb-4">
+        <div class="col-lg-6">
+            @if (!string.IsNullOrWhiteSpace(Model.MainImageUrl))
+            {
+                <img src="@Model.MainImageUrl" alt="@Model.Title" class="img-fluid rounded" />
+            }
+        </div>
+        <div class="col-lg-6">
+            <h1 class="h3">@Model.Title</h1>
+            @if (!string.IsNullOrWhiteSpace(Model.ShortDescription))
+            {
+                <p class="lead">@Model.ShortDescription</p>
+            }
+
+            @if (Model.ContactFormEnabled)
+            {
+                <a class="btn btn-primary" href="#inquiry-form">@Model.ContactFormTitle</a>
+            }
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="html-content">
+                @Html.Raw(Model.HtmlDetails)
+            </div>
+
+            @if (Model.ContactFormEnabled)
+            {
+                <section id="inquiry-form" class="mt-5">
+                    <h2 class="h5 mb-3">@Model.ContactFormTitle</h2>
+                    <form asp-action="SendInquiry" asp-controller="Products" asp-route-slug="@Model.Slug" method="post">
+                        @Html.AntiForgeryToken()
+
+                        <div class="mb-3">
+                            <label asp-for="InquiryForm.Name" class="form-label">Name</label>
+                            <input asp-for="InquiryForm.Name" class="form-control" />
+                            <span asp-validation-for="InquiryForm.Name" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="InquiryForm.Email" class="form-label">Email</label>
+                            <input asp-for="InquiryForm.Email" class="form-control" />
+                            <span asp-validation-for="InquiryForm.Email" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="InquiryForm.Phone" class="form-label">Phone</label>
+                            <input asp-for="InquiryForm.Phone" class="form-control" />
+                            <span asp-validation-for="InquiryForm.Phone" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="InquiryForm.Message" class="form-label">Message</label>
+                            <textarea asp-for="InquiryForm.Message" class="form-control" rows="5"></textarea>
+                            <span asp-validation-for="InquiryForm.Message" class="text-danger"></span>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Send Message</button>
+                    </form>
+                </section>
+            }
+        </div>
+
+        <aside class="col-lg-4">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Related Products</h5>
+                    <ul class="list-unstyled mb-0">
+                        @foreach (var item in Model.RelatedProducts)
+                        {
+                            <li class="mb-2"><a asp-controller="Products" asp-action="Details" asp-route-slug="@item.Slug">@item.Title</a></li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </aside>
+    </div>
+</div>
+
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }

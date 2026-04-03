@@ -1,14 +1,19 @@
 @using EcologicInnovations.Web.Security
+@using System.Security.Claims
 
 <ul class="navbar-nav align-items-lg-center">
     @if (User.IsSignedIn())
     {
-        <li class="nav-item">
+            <li class="nav-item d-flex align-items-center gap-2">
+            @{ var email = User.FindFirstValue(ClaimTypes.Email); }
+            <span class="nav-link text-secondary small">@(string.IsNullOrWhiteSpace(email) ? User.Identity?.Name : email)</span>
             <form asp-area="Identity"
                   asp-page="/Account/Logout"
+                  asp-page-handler="Logout"
                   asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })"
                   method="post"
                   class="d-inline">
+                @Html.AntiForgeryToken()
                 <button type="submit" class="btn btn-outline-secondary btn-sm rounded-pill px-3">
                     Logout
                 </button>

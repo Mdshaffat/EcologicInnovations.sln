@@ -1,0 +1,20 @@
+.admin-messages-table th,
+.admin-messages-table td {
+    vertical-align: middle;
+}
+
+.message-preview-row td {
+    border-top: 0 !important;
+}
+
+.message-body-box {
+    white-space: normal;
+    line-height: 1.8;
+    color: #334155;
+    background: #f8fafc;
+}
+
+.admin-messages-table .badge {
+    font-weight: 600;
+    letter-spacing: .01em;
+}

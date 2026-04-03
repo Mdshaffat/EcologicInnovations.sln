@@ -1,0 +1,14 @@
+.admin-stat-pill {
+    background: #f8fafc;
+    border: 1px solid #e9edf2;
+    border-radius: 999px;
+    padding: .65rem 1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: .6rem;
+}
+
+.admin-stat-pill-label {
+    color: #6b7280;
+    font-size: .85rem;
+}

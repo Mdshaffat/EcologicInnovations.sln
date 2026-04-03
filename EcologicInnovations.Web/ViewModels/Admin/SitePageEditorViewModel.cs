@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using EcologicInnovations.Web.Models.Enums;
+using EcologicInnovations.Web.ViewModels.Shared;
 
 namespace EcologicInnovations.Web.ViewModels.Admin;
 
@@ -97,4 +98,5 @@ public class SitePageEditorViewModel
     /// Optional preview HTML used by the admin view after sanitization.
     /// </summary>
     public string? PreviewHtml { get; set; }
+    public SeoMetaViewModel Seo { get; internal set; }
 }

@@ -1,0 +1,37 @@
+@using EcologicInnovations.Web.ViewModels.Shared
+@{
+    // This compatibility partial accepts either a PaginationRenderViewModel (new) or a
+    // PaginationViewModel (older admin views) and forwards an appropriate
+    // PaginationRenderViewModel to the primary _Pagination partial.
+    object incomingModel = Model;
+
+    PaginationRenderViewModel renderModel;
+
+    if (incomingModel is PaginationRenderViewModel prm)
+    {
+        renderModel = prm;
+    }
+    else if (incomingModel is PaginationViewModel pvm)
+    {
+        // Build a minimal render model from the older pagination model.
+        var query = new Dictionary<string, string?>(StringComparer.OrdinalIgnoreCase);
+        foreach (var q in Context.Request.Query)
+        {
+            query[q.Key] = q.Value.ToString();
+        }
+
+        renderModel = new PaginationRenderViewModel
+        {
+            Pagination = pvm,
+            CurrentPath = Context.Request.Path.HasValue ? Context.Request.Path.Value! : "/",
+            Query = query
+        };
+    }
+    else
+    {
+        // If no model or unknown model, render nothing.
+        renderModel = new PaginationRenderViewModel();
+    }
+}
+
+@await Html.PartialAsync("_Pagination", renderModel)

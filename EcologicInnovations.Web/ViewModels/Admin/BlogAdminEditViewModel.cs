@@ -39,8 +39,8 @@ public class BlogAdminEditViewModel
     /// Feature image URL. Usually comes from Media / Uploads.
     /// </summary>
     [StringLength(500)]
-    [Url]
     [Display(Name = "Feature Image URL")]
+    [EcologicInnovations.Web.Validation.RelativeOrAbsoluteUrl]
     public string? FeatureImageUrl { get; set; }
 
     /// <summary>
@@ -108,8 +108,8 @@ public class BlogAdminEditViewModel
     /// Open Graph image URL. If blank, the feature image can be used later as fallback.
     /// </summary>
     [StringLength(500)]
-    [Url]
     [Display(Name = "OG Image URL")]
+    [EcologicInnovations.Web.Validation.RelativeOrAbsoluteUrl]
     public string? OgImageUrl { get; set; }
 
     /// <summary>

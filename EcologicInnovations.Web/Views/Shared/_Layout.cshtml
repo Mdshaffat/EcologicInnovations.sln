@@ -9,6 +9,7 @@
     <partial name="_SeoHead" />
     <partial name="_HtmlTypographyStylesPartial" />
     <partial name="_PublicStylesPartial" />
+    @RenderSection("Styles", required: false)
 </head>
 <body class="public-body">
     <header>
@@ -26,5 +27,6 @@
     @await Component.InvokeAsync("PublicFooter")
     <partial name="_PublicToastContainer" />
     <partial name="_PublicScriptsPartial" />
+    @RenderSection("Scripts", required: false)
 </body>
 </html>

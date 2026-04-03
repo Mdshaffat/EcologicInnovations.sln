@@ -9,7 +9,7 @@ namespace EcologicInnovations.Web.Areas.Admin.Controllers;
 /// This ensures consistent area routing and admin-only authorization.
 /// </summary>
 [Area("Admin")]
-[Authorize(Policy = AppPolicies.RequireAdminRole)]
+[EcologicInnovations.Web.Security.AdminOnly]
 public abstract class AdminControllerBase : Controller
 {
 }

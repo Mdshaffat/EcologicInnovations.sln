@@ -37,7 +37,7 @@ public class PublicFooterViewComponent : ViewComponent
             Address = siteSettings.Address,
             FooterHtml = string.IsNullOrWhiteSpace(siteSettings.FooterHtml)
                 ? null
-                : _htmlSanitizationService.Sanitize(siteSettings.FooterHtml),
+                : _htmlSanitizationService.SanitizeFooterHtml(siteSettings.FooterHtml),
             FacebookUrl = siteSettings.FacebookUrl,
             LinkedInUrl = siteSettings.LinkedInUrl,
             YouTubeUrl = siteSettings.YouTubeUrl,

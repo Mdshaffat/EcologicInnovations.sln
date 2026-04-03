@@ -84,12 +84,14 @@ public class MessagesController : AdminControllerBase
             _ => query.OrderByDescending(x => x.CreatedAt).ThenByDescending(x => x.Id)
         };
 
-        var totalCountTask = query.CountAsync(cancellationToken);
-        var newCountTask = _dbContext.ContactMessages
+        // Execute queries sequentially on the same DbContext to avoid concurrent operations.
+        var totalCount = await query.CountAsync(cancellationToken);
+
+        var newCount = await _dbContext.ContactMessages
             .AsNoTracking()
             .CountAsync(x => x.Status == ContactMessageStatus.New, cancellationToken);
 
-        var itemsTask = query
+        var items = await query
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
             .Select(x => new MessageAdminListItemViewModel
@@ -109,24 +111,22 @@ public class MessagesController : AdminControllerBase
             })
             .ToListAsync(cancellationToken);
 
-        await Task.WhenAll(totalCountTask, newCountTask, itemsTask);
-
         var model = new MessageAdminListViewModel
         {
             Filter = filter,
-            Items = itemsTask.Result,
-            TotalCount = totalCountTask.Result,
-            NewCount = newCountTask.Result,
+            Items = items,
+            TotalCount = totalCount,
+            NewCount = newCount,
             Pagination = new PaginationViewModel
             {
                 PageNumber = pageNumber,
                 PageSize = pageSize,
-                TotalItems = totalCountTask.Result,
+                TotalItems = totalCount,
                 BasePath = Url.Action(nameof(Index), "Messages", new { area = "Admin" })
             },
             StatusOptions = BuildStatusOptions(filter.Status),
             SourceTypeOptions = BuildSourceTypeOptions(filter.SourceType),
-            EmptyState = itemsTask.Result.Count == 0
+            EmptyState = items.Count == 0
                 ? new EmptyStateViewModel
                 {
                     Title = "No messages found",
