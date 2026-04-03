@@ -116,25 +116,7 @@
                         }
                     </div>
 
-                    @if (Model.Pagination.TotalPages > 1)
-                    {
-                        <nav class="mt-5" aria-label="Blog pagination">
-                            <ul class="pagination justify-content-center flex-wrap gap-2">
-                                @for (var i = 1; i <= Model.Pagination.TotalPages; i++)
-                                {
-                                    <li class="page-item @(i == Model.Pagination.PageNumber ? "active" : "")">
-                                        <a class="page-link rounded-pill"
-                                           asp-controller="Blog"
-                                           asp-action="Index"
-                                           asp-route-category="@Model.Sidebar.SelectedCategorySlug"
-                                           asp-route-q="@Model.Sidebar.SearchTerm"
-                                           asp-route-sort="@Model.Sidebar.SortBy"
-                                           asp-route-page="@i">@i</a>
-                                    </li>
-                                }
-                            </ul>
-                        </nav>
-                    }
+                    <partial name="_PaginationPartial" model="Model.Pagination" />
                 }
             </div>
         </div>

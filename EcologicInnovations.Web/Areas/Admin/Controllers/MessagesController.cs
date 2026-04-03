@@ -179,6 +179,8 @@ public class MessagesController : AdminControllerBase
             PageUrl = message.PageUrl,
             Status = message.Status,
             AdminNote = message.AdminNote,
+            SubmitterIpAddress = message.SubmitterIpAddress,
+            SubmitterUserAgent = message.SubmitterUserAgent,
             CreatedAt = message.CreatedAt,
             UpdatedAt = message.UpdatedAt,
             StatusOptions = BuildStatusOptions(message.Status),

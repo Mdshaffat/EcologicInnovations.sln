@@ -39,7 +39,7 @@
             <div class="card-body p-4 p-lg-5">
                 <div class="row align-items-center g-4">
                     <div class="col-lg-8">
-                        <span class="products-hero-kicker">Ecologic Innovations Catalog</span>
+                        <span class="products-hero-kicker">Our Products</span>
                         <h1 class="display-6 fw-bold mb-3">@Model.PageTitle</h1>
                         @if (!string.IsNullOrWhiteSpace(Model.IntroText))
                         {
@@ -50,7 +50,14 @@
                         <div class="products-hero-stats">
                             <div class="products-hero-stat-card">
                                 <span class="products-hero-stat-number">@Model.ResultCount</span>
-                                <span class="products-hero-stat-label">Matching Products</span>
+                                @if (!string.IsNullOrWhiteSpace(Model.SelectedCategoryName) || !string.IsNullOrWhiteSpace(Model.Sidebar.SearchTerm))
+                                {
+                                    <span class="products-hero-stat-label">Matching Products</span>
+                                }
+                                else
+                                {
+                                    <span class="products-hero-stat-label">Products</span>
+                                }
                             </div>
                         </div>
                     </div>
@@ -172,40 +179,13 @@
                     <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
                         @foreach (var product in Model.Products)
                         {
-                            <partial name="_ProductCard" model="product" />
+                            <div class="col">
+                                <partial name="_ProductCard" model="product" />
+                            </div>
                         }
                     </div>
 
-                    @if (Model.Pagination.TotalPages > 1)
-                    {
-                        <nav aria-label="Products pagination" class="mt-5">
-                            <ul class="pagination justify-content-center flex-wrap gap-2">
-                                <li class="page-item @(Model.Pagination.HasPreviousPage ? "" : "disabled")">
-                                    <a class="page-link"
-                                       href="@Url.Action("Index", "Products", new { category = Model.Sidebar.SelectedCategorySlug, q = Model.Sidebar.SearchTerm, sort = Model.Sidebar.SortBy, page = Model.Pagination.PageNumber - 1 })">
-                                        Previous
-                                    </a>
-                                </li>
-
-                                @for (var i = 1; i <= Model.Pagination.TotalPages; i++)
-                                {
-                                    <li class="page-item @(i == Model.Pagination.PageNumber ? "active" : "")">
-                                        <a class="page-link"
-                                           href="@Url.Action("Index", "Products", new { category = Model.Sidebar.SelectedCategorySlug, q = Model.Sidebar.SearchTerm, sort = Model.Sidebar.SortBy, page = i })">
-                                            @i
-                                        </a>
-                                    </li>
-                                }
-
-                                <li class="page-item @(Model.Pagination.HasNextPage ? "" : "disabled")">
-                                    <a class="page-link"
-                                       href="@Url.Action("Index", "Products", new { category = Model.Sidebar.SelectedCategorySlug, q = Model.Sidebar.SearchTerm, sort = Model.Sidebar.SortBy, page = Model.Pagination.PageNumber + 1 })">
-                                        Next
-                                    </a>
-                                </li>
-                            </ul>
-                        </nav>
-                    }
+                    <partial name="_PaginationPartial" model="Model.Pagination" />
                 }
             </div>
         </div>

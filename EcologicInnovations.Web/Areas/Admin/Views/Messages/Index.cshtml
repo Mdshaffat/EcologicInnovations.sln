@@ -150,54 +150,7 @@ else
         @if (Model.Pagination.TotalPages > 1)
         {
             <div class="card-footer bg-white border-top-0 py-3">
-                <nav aria-label="Messages pagination">
-                    <ul class="pagination justify-content-center mb-0">
-                        <li class="page-item @(Model.Pagination.HasPreviousPage ? "" : "disabled")">
-                            <a class="page-link"
-                               asp-action="Index"
-                               asp-controller="Messages"
-                               asp-area="Admin"
-                               asp-route-searchTerm="@Model.Filter.SearchTerm"
-                               asp-route-status="@Model.Filter.Status"
-                               asp-route-sourceType="@Model.Filter.SourceType"
-                               asp-route-sortBy="@Model.Filter.SortBy"
-                               asp-route-pageNumber="@(Model.Pagination.PageNumber - 1)">
-                                Previous
-                            </a>
-                        </li>
-
-                        @for (var page = 1; page <= Model.Pagination.TotalPages; page++)
-                        {
-                            <li class="page-item @(page == Model.Pagination.PageNumber ? "active" : "")">
-                                <a class="page-link"
-                                   asp-action="Index"
-                                   asp-controller="Messages"
-                                   asp-area="Admin"
-                                   asp-route-searchTerm="@Model.Filter.SearchTerm"
-                                   asp-route-status="@Model.Filter.Status"
-                                   asp-route-sourceType="@Model.Filter.SourceType"
-                                   asp-route-sortBy="@Model.Filter.SortBy"
-                                   asp-route-pageNumber="@(page)">
-                                    @(page)
-                                </a>
-                            </li>
-                        }
-
-                        <li class="page-item @(Model.Pagination.HasNextPage ? "" : "disabled")">
-                            <a class="page-link"
-                               asp-action="Index"
-                               asp-controller="Messages"
-                               asp-area="Admin"
-                               asp-route-searchTerm="@Model.Filter.SearchTerm"
-                               asp-route-status="@Model.Filter.Status"
-                               asp-route-sourceType="@Model.Filter.SourceType"
-                               asp-route-sortBy="@Model.Filter.SortBy"
-                               asp-route-pageNumber="@(Model.Pagination.PageNumber + 1)">
-                                Next
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
+                <partial name="~/Views/Shared/_PaginationPartial.cshtml" model="Model.Pagination" />
             </div>
         }
     </div>

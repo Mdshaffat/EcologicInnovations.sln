@@ -1,9 +1,5 @@
 .blog-details-page {
-    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
-}
-
-.sidebar-sticky-offset {
-    top: 96px;
+    background: var(--eco-page-bg);
 }
 
 .blog-feature-image {
@@ -14,13 +10,13 @@
 .blog-article-body {
     font-size: 1.05rem;
     line-height: 1.85;
-    color: #334155;
+    color: var(--eco-text);
 }
 
 .blog-article-body h2,
 .blog-article-body h3,
 .blog-article-body h4 {
-    color: #0f172a;
+    color: var(--eco-heading);
     margin-top: 2rem;
     margin-bottom: 1rem;
     font-weight: 700;
@@ -47,13 +43,13 @@
 
 .blog-article-body table th,
 .blog-article-body table td {
-    border: 1px solid #e2e8f0;
+    border: 1px solid var(--eco-border);
     padding: .75rem;
 }
 
 .blog-inquiry-form .form-control,
 .blog-inquiry-form textarea {
-    border-radius: 1rem;
+    border-radius: var(--eco-radius);
 }
 
 .related-blog-image {

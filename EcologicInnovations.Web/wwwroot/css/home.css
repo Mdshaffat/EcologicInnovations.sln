@@ -1,5 +1,7 @@
 .home-page {
-    background: #f8fbf9;
+    background: var(--eco-bg-soft);
+    margin-top: -1.5rem;
+    margin-bottom: -1.5rem;
 }
 
 .hero-section {
@@ -10,23 +12,20 @@
 }
 
 .py-lg-6 {
-    padding-top: 5rem;
-    padding-bottom: 5rem;
+    padding-top: 4rem;
+    padding-bottom: 4rem;
 }
 
-.hero-kicker,
-.section-kicker {
+.hero-kicker {
     letter-spacing: 0.12em;
     font-size: 0.82rem;
 }
 
-.hero-title,
-.section-title {
+.hero-title {
     line-height: 1.15;
 }
 
 .hero-subtitle,
-.section-text,
 .cta-text {
     max-width: 62ch;
 }
@@ -63,10 +62,10 @@
 .hero-mini-card {
     height: 100%;
     background: rgba(255, 255, 255, 0.92);
-    color: #0f172a;
-    border-radius: 1rem;
+    color: var(--eco-heading);
+    border-radius: var(--eco-radius);
     padding: 1rem;
-    box-shadow: 0 0.5rem 1rem rgba(15, 23, 42, 0.12);
+    box-shadow: var(--eco-shadow-sm);
 }
 
 .hero-mini-card h3 {
@@ -76,13 +75,13 @@
 
 .hero-mini-card p {
     margin-bottom: 0;
-    color: #475569;
+    color: var(--eco-text-secondary);
     font-size: 0.92rem;
 }
 
 .hero-mini-icon {
     font-size: 1.4rem;
-    color: #15803d;
+    color: var(--eco-secondary);
     margin-bottom: 0.65rem;
 }
 
@@ -106,8 +105,8 @@
 .product-showcase-placeholder,
 .blog-showcase-placeholder {
     min-height: 220px;
-    background: linear-gradient(135deg, #ecfdf5 0%, #f0fdf4 100%);
-    color: #15803d;
+    background: linear-gradient(135deg, var(--eco-bg-green-soft) 0%, #f0fdf4 100%);
+    color: var(--eco-secondary);
 }
 
 .product-showcase-placeholder,
@@ -119,7 +118,7 @@
 .blog-showcase-card,
 .value-card,
 .placeholder-card {
-    border-radius: 1rem;
+    border-radius: var(--eco-radius-lg);
     overflow: hidden;
 }
 
@@ -137,7 +136,7 @@
 
 .value-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 1rem 2rem rgba(15, 23, 42, 0.08);
+    box-shadow: var(--eco-shadow-hover);
 }
 
 .value-icon {
@@ -147,8 +146,8 @@
     align-items: center;
     justify-content: center;
     border-radius: 999px;
-    background: #ecfdf5;
-    color: #15803d;
+    background: var(--eco-bg-green-soft);
+    color: var(--eco-secondary);
     font-size: 1.2rem;
 }
 
@@ -163,11 +162,11 @@
 
 .empty-state-box {
     background: #fff;
-    border: 1px solid #e5e7eb;
+    border: 1px solid var(--eco-border);
 }
 
 .cta-section {
-    background: linear-gradient(135deg, #166534 0%, #0f766e 100%);
+    background: linear-gradient(135deg, var(--eco-green-dark) 0%, var(--eco-teal) 100%);
 }
 
 .footer-info-section a {
@@ -204,8 +203,8 @@
 
 @media (max-width: 991.98px) {
     .py-lg-6 {
-        padding-top: 4rem;
-        padding-bottom: 4rem;
+        padding-top: 3rem;
+        padding-bottom: 3rem;
     }
 
     .hero-image,

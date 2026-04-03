@@ -50,7 +50,7 @@
 }
 
 .inquiry-card {
-    border-radius: 1rem;
+    border-radius: var(--eco-radius);
 }
 
 .related-product-image,

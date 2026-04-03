@@ -8,19 +8,20 @@ namespace EcologicInnovations.Web.ViewModels.Contact;
 /// </summary>
 public class ContactFormInputModel
 {
-    [Required]
-    [StringLength(150)]
+    [Required(ErrorMessage = "Please enter your full name.")]
+    [StringLength(150, MinimumLength = 2, ErrorMessage = "Name must be between 2 and 150 characters.")]
     [Display(Name = "Full Name")]
     public string Name { get; set; } = string.Empty;
 
-    [Required]
-    [EmailAddress]
+    [Required(ErrorMessage = "Please enter your email address.")]
+    [EmailAddress(ErrorMessage = "Please enter a valid email address.")]
     [StringLength(256)]
     [Display(Name = "Email Address")]
     public string Email { get; set; } = string.Empty;
 
-    [Required]
-    [StringLength(50)]
+    [Required(ErrorMessage = "Please enter your phone number.")]
+    [StringLength(50, MinimumLength = 7, ErrorMessage = "Phone number must be between 7 and 50 characters.")]
+    [RegularExpression(@"^[\d\s\+\-\(\)\.]+$", ErrorMessage = "Please enter a valid phone number.")]
     [Display(Name = "Phone Number")]
     public string Phone { get; set; } = string.Empty;
 
@@ -32,8 +33,8 @@ public class ContactFormInputModel
     [Display(Name = "Subject")]
     public string? Subject { get; set; }
 
-    [Required]
-    [StringLength(4000)]
+    [Required(ErrorMessage = "Please enter your message.")]
+    [StringLength(4000, MinimumLength = 10, ErrorMessage = "Message must be between 10 and 4000 characters.")]
     [Display(Name = "Message")]
     public string Message { get; set; } = string.Empty;
 

@@ -20,11 +20,17 @@
             query[q.Key] = q.Value.ToString();
         }
 
+        // Auto-detect the page parameter name: admin pages use "pageNumber", public pages use "page".
+        var currentPath = Context.Request.Path.HasValue ? Context.Request.Path.Value! : "/";
+        var isAdminPath = currentPath.StartsWith("/Admin", StringComparison.OrdinalIgnoreCase);
+        var pageParam = isAdminPath || query.ContainsKey("pageNumber") ? "pageNumber" : "page";
+
         renderModel = new PaginationRenderViewModel
         {
             Pagination = pvm,
             CurrentPath = Context.Request.Path.HasValue ? Context.Request.Path.Value! : "/",
-            Query = query
+            Query = query,
+            PageParameterName = pageParam
         };
     }
     else

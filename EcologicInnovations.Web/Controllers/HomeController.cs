@@ -96,9 +96,9 @@ public class HomeController : Controller
             .ToListAsync(cancellationToken);
 
         var seo = await _seoMetadataService.BuildDefaultAsync(
-            title: siteSettings.MetaTitleDefault ?? "Ecologic Innovations | Software, Sustainability IoT, and Energy Equipment",
+            title: siteSettings.MetaTitleDefault ?? "Ecologic Innovations | Software Development, Smart Systems, Training & Impact",
             description: siteSettings.MetaDescriptionDefault ??
-                         "Ecologic Innovations delivers software solutions, sustainability IoT devices, energy equipment, and practical support for smarter business operations.",
+                         "Ecologic Innovations builds custom software, smart IoT and drone systems, training programs, and impact-driven technology for businesses and communities.",
             canonicalPath: "/",
             ogImageUrl: siteSettings.LogoUrl,
             cancellationToken: cancellationToken);
@@ -107,9 +107,9 @@ public class HomeController : Controller
         {
             Hero = new HomeHeroViewModel
             {
-                Title = "Software, Sustainability IoT, and Energy Equipment for Smarter Operations",
+                Title = "Software, Smart Systems, Training, and Real-World Impact",
                 Subtitle = siteSettings.Tagline ??
-                           "Ecologic Innovations helps businesses digitize sustainability work, monitor utilities, manage efficiency, and deploy practical eco-technology solutions.",
+                           "We're a team of builders and problem-solvers. From web and mobile apps to IoT, drones, and hands-on training — we help businesses and communities grow smarter.",
                 ImageUrl = siteSettings.LogoUrl,
                 PrimaryButtonText = "Explore Products",
                 PrimaryButtonUrl = Url.Action("Index", "Products"),
@@ -118,7 +118,7 @@ public class HomeController : Controller
             },
             AboutTitle = aboutPage?.Title ?? "About Ecologic Innovations",
             AboutSummary = aboutPage?.ShortIntro ??
-                           "We build business-ready software, sustainability IoT devices, and energy-focused solutions that help organizations improve visibility, compliance, efficiency, and decision-making.",
+                           "We're passionate about using technology to make a difference. Our team specializes in software development, smart IoT and drone systems, professional training, and building tools that create lasting impact.",
             AboutImageUrl = aboutPage?.BannerImageUrl,
             FeaturedProducts = featuredProducts,
             LatestBlogs = latestBlogs,
@@ -126,31 +126,31 @@ public class HomeController : Controller
             [
                 new HomeValuePointViewModel
                 {
-                    IconCssClass = "bi bi-laptop",
-                    Title = "Business Software",
-                    Description = "Practical digital platforms and custom web systems designed for operational control and growth."
+                    IconCssClass = "bi bi-code-slash",
+                    Title = "Software Development",
+                    Description = "Web, desktop, and mobile applications — we design and build software from scratch to fit exactly what your business needs."
                 },
                 new HomeValuePointViewModel
                 {
                     IconCssClass = "bi bi-cpu",
-                    Title = "Sustainability IoT Devices",
-                    Description = "Smart monitoring tools and connected devices that improve visibility into sustainability and resource use."
+                    Title = "Smart Systems",
+                    Description = "IoT sensors, drones, and connected devices for real-time monitoring, data collection, and intelligent automation."
                 },
                 new HomeValuePointViewModel
                 {
-                    IconCssClass = "bi bi-lightning-charge",
-                    Title = "Energy Equipment",
-                    Description = "Energy-focused products and supporting solutions for monitoring, efficiency improvement, and control."
+                    IconCssClass = "bi bi-mortarboard",
+                    Title = "Training & Development",
+                    Description = "Practical workshops, technical courses, and skill-building programs that empower teams and individuals to grow."
                 },
                 new HomeValuePointViewModel
                 {
-                    IconCssClass = "bi bi-people",
-                    Title = "Practical Support",
-                    Description = "Business-ready guidance and implementation thinking built around real operational needs."
+                    IconCssClass = "bi bi-globe-americas",
+                    Title = "Impact",
+                    Description = "Everything we build is rooted in making a positive difference — for businesses, communities, and the environment."
                 }
             ],
-            CtaTitle = "Ready to build smarter sustainability and energy solutions?",
-            CtaText = "Talk to Ecologic Innovations about software, monitoring devices, energy equipment, or a tailored solution for your business.",
+            CtaTitle = "Got a project idea? Let's make it happen.",
+            CtaText = "Whether you need a web app, a mobile solution, a smart monitoring system, or a training program for your team — we'd love to hear from you.",
             CtaButtonText = "Send an Inquiry",
             CtaButtonUrl = Url.Action("Index", "Contact"),
             SiteName = siteSettings.CompanyName ?? "Ecologic Innovations",

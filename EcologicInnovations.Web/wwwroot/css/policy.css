@@ -1,5 +1,5 @@
 .policy-page {
-    background: #f8fafc;
+    background: var(--eco-bg-soft);
 }
 
 .policy-hero {
@@ -58,7 +58,7 @@
 
 .policy-intro-card {
     background: #ffffff;
-    border-radius: 1.25rem;
+    border-radius: var(--eco-radius-lg);
     border: 1px solid rgba(15, 23, 42, 0.06);
 }
 
@@ -68,7 +68,7 @@
 
 .policy-content {
     background: #ffffff;
-    border-radius: 1.5rem;
+    border-radius: var(--eco-radius-lg);
     border: 1px solid rgba(15, 23, 42, 0.06);
     overflow: hidden;
 }

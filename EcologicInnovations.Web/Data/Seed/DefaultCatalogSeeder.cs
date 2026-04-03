@@ -36,31 +36,31 @@ public static class DefaultCatalogSeeder
             {
                 Name = "Software Solutions",
                 Slug = "software-solutions",
-                Description = "Business software, web solutions, and digital platforms.",
+                Description = "Web, desktop, and mobile applications built for real-world needs.",
                 SortOrder = 1,
                 IsActive = true
             },
             new()
             {
-                Name = "Sustainability IoT Devices",
-                Slug = "sustainability-iot-devices",
-                Description = "IoT-based tools and monitoring devices supporting sustainability goals.",
+                Name = "Smart Systems",
+                Slug = "smart-systems",
+                Description = "IoT devices, drones, and connected technology for monitoring and automation.",
                 SortOrder = 2,
                 IsActive = true
             },
             new()
             {
-                Name = "Energy Equipment",
-                Slug = "energy-equipment",
-                Description = "Equipment and tools focused on energy management, efficiency, and monitoring.",
+                Name = "Training & Development",
+                Slug = "training-development",
+                Description = "Workshops, courses, and skill-building programs for teams and individuals.",
                 SortOrder = 3,
                 IsActive = true
             },
             new()
             {
-                Name = "Consulting & Services",
-                Slug = "consulting-services",
-                Description = "Professional services, support, and advisory offerings.",
+                Name = "Impact Solutions",
+                Slug = "impact-solutions",
+                Description = "Technology and tools designed to create positive social and environmental change.",
                 SortOrder = 4,
                 IsActive = true
             }
@@ -87,33 +87,33 @@ public static class DefaultCatalogSeeder
         {
             new()
             {
-                Name = "Sustainability Insights",
-                Slug = "sustainability-insights",
-                Description = "Articles about sustainability strategy, compliance, and improvement.",
+                Name = "Software & Tech",
+                Slug = "software-tech",
+                Description = "Articles about software development, tools, and technical deep-dives.",
                 SortOrder = 1,
                 IsActive = true
             },
             new()
             {
-                Name = "Energy Management",
-                Slug = "energy-management",
-                Description = "Content focused on energy performance, monitoring, and efficiency.",
+                Name = "Smart Systems & IoT",
+                Slug = "smart-systems-iot",
+                Description = "Content on IoT, drones, connected devices, and automation.",
                 SortOrder = 2,
                 IsActive = true
             },
             new()
             {
-                Name = "Technology & IoT",
-                Slug = "technology-iot",
-                Description = "Posts about software, automation, and IoT in practical business use.",
+                Name = "Training & Learning",
+                Slug = "training-learning",
+                Description = "Tips, resources, and insights on skill development and team training.",
                 SortOrder = 3,
                 IsActive = true
             },
             new()
             {
-                Name = "Business Updates",
-                Slug = "business-updates",
-                Description = "Company news, launches, and announcements.",
+                Name = "Company Updates",
+                Slug = "company-updates",
+                Description = "News, launches, and announcements from Ecologic Innovations.",
                 SortOrder = 4,
                 IsActive = true
             }
@@ -151,12 +151,12 @@ public static class DefaultCatalogSeeder
             .FirstOrDefaultAsync(cancellationToken);
 
         var iotCategoryId = await dbContext.ProductCategories
-            .Where(x => x.Slug == "sustainability-iot-devices")
+            .Where(x => x.Slug == "smart-systems")
             .Select(x => x.Id)
             .FirstOrDefaultAsync(cancellationToken);
 
-        var energyCategoryId = await dbContext.ProductCategories
-            .Where(x => x.Slug == "energy-equipment")
+        var trainingCategoryId = await dbContext.ProductCategories
+            .Where(x => x.Slug == "training-development")
             .Select(x => x.Id)
             .FirstOrDefaultAsync(cancellationToken);
 
@@ -200,54 +200,54 @@ public static class DefaultCatalogSeeder
         {
             sampleProducts.Add(new Product
             {
-                Title = "Sustainability Sensor Hub",
-                Slug = "sustainability-sensor-hub",
+                Title = "Smart Environment Monitor",
+                Slug = "smart-environment-monitor",
                 ProductCategoryId = iotCategoryId,
-                ShortDescription = "A placeholder IoT product for monitoring environmental or utility-related indicators.",
+                ShortDescription = "An IoT-based solution for real-time environmental monitoring using connected sensors and drone data.",
                 MainImageUrl = "/images/placeholders/product-iot.jpg",
                 HtmlDetails = @"
 <section class='content-block'>
     <h2>Overview</h2>
-    <p>This sample entry shows how sustainability-related IoT devices can be presented with rich HTML content.</p>
+    <p>This sample entry shows how smart system products — including IoT devices and drones — can be presented with rich HTML content.</p>
 </section>",
                 ContactFormEnabled = true,
-                ContactFormTitle = "Request Information About This Device",
+                ContactFormTitle = "Request Information About This System",
                 ShowInProductMenu = true,
                 MenuSortOrder = 2,
                 ListSortOrder = 2,
                 IsFeatured = true,
                 IsPublished = true,
                 IsActive = true,
-                MetaTitle = "Sustainability Sensor Hub | Ecologic Innovations",
-                MetaDescription = "Placeholder sustainability IoT device product for Ecologic Innovations.",
+                MetaTitle = "Smart Environment Monitor | Ecologic Innovations",
+                MetaDescription = "Smart system product for environmental monitoring by Ecologic Innovations.",
                 OgImageUrl = "/images/placeholders/product-iot.jpg"
             });
         }
 
-        if (energyCategoryId > 0)
+        if (trainingCategoryId > 0)
         {
             sampleProducts.Add(new Product
             {
-                Title = "Energy Monitoring Toolkit",
-                Slug = "energy-monitoring-toolkit",
-                ProductCategoryId = energyCategoryId,
-                ShortDescription = "A sample energy-focused solution package for monitoring and reporting applications.",
+                Title = "Developer Skills Workshop",
+                Slug = "developer-skills-workshop",
+                ProductCategoryId = trainingCategoryId,
+                ShortDescription = "A hands-on training program for teams looking to level up their software development and IoT skills.",
                 MainImageUrl = "/images/placeholders/product-energy.jpg",
                 HtmlDetails = @"
 <section class='content-block'>
     <h2>Overview</h2>
-    <p>This placeholder product is intended to show energy equipment or monitoring solution layout on the public site.</p>
+    <p>This sample product demonstrates how training programs and workshops can be listed and managed from the admin panel.</p>
 </section>",
                 ContactFormEnabled = true,
-                ContactFormTitle = "Ask About This Energy Solution",
+                ContactFormTitle = "Ask About This Training Program",
                 ShowInProductMenu = false,
                 MenuSortOrder = 0,
                 ListSortOrder = 3,
                 IsFeatured = true,
                 IsPublished = true,
                 IsActive = true,
-                MetaTitle = "Energy Monitoring Toolkit | Ecologic Innovations",
-                MetaDescription = "Placeholder energy equipment solution for Ecologic Innovations.",
+                MetaTitle = "Developer Skills Workshop | Ecologic Innovations",
+                MetaDescription = "Hands-on training workshop by Ecologic Innovations.",
                 OgImageUrl = "/images/placeholders/product-energy.jpg"
             });
         }

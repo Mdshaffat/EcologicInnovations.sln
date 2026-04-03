@@ -58,6 +58,12 @@ public class ContactMessageConfiguration : IEntityTypeConfiguration<ContactMessa
         builder.Property(x => x.AdminNote)
             .HasMaxLength(2000);
 
+        builder.Property(x => x.SubmitterIpAddress)
+            .HasMaxLength(45);
+
+        builder.Property(x => x.SubmitterUserAgent)
+            .HasMaxLength(512);
+
         builder.Property(x => x.CreatedAt)
             .HasDefaultValueSql("SYSUTCDATETIME()");
 

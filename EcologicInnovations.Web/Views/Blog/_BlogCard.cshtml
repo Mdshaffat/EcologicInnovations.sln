@@ -49,9 +49,13 @@
 
         @if (!string.IsNullOrWhiteSpace(Model.Excerpt))
         {
-            <p class="text-secondary small mb-3 flex-grow-1">
+            <p class="text-secondary small mb-3 flex-grow-1 blog-card-excerpt">
                 @Model.Excerpt
             </p>
+        }
+        else
+        {
+            <div class="flex-grow-1"></div>
         }
 
         <div class="mt-auto">

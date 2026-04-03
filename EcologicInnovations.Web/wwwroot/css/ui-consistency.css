@@ -1,5 +1,5 @@
 .validation-summary-box {
-    border-radius: 1rem;
+    border-radius: var(--eco-radius);
     background: #fff5f5;
 }
 
@@ -16,8 +16,8 @@
 }
 
 .empty-state-card {
-    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
-    border-color: #e2e8f0 !important;
+    background: linear-gradient(180deg, #ffffff 0%, var(--eco-bg-soft) 100%);
+    border-color: var(--eco-border) !important;
 }
 
 .empty-state-icon {
@@ -62,15 +62,15 @@
 
 .form-card,
 .admin-form-card {
-    border-radius: 1.25rem;
-    border: 1px solid #e5e7eb;
+    border-radius: var(--eco-radius-lg);
+    border: 1px solid var(--eco-border);
     background: #ffffff;
     box-shadow: 0 0.75rem 2rem rgba(15, 23, 42, 0.05);
 }
 
 .form-label {
     font-weight: 600;
-    color: #1f2937;
+    color: var(--eco-heading);
 }
 
 .form-control,
@@ -106,7 +106,7 @@ textarea.form-control {
 
 .ui-alert-stack .alert,
 .ui-toast {
-    border-radius: 1rem;
+    border-radius: var(--eco-radius);
 }
 
 .ui-toast-success .toast-header {
@@ -132,10 +132,10 @@ textarea.form-control {
 }
 
 .status-page-card {
-    border-radius: 1.5rem;
-    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
-    border: 1px solid #e2e8f0;
-    box-shadow: 0 1rem 2.5rem rgba(15, 23, 42, 0.08);
+    border-radius: var(--eco-radius-lg);
+    background: linear-gradient(180deg, #ffffff 0%, var(--eco-bg-soft) 100%);
+    border: 1px solid var(--eco-border);
+    box-shadow: var(--eco-shadow);
 }
 
 .status-page-icon {

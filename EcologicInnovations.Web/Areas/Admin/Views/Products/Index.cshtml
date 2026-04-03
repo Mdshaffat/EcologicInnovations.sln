@@ -241,60 +241,7 @@ else
         @if (Model.Pagination.TotalPages > 1)
         {
             <div class="card-footer bg-white">
-                <nav aria-label="Product admin pagination">
-                    <ul class="pagination mb-0 flex-wrap">
-                        <li class="page-item @(Model.Pagination.HasPreviousPage ? "" : "disabled")">
-                            <a class="page-link"
-                               asp-area="Admin"
-                               asp-controller="Products"
-                               asp-action="Index"
-                               asp-route-searchTerm="@Model.Filter.SearchTerm"
-                               asp-route-productCategoryId="@Model.Filter.ProductCategoryId"
-                               asp-route-isPublished="@Model.Filter.IsPublished"
-                               asp-route-isActive="@Model.Filter.IsActive"
-                               asp-route-isFeatured="@Model.Filter.IsFeatured"
-                               asp-route-showInProductMenu="@Model.Filter.ShowInProductMenu"
-                               asp-route-sortBy="@Model.Filter.SortBy"
-                               asp-route-pageSize="@Model.Filter.PageSize"
-                               asp-route-pageNumber="@(Model.Pagination.PageNumber - 1)">Previous</a>
-                        </li>
-
-                        @for (var page = 1; page <= Model.Pagination.TotalPages; page++)
-                        {
-                            <li class="page-item @(page == Model.Pagination.PageNumber ? "active" : "")">
-                                <a class="page-link"
-                                   asp-area="Admin"
-                                   asp-controller="Products"
-                                   asp-action="Index"
-                                   asp-route-searchTerm="@Model.Filter.SearchTerm"
-                                   asp-route-productCategoryId="@Model.Filter.ProductCategoryId"
-                                   asp-route-isPublished="@Model.Filter.IsPublished"
-                                   asp-route-isActive="@Model.Filter.IsActive"
-                                   asp-route-isFeatured="@Model.Filter.IsFeatured"
-                                   asp-route-showInProductMenu="@Model.Filter.ShowInProductMenu"
-                                   asp-route-sortBy="@Model.Filter.SortBy"
-                                   asp-route-pageSize="@Model.Filter.PageSize"
-                                   asp-route-pageNumber="@(page)">@(page)</a>
-                            </li>
-                        }
-
-                        <li class="page-item @(Model.Pagination.HasNextPage ? "" : "disabled")">
-                            <a class="page-link"
-                               asp-area="Admin"
-                               asp-controller="Products"
-                               asp-action="Index"
-                               asp-route-searchTerm="@Model.Filter.SearchTerm"
-                               asp-route-productCategoryId="@Model.Filter.ProductCategoryId"
-                               asp-route-isPublished="@Model.Filter.IsPublished"
-                               asp-route-isActive="@Model.Filter.IsActive"
-                               asp-route-isFeatured="@Model.Filter.IsFeatured"
-                               asp-route-showInProductMenu="@Model.Filter.ShowInProductMenu"
-                               asp-route-sortBy="@Model.Filter.SortBy"
-                               asp-route-pageSize="@Model.Filter.PageSize"
-                               asp-route-pageNumber="@(Model.Pagination.PageNumber + 1)">Next</a>
-                        </li>
-                    </ul>
-                </nav>
+                <partial name="~/Views/Shared/_PaginationPartial.cshtml" model="Model.Pagination" />
             </div>
         }
     </div>

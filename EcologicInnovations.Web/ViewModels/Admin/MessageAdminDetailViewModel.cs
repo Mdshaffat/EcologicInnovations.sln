@@ -80,6 +80,16 @@ public class MessageAdminDetailViewModel
     public string? AdminNote { get; set; }
 
     /// <summary>
+    /// IP address of the client that submitted the form.
+    /// </summary>
+    public string? SubmitterIpAddress { get; set; }
+
+    /// <summary>
+    /// Browser/device User-Agent string captured at submission time.
+    /// </summary>
+    public string? SubmitterUserAgent { get; set; }
+
+    /// <summary>
     /// Creation time of the message.
     /// </summary>
     public DateTime CreatedAt { get; set; }

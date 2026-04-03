@@ -22,7 +22,7 @@ public class SeoOptions
     /// Default description used when a page-specific description is unavailable.
     /// </summary>
     public string DefaultDescription { get; set; } =
-        "Ecologic Innovations delivers software, sustainability IoT devices, energy equipment, and practical eco-technology solutions.";
+        "Ecologic Innovations builds custom software, smart systems, training programs, and impact-driven technology for businesses and communities.";
 
     /// <summary>
     /// Fallback Open Graph image URL.

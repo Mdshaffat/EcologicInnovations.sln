@@ -31,17 +31,17 @@ public static class DefaultSiteContentSeeder
         var siteSetting = new SiteSetting
         {
             CompanyName = "Ecologic Innovations",
-            Tagline = "Software, sustainability IoT devices, energy equipment, and eco-focused digital solutions.",
+            Tagline = "Software development, smart systems, training & development, and impact-driven technology.",
             SupportEmail = "support@ecologicinnovations.com",
             SalesEmail = "sales@ecologicinnovations.com",
-            Phone = "+880-0000-000000",
+            Phone = "+8801517831132",
             Address = "Bangladesh",
             FooterHtml = "<p>&copy; 2026 Ecologic Innovations. All rights reserved.</p>",
             FacebookUrl = "https://facebook.com/",
             LinkedInUrl = "https://linkedin.com/",
             YouTubeUrl = "https://youtube.com/",
             MetaTitleDefault = "Ecologic Innovations",
-            MetaDescriptionDefault = "Ecologic Innovations delivers software, sustainability IoT devices, energy equipment, and business-focused eco technology solutions."
+            MetaDescriptionDefault = "Ecologic Innovations builds custom software, smart IoT and drone systems, training programs, and impact-driven technology for businesses and communities."
         };
 
         dbContext.SiteSettings.Add(siteSetting);
@@ -64,19 +64,19 @@ public static class DefaultSiteContentSeeder
             PageKey = SitePageKey.AboutUs,
             Title = "About Us",
             Slug = "about-us",
-            ShortIntro = "Ecologic Innovations helps organizations grow through practical software, sustainability technology, and energy-focused solutions.",
+            ShortIntro = "Ecologic Innovations helps organizations grow through custom software, smart systems, training programs, and impact-driven solutions.",
             BannerImageUrl = "/images/placeholders/about-banner.jpg",
             HtmlContent = @"
 <section class='content-block'>
     <h2>Who We Are</h2>
-    <p>Ecologic Innovations is a business-focused technology company working in software, sustainability-related IoT devices, energy equipment, and solution-driven digital services.</p>
+    <p>Ecologic Innovations is a technology company focused on software development, smart IoT and drone systems, professional training, and building tools that create real-world impact.</p>
     <h2>What We Do</h2>
-    <p>We build practical systems that help businesses improve visibility, efficiency, sustainability performance, and operational decision-making.</p>
+    <p>We build practical solutions — from web and mobile apps to connected devices and hands-on training programs — that help businesses and communities grow smarter.</p>
     <h2>Our Direction</h2>
-    <p>Our goal is to combine modern software thinking with real-world sustainability and energy applications.</p>
+    <p>Our goal is to combine modern software thinking with smart technology and education to drive meaningful change.</p>
 </section>",
             MetaTitle = "About Us | Ecologic Innovations",
-            MetaDescription = "Learn about Ecologic Innovations, our mission, and our work in software, sustainability IoT devices, and energy equipment.",
+            MetaDescription = "Learn about Ecologic Innovations, our mission, and our work in software development, smart systems, training, and impact.",
             IsPublished = true,
             SortOrder = 1
         };

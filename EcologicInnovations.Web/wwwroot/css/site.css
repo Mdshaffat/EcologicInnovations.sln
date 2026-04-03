@@ -1,13 +1,23 @@
 :root {
     --eco-primary: #0d6efd;
     --eco-secondary: #198754;
+    --eco-green-dark: #166534;
+    --eco-teal: #0f766e;
     --eco-dark: #14314b;
+    --eco-heading: #0f172a;
     --eco-text: #334155;
+    --eco-text-secondary: #475569;
     --eco-muted: #64748b;
     --eco-bg-soft: #f8fafc;
+    --eco-bg-green-soft: #ecfdf5;
     --eco-border: #e2e8f0;
     --eco-shadow: 0 14px 35px rgba(15, 23, 42, 0.08);
+    --eco-shadow-sm: 0 0.5rem 1rem rgba(15, 23, 42, 0.06);
+    --eco-shadow-hover: 0 1rem 2rem rgba(15, 23, 42, 0.08);
     --eco-radius: 1rem;
+    --eco-radius-lg: 1.25rem;
+    --eco-section-py: 3.5rem;
+    --eco-page-bg: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
 }
 
 html {
@@ -115,8 +125,48 @@ img {
 .section-card-soft {
     background: #ffffff;
     border: 1px solid var(--eco-border);
-    border-radius: var(--eco-radius);
+    border-radius: var(--eco-radius-lg);
     box-shadow: var(--eco-shadow);
+}
+
+/* ── Common page & section utilities ── */
+
+.page-bg {
+    background: var(--eco-page-bg);
+}
+
+.section-kicker {
+    display: inline-block;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--eco-secondary);
+}
+
+.section-title {
+    color: var(--eco-heading);
+    line-height: 1.15;
+}
+
+.section-text {
+    color: var(--eco-text-secondary);
+    max-width: 62ch;
+}
+
+.sidebar-sticky-offset {
+    top: 96px;
+}
+
+.common-card {
+    border-radius: var(--eco-radius-lg);
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.common-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--eco-shadow-hover) !important;
 }
 
 .page-hero-soft {

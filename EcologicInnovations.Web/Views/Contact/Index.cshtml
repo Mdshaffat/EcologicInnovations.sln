@@ -32,8 +32,8 @@
             <div class="col-lg-5">
                 <div class="contact-hero-card card border-0 shadow-sm overflow-hidden">
                     <div class="card-body p-4 p-lg-5">
-                        <span class="badge rounded-pill text-bg-success-subtle border border-success-subtle mb-3">
-                            Ecologic Innovations
+                        <span class="badge rounded-pill border border-success text-success bg-white mb-3">
+                            <i class="bi bi-leaf me-1"></i>Ecologic Innovations
                         </span>
 
                         <h1 class="display-6 fw-bold mb-3">@Model.PageTitle</h1>
@@ -116,14 +116,23 @@
                         <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mb-4">
                             <div>
                                 <h2 class="h3 mb-1">Send a Message</h2>
-                                <p class="text-secondary mb-0">We will review your inquiry and respond as soon as possible.</p>
+                                <p class="text-secondary mb-0">We'd love to hear from you. Drop us a message and we'll get back to you shortly.</p>
                             </div>
                         </div>
 
                         @if (Model.SubmittedSuccessfully && !string.IsNullOrWhiteSpace(Model.SuccessMessage))
                         {
-                            <div class="alert alert-success rounded-4">
-                                @Model.SuccessMessage
+                            <div class="alert alert-success d-flex align-items-start gap-3 rounded-4 shadow-sm border-0 mb-4" id="successMessage"
+                                 style="background: linear-gradient(135deg, #ecfdf5 0%, #f0fdf4 100%); border-left: 4px solid #16a34a !important;">
+                                <div class="flex-shrink-0 mt-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#16a34a" viewBox="0 0 16 16">
+                                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <strong class="d-block mb-1" style="color: #166534;">Message Sent!</strong>
+                                    <span style="color: #15803d;">@Model.SuccessMessage</span>
+                                </div>
                             </div>
                         }
 
@@ -198,7 +207,7 @@
                                     <i class="bi bi-send me-2"></i>Send Message
                                 </button>
                                 <span class="text-secondary small">
-                                    By submitting this form, your inquiry will be logged in our support system.
+                                    Your message goes straight to our team. We typically respond within 24 hours.
                                 </span>
                             </div>
                         </form>
@@ -211,4 +220,13 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    @if (Model.SubmittedSuccessfully)
+    {
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                var el = document.getElementById('successMessage');
+                if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            });
+        </script>
+    }
 }

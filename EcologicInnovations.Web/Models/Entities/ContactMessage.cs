@@ -97,6 +97,20 @@ public class ContactMessage : BaseEntity
     public string? AdminNote { get; set; }
 
     /// <summary>
+    /// IP address of the client that submitted the form.
+    /// Used for security auditing and spam/abuse detection.
+    /// </summary>
+    [StringLength(45)]
+    public string? SubmitterIpAddress { get; set; }
+
+    /// <summary>
+    /// Full User-Agent header from the browser/device that submitted the form.
+    /// Helps identify bots and provides forensic context.
+    /// </summary>
+    [StringLength(512)]
+    public string? SubmitterUserAgent { get; set; }
+
+    /// <summary>
     /// Navigation to related product when applicable.
     /// </summary>
     [ForeignKey(nameof(ProductId))]

@@ -141,7 +141,7 @@ public class ProductsController : Controller
 
         var introText = selectedCategory is not null
             ? $"Browse {selectedCategory.Name.ToLowerInvariant()} solutions from Ecologic Innovations."
-            : "Explore software, sustainability IoT devices, energy equipment, and practical business solutions from Ecologic Innovations.";
+            : "Discover our software, smart systems, training resources, and impact-driven solutions.";
 
         var hasFilterState =
             !string.IsNullOrWhiteSpace(searchTerm) ||

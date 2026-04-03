@@ -1,5 +1,5 @@
 .products-page {
-    background: linear-gradient(180deg, #f8fbfd 0%, #ffffff 30%, #f8fbfd 100%);
+    background: var(--eco-page-bg);
 }
 
 .products-hero {
@@ -8,7 +8,7 @@
         radial-gradient(circle at top right, rgba(13, 110, 253, 0.08), transparent 30%),
         radial-gradient(circle at bottom left, rgba(25, 135, 84, 0.08), transparent 30%),
         #ffffff;
-    border-radius: 1.25rem;
+    border-radius: var(--eco-radius-lg);
 }
 
 .products-hero-kicker {
@@ -28,7 +28,7 @@
 
 .products-hero-stat-card {
     min-width: 180px;
-    border-radius: 1rem;
+    border-radius: var(--eco-radius);
     background: #0d6efd;
     color: #fff;
     padding: 1.25rem 1rem;
@@ -51,7 +51,7 @@
 }
 
 .filter-sidebar-card {
-    border-radius: 1rem;
+    border-radius: var(--eco-radius);
     top: 1rem;
 }
 
@@ -78,14 +78,14 @@
 }
 
 .product-card {
-    border-radius: 1rem;
+    border-radius: var(--eco-radius-lg);
     overflow: hidden;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .product-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.08) !important;
+    box-shadow: var(--eco-shadow-hover) !important;
 }
 
 .product-card-image-wrap {

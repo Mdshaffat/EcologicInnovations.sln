@@ -63,7 +63,7 @@ public class ContactController : Controller
     [HttpPost("")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Index(
-        ContactFormInputModel input,
+        [Bind(Prefix = "Form")] ContactFormInputModel input,
         CancellationToken cancellationToken = default)
     {
         await ResolvePostedSourceAsync(input, cancellationToken);
@@ -94,7 +94,11 @@ public class ContactController : Controller
             SourceTitle = string.IsNullOrWhiteSpace(input.SourceTitle) ? null : input.SourceTitle.Trim(),
             PageUrl = string.IsNullOrWhiteSpace(input.PageUrl) ? "/contact" : input.PageUrl.Trim(),
             Status = ContactMessageStatus.New,
-            AdminNote = null
+            AdminNote = null,
+            SubmitterIpAddress = HttpContext.Connection.RemoteIpAddress?.ToString(),
+            SubmitterUserAgent = Request.Headers.UserAgent.ToString() is { Length: > 0 } ua
+                ? (ua.Length > 512 ? ua[..512] : ua)
+                : null
         };
 
         _dbContext.ContactMessages.Add(entity);
@@ -135,7 +139,7 @@ public class ContactController : Controller
         var model = new ContactPageViewModel
         {
             PageTitle = "Contact Us",
-            IntroText = "Tell us what you need. We support software, sustainability IoT devices, energy equipment, and business-focused eco solutions.",
+            IntroText = "Have a project in mind or need help with something? Tell us about it — we're here for software, smart systems, training, and everything in between.",
             SupportEmail = siteSettings.SupportEmail,
             SalesEmail = siteSettings.SalesEmail,
             Phone = siteSettings.Phone,
@@ -148,10 +152,10 @@ public class ContactController : Controller
             Seo = new SeoMetaViewModel
             {
                 Title = "Contact Us",
-                Description = "Contact Ecologic Innovations for software, sustainability IoT devices, energy equipment, and eco-technology business solutions.",
+                Description = "Get in touch with Ecologic Innovations for custom software, smart systems, training programs, or any project collaboration.",
                 CanonicalUrl = canonicalUrl,
                 OgTitle = "Contact Us",
-                OgDescription = "Contact Ecologic Innovations for practical business and sustainability solutions.",
+                OgDescription = "Reach out to Ecologic Innovations — we'd love to hear about your project or idea.",
                 Robots = "index,follow"
             }
         };

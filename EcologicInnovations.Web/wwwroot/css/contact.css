@@ -1,9 +1,9 @@
 .contact-page {
-    background: linear-gradient(180deg, #f8fbff 0%, #ffffff 100%);
+    background: var(--eco-page-bg);
 }
 
 .contact-hero-card {
-    border-radius: 1.5rem;
+    border-radius: var(--eco-radius-lg);
     background:
         radial-gradient(circle at top right, rgba(13, 110, 253, 0.10), transparent 28%),
         radial-gradient(circle at bottom left, rgba(25, 135, 84, 0.10), transparent 30%),
@@ -17,7 +17,7 @@
 .contact-info-icon {
     width: 2.75rem;
     height: 2.75rem;
-    border-radius: 1rem;
+    border-radius: var(--eco-radius);
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -27,14 +27,35 @@
     flex-shrink: 0;
 }
 
-.contact-page .form-control,
-.contact-page textarea {
-    border-radius: 1rem;
-    border-color: #dbe4f0;
+.contact-hero-card .badge {
+    font-weight: 600;
+    font-size: 0.82rem;
+    letter-spacing: 0.03em;
 }
 
-.contact-page .form-control:focus,
-.contact-page textarea:focus {
-    box-shadow: 0 0 0 .2rem rgba(13, 110, 253, 0.12);
-    border-color: #0d6efd;
+.contact-page .form-control-lg {
+    border-radius: var(--eco-radius);
+    border-color: var(--eco-border);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.contact-page .form-control-lg:focus {
+    border-color: var(--eco-primary);
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.12);
+}
+
+.contact-page .form-control-lg.input-validation-error {
+    border-color: #dc3545;
+    box-shadow: none;
+}
+
+.contact-page .text-danger.small {
+    display: inline-block;
+    margin-top: 0.3rem;
+    font-size: 0.82rem;
+}
+
+.contact-page .btn-primary.btn-lg {
+    border-radius: var(--eco-radius);
+    font-weight: 600;
 }

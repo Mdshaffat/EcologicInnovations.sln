@@ -44,9 +44,13 @@
 
         @if (!string.IsNullOrWhiteSpace(Model.ShortDescription))
         {
-            <p class="text-secondary small mb-3 flex-grow-1">
+            <p class="text-secondary small mb-3 flex-grow-1 product-card-text">
                 @Model.ShortDescription
             </p>
+        }
+        else
+        {
+            <div class="flex-grow-1"></div>
         }
 
         <div class="mt-auto">
