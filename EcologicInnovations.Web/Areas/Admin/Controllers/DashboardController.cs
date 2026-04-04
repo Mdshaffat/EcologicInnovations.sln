@@ -49,7 +49,7 @@ public class DashboardController : AdminControllerBase
 
         var newMessages = await _dbContext.ContactMessages
             .AsNoTracking()
-            .CountAsync(x => x.Status == ContactMessageStatus.New, cancellationToken);
+            .CountAsync(x => x.Status == ContactMessageStatus.New || x.Status == ContactMessageStatus.Unread, cancellationToken);
 
         var totalMedia = await _dbContext.MediaFiles
             .AsNoTracking()
@@ -89,7 +89,7 @@ public class DashboardController : AdminControllerBase
                 },
                 new AdminDashboardSummaryCardViewModel
                 {
-                    Title = "Blogs",
+                    Title = "Articles",
                     Count = totalBlogs,
                     IconCssClass = "bi bi-journal-richtext",
                     ColorClass = "success",
@@ -115,7 +115,7 @@ public class DashboardController : AdminControllerBase
         };
 
         ViewData["AdminPageTitle"] = "Dashboard";
-        ViewData["AdminPageDescription"] = "Overview of products, blogs, messages, and media activity.";
+        ViewData["AdminPageDescription"] = "Overview of products, articles, messages, and media activity.";
         ViewData["AdminBreadcrumbs"] = new List<BreadcrumbItemViewModel>
         {
             new() { Title = "Admin", Url = Url.Action("Index", "Dashboard", new { area = "Admin" }), IsActive = false },

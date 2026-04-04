@@ -18,3 +18,33 @@
     font-weight: 600;
     letter-spacing: .01em;
 }
+
+/* Flag icon column */
+.msg-flag-icons {
+    min-width: 24px;
+}
+
+.msg-toggle-btn {
+    line-height: 1;
+    font-size: 1rem;
+    text-decoration: none !important;
+    transition: transform 0.15s ease;
+}
+
+.msg-toggle-btn:hover {
+    transform: scale(1.25);
+}
+
+/* Unread row highlight */
+.admin-messages-table tr.table-active {
+    background-color: rgba(var(--bs-primary-rgb), 0.04) !important;
+}
+
+/* Quick action buttons in detail page */
+.btn-warning {
+    --bs-btn-color: #000;
+}
+
+.btn-outline-warning:hover {
+    color: #000;
+}

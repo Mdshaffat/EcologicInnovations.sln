@@ -27,4 +27,16 @@ public class MessageStatusUpdateInputModel
     [StringLength(2000)]
     [Display(Name = "Admin Note")]
     public string? AdminNote { get; set; }
+
+    /// <summary>
+    /// Admin important flag.
+    /// </summary>
+    [Display(Name = "Important")]
+    public bool IsImportant { get; set; }
+
+    /// <summary>
+    /// Admin red-mark / priority flag.
+    /// </summary>
+    [Display(Name = "Red Mark")]
+    public bool IsFlagged { get; set; }
 }

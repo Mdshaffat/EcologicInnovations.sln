@@ -44,6 +44,21 @@ public class MessageAdminListViewModel
     public int NewCount { get; set; }
 
     /// <summary>
+    /// Total count of messages marked as important.
+    /// </summary>
+    public int ImportantCount { get; set; }
+
+    /// <summary>
+    /// Total count of messages marked with a red flag.
+    /// </summary>
+    public int FlaggedCount { get; set; }
+
+    /// <summary>
+    /// Total count of unread messages (New + Unread statuses).
+    /// </summary>
+    public int UnreadCount { get; set; }
+
+    /// <summary>
     /// Optional empty-state block when no messages match the filter.
     /// </summary>
     public EmptyStateViewModel? EmptyState { get; set; }

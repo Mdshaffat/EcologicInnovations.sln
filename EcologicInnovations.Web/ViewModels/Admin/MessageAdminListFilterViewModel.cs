@@ -29,6 +29,16 @@ public class MessageAdminListFilterViewModel
     public string SortBy { get; set; } = "newest";
 
     /// <summary>
+    /// Filter to show only important messages.
+    /// </summary>
+    public bool? Important { get; set; }
+
+    /// <summary>
+    /// Filter to show only flagged (red mark) messages.
+    /// </summary>
+    public bool? Flagged { get; set; }
+
+    /// <summary>
     /// Current page number starting from 1.
     /// </summary>
     public int PageNumber { get; set; } = 1;

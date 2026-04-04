@@ -77,6 +77,7 @@ public class ContactController : Controller
                 cancellationToken: cancellationToken);
 
             ViewData.SetSeoMeta(invalidModel.Seo);
+            Response.StatusCode = StatusCodes.Status400BadRequest;
             return View(invalidModel);
         }
 
@@ -227,7 +228,7 @@ public class ContactController : Controller
                 model.Form.RegardingProductTitle = null;
 
                 model.Seo.Title = $"Contact Us About {blog.Title}";
-                model.Seo.Description = $"Send an inquiry related to the blog article {blog.Title}.";
+                model.Seo.Description = $"Send an inquiry related to the article {blog.Title}.";
                 model.Seo.OgTitle = model.Seo.Title;
                 model.Seo.OgDescription = model.Seo.Description;
             }

@@ -136,7 +136,7 @@ public class BlogController : Controller
 
         var pageTitle = selectedCategory is not null
             ? $"{selectedCategory.Name} Articles"
-            : "Blog";
+            : "Articles";
 
         var introText = selectedCategory is not null
             ? $"Explore {selectedCategory.Name.ToLowerInvariant()} insights, updates, and practical knowledge from Ecologic Innovations."
@@ -151,11 +151,11 @@ public class BlogController : Controller
         var seo = new SeoMetaViewModel
         {
             Title = selectedCategory is not null
-                ? $"{selectedCategory.Name} Blog | {siteSettings.CompanyName}"
-                : $"Blog | {siteSettings.CompanyName}",
+                ? $"{selectedCategory.Name} Articles | {siteSettings.CompanyName}"
+                : $"Articles | {siteSettings.CompanyName}",
             Description = selectedCategory is not null
                 ? $"Browse published articles in the {selectedCategory.Name} category from {siteSettings.CompanyName}."
-                : siteSettings.MetaDescriptionDefault ?? "Explore the latest blog posts and insights from Ecologic Innovations.",
+                : siteSettings.MetaDescriptionDefault ?? "Explore the latest articles and insights from Ecologic Innovations.",
             CanonicalUrl = _canonicalUrlService.BuildCanonicalUrl(),
             Robots = hasFilterState ? "noindex,follow" : "index,follow"
         };
@@ -189,7 +189,7 @@ public class BlogController : Controller
             EmptyState = posts.Count == 0
                 ? new EmptyStateViewModel
                 {
-                    Title = "No blog posts found",
+                    Title = "No articles found",
                     Message = "Try another category or search keyword.",
                     ButtonText = "View All Articles",
                     ButtonUrl = Url.Action(nameof(Index), "Blog")
@@ -263,6 +263,7 @@ public class BlogController : Controller
             var invalidModel = await BuildDetailsViewModelAsync(post.Id, cancellationToken, input);
             invalidModel.InquirySubmittedSuccessfully = false;
             ViewData["Seo"] = invalidModel.Seo;
+            Response.StatusCode = StatusCodes.Status400BadRequest;
             return View(nameof(Details), invalidModel);
         }
 
@@ -278,19 +279,18 @@ public class BlogController : Controller
             BlogPostId = post.Id,
             SourceTitle = post.Title,
             PageUrl = input.PageUrl,
-            Status = ContactMessageStatus.New
+            Status = ContactMessageStatus.New,
+            SubmitterIpAddress = HttpContext.Connection.RemoteIpAddress?.ToString(),
+            SubmitterUserAgent = Request.Headers.UserAgent.ToString() is { Length: > 0 } ua
+                ? (ua.Length > 512 ? ua[..512] : ua)
+                : null
         };
 
         _dbContext.ContactMessages.Add(entity);
         await _dbContext.SaveChangesAsync(cancellationToken);
 
-        var successModel = await BuildDetailsViewModelAsync(post.Id, cancellationToken);
-        successModel.InquirySubmittedSuccessfully = true;
-        successModel.SuccessMessage = "Thank you. Your message has been sent successfully.";
-        ViewData["Seo"] = successModel.Seo;
-
-        ModelState.Clear();
-        return View(nameof(Details), successModel);
+        TempData["BlogInquirySuccess"] = "Thank you. Your message has been sent successfully. Our team will contact you soon.";
+        return RedirectToAction(nameof(Details), new { slug });
     }
 
     private async Task<BlogDetailsViewModel> BuildDetailsViewModelAsync(
@@ -331,6 +331,8 @@ public class BlogController : Controller
             RegardingBlogTitle = post.Title
         };
 
+        var successMessage = TempData["BlogInquirySuccess"]?.ToString();
+
         return new BlogDetailsViewModel
         {
             Id = post.Id,
@@ -347,6 +349,8 @@ public class BlogController : Controller
             InquiryForm = inquiryModel,
             RelatedPosts = relatedPosts,
             Breadcrumbs = BreadcrumbBuilder.CreateForBlogDetails(post.Title),
+            InquirySubmittedSuccessfully = !string.IsNullOrWhiteSpace(successMessage),
+            SuccessMessage = successMessage,
             Seo = new SeoMetaViewModel
             {
                 Title = !string.IsNullOrWhiteSpace(post.MetaTitle)

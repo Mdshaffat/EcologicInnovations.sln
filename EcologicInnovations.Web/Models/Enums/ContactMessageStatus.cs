@@ -23,5 +23,10 @@ public enum ContactMessageStatus
     /// <summary>
     /// Inquiry has been completed or closed.
     /// </summary>
-    Closed = 4
+    Closed = 4,
+
+    /// <summary>
+    /// Message was previously read but explicitly marked back to unread by admin.
+    /// </summary>
+    Unread = 5
 }

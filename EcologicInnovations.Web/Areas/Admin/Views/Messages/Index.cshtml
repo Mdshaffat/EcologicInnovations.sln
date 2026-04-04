@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Messages";
+    var currentUrl = Context.Request.Path + Context.Request.QueryString;
 }
 
 @section Styles {
@@ -14,22 +15,28 @@
             <div>
                 <h2 class="h4 mb-1">Unified Message Inbox</h2>
                 <p class="text-secondary mb-0">
-                    Review messages from the contact page, product inquiries, and blog inquiries.
+                    Review messages from the contact page, product inquiries, and article inquiries.
                 </p>
             </div>
 
             <div class="d-flex flex-wrap gap-2">
-                <span class="badge text-bg-danger-subtle border border-danger-subtle px-3 py-2 rounded-pill">
-                    New: @Model.NewCount
+                <span class="badge bg-danger-subtle text-danger-emphasis border border-danger-subtle px-3 py-2 rounded-pill">
+                    <i class="bi bi-envelope-fill me-1"></i> Unread: @Model.UnreadCount
                 </span>
-                <span class="badge text-bg-light border px-3 py-2 rounded-pill">
+                <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle px-3 py-2 rounded-pill">
+                    <i class="bi bi-star-fill me-1"></i> Important: @Model.ImportantCount
+                </span>
+                <span class="badge bg-danger-subtle text-danger-emphasis border border-danger-subtle px-3 py-2 rounded-pill">
+                    <i class="bi bi-flag-fill me-1"></i> Flagged: @Model.FlaggedCount
+                </span>
+                <span class="badge bg-body-secondary text-body border px-3 py-2 rounded-pill">
                     Total: @Model.TotalCount
                 </span>
             </div>
         </div>
 
         <form method="get" asp-action="Index" asp-controller="Messages" asp-area="Admin" class="row g-3 align-items-end">
-            <div class="col-lg-4">
+            <div class="col-lg-3">
                 <label class="form-label">Search</label>
                 <input name="searchTerm" value="@Model.Filter.SearchTerm" class="form-control" placeholder="Name, email, source title, or message..." />
             </div>
@@ -49,6 +56,7 @@
                 <select name="sortBy" class="form-select">
                     <option value="newest" selected="@(Model.Filter.SortBy == "newest")">Newest</option>
                     <option value="oldest" selected="@(Model.Filter.SortBy == "oldest")">Oldest</option>
+                    <option value="flagged" selected="@(Model.Filter.SortBy == "flagged")">Flagged First</option>
                     <option value="status_asc" selected="@(Model.Filter.SortBy == "status_asc")">Status A-Z</option>
                     <option value="status_desc" selected="@(Model.Filter.SortBy == "status_desc")">Status Z-A</option>
                     <option value="name_asc" selected="@(Model.Filter.SortBy == "name_asc")">Name A-Z</option>
@@ -56,8 +64,22 @@
                 </select>
             </div>
 
-            <div class="col-lg-2 d-grid">
-                <button type="submit" class="btn btn-primary">
+            <div class="col-lg-3 d-flex gap-2 align-items-end">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" name="important" value="true" id="filterImportant"
+                           @(Model.Filter.Important == true ? "checked" : "") />
+                    <label class="form-check-label" for="filterImportant">
+                        <i class="bi bi-star-fill text-warning"></i>
+                    </label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" name="flagged" value="true" id="filterFlagged"
+                           @(Model.Filter.Flagged == true ? "checked" : "") />
+                    <label class="form-check-label" for="filterFlagged">
+                        <i class="bi bi-flag-fill text-danger"></i>
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-primary flex-grow-1">
                     <i class="bi bi-funnel me-2"></i>Apply
                 </button>
             </div>
@@ -90,20 +112,44 @@ else
             <table class="table table-hover align-middle mb-0 admin-messages-table">
                 <thead class="table-light">
                     <tr>
+                        <th style="width: 40px;"></th>
                         <th>Sender</th>
                         <th>Contact</th>
                         <th>Source</th>
                         <th>Status</th>
                         <th>Received</th>
-                        <th class="text-end">Action</th>
+                        <th class="text-end">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var item in Model.Items)
                     {
-                        <tr>
+                        var isUnread = item.Status is EcologicInnovations.Web.Models.Enums.ContactMessageStatus.New
+                            or EcologicInnovations.Web.Models.Enums.ContactMessageStatus.Unread;
+
+                        <tr class="@(isUnread ? "table-active fw-semibold" : "")">
                             <td>
-                                <div class="fw-semibold">@item.Name</div>
+                                <div class="d-flex flex-column align-items-center gap-1 msg-flag-icons">
+                                    <form asp-action="ToggleImportant" asp-controller="Messages" asp-area="Admin" method="post" class="d-inline">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="id" value="@item.Id" />
+                                        <input type="hidden" name="returnUrl" value="@currentUrl" />
+                                        <button type="submit" class="btn btn-link btn-sm p-0 msg-toggle-btn" title="@(item.IsImportant ? "Remove important" : "Mark important")">
+                                            <i class="bi @(item.IsImportant ? "bi-star-fill text-warning" : "bi-star text-muted")"></i>
+                                        </button>
+                                    </form>
+                                    <form asp-action="ToggleFlag" asp-controller="Messages" asp-area="Admin" method="post" class="d-inline">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="id" value="@item.Id" />
+                                        <input type="hidden" name="returnUrl" value="@currentUrl" />
+                                        <button type="submit" class="btn btn-link btn-sm p-0 msg-toggle-btn" title="@(item.IsFlagged ? "Remove red mark" : "Add red mark")">
+                                            <i class="bi @(item.IsFlagged ? "bi-flag-fill text-danger" : "bi-flag text-muted")"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="@(isUnread ? "fw-bold" : "fw-semibold")">@item.Name</div>
                                 @if (!string.IsNullOrWhiteSpace(item.Subject))
                                 {
                                     <div class="small text-secondary">@item.Subject</div>
@@ -128,16 +174,26 @@ else
                                 <div class="small text-secondary">@item.CreatedAt.ToLocalTime().ToString("hh:mm tt")</div>
                             </td>
                             <td class="text-end">
-                                <a asp-action="Details" asp-controller="Messages" asp-area="Admin" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary">
-                                    View
-                                </a>
+                                <div class="d-flex gap-1 justify-content-end">
+                                    <form asp-action="ToggleRead" asp-controller="Messages" asp-area="Admin" method="post" class="d-inline">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="id" value="@item.Id" />
+                                        <input type="hidden" name="returnUrl" value="@currentUrl" />
+                                        <button type="submit" class="btn btn-sm @(isUnread ? "btn-outline-success" : "btn-outline-secondary")" title="@(isUnread ? "Mark as read" : "Mark as unread")">
+                                            <i class="bi @(isUnread ? "bi-envelope-open" : "bi-envelope-fill")"></i>
+                                        </button>
+                                    </form>
+                                    <a asp-action="Details" asp-controller="Messages" asp-area="Admin" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary">
+                                        View
+                                    </a>
+                                </div>
                             </td>
                         </tr>
 
                         @if (!string.IsNullOrWhiteSpace(item.MessagePreview))
                         {
                             <tr class="message-preview-row">
-                                <td colspan="6" class="pt-0">
+                                <td colspan="7" class="pt-0">
                                     <div class="small text-secondary ps-1 pb-2">@item.MessagePreview</div>
                                 </td>
                             </tr>

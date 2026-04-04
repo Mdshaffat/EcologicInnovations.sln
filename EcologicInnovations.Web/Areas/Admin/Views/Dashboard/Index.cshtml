@@ -5,6 +5,7 @@
     string BadgeClass(ContactMessageStatus status) => status switch
     {
         ContactMessageStatus.New => "bg-danger-subtle text-danger-emphasis",
+        ContactMessageStatus.Unread => "bg-warning-subtle text-warning-emphasis",
         ContactMessageStatus.Read => "bg-primary-subtle text-primary-emphasis",
         ContactMessageStatus.Replied => "bg-success-subtle text-success-emphasis",
         ContactMessageStatus.Closed => "bg-secondary-subtle text-secondary-emphasis",
@@ -131,7 +132,7 @@
                             <i class="bi bi-bell"></i>
                         </div>
                         <div>
-                            <div class="fw-semibold">@Model.NewMessageCount New Messages</div>
+                            <div class="fw-semibold">@Model.NewMessageCount Unread Messages</div>
                             <div class="text-muted small">Need review or response</div>
                         </div>
                     </div>
@@ -151,8 +152,8 @@
                             <i class="bi bi-journal-check"></i>
                         </div>
                         <div>
-                            <div class="fw-semibold">@Model.PublishedBlogCount Published Blogs</div>
-                            <div class="text-muted small">Available on the blog page</div>
+                            <div class="fw-semibold">@Model.PublishedBlogCount Published Articles</div>
+                            <div class="text-muted small">Available on the articles page</div>
                         </div>
                     </div>
 
@@ -174,7 +175,7 @@
                         <i class="bi bi-plus-circle me-1"></i> Add New Product
                     </a>
                     <a asp-area="Admin" asp-controller="Blogs" asp-action="Create" class="btn btn-outline-success">
-                        <i class="bi bi-plus-circle me-1"></i> Add New Blog
+                        <i class="bi bi-plus-circle me-1"></i> Add New Article
                     </a>
                     <a asp-area="Admin" asp-controller="Media" asp-action="Upload" class="btn btn-outline-secondary">
                         <i class="bi bi-upload me-1"></i> Upload Media
@@ -219,7 +220,7 @@
                     </div>
                     <div>
                         <div class="fw-semibold">Inquiry Tracking</div>
-                        <div class="text-muted small">Messages preserve whether the user came from General, Product, or Blog.</div>
+                        <div class="text-muted small">Messages preserve whether the user came from General, Product, or Article.</div>
                     </div>
                 </div>
             </div>

@@ -297,13 +297,17 @@ public class ProductsController : Controller
             BlogPostId = null,
             SourceTitle = product.Title,
             PageUrl = source.PageUrl,
-            Status = ContactMessageStatus.New
+            Status = ContactMessageStatus.New,
+            SubmitterIpAddress = HttpContext.Connection.RemoteIpAddress?.ToString(),
+            SubmitterUserAgent = Request.Headers.UserAgent.ToString() is { Length: > 0 } ua
+                ? (ua.Length > 512 ? ua[..512] : ua)
+                : null
         };
 
         _dbContext.ContactMessages.Add(entity);
         await _dbContext.SaveChangesAsync(cancellationToken);
 
-        TempData["ProductInquirySuccess"] = "Thank you. Your message has been sent successfully.";
+        TempData["ProductInquirySuccess"] = "Thank you. Your message has been sent successfully. Our team will contact you soon.";
         return RedirectToAction(nameof(Details), new { slug });
     }
 

@@ -63,7 +63,7 @@ public static class BreadcrumbBuilder
         return
         [
             new BreadcrumbItemViewModel { Title = "Home", Url = "/", IsActive = false },
-            new BreadcrumbItemViewModel { Title = "Blog", Url = null, IsActive = true }
+            new BreadcrumbItemViewModel { Title = "Articles", Url = null, IsActive = true }
         ];
     }
 
@@ -72,7 +72,7 @@ public static class BreadcrumbBuilder
         return
         [
             new BreadcrumbItemViewModel { Title = "Home", Url = "/", IsActive = false },
-            new BreadcrumbItemViewModel { Title = "Blog", Url = "/blog", IsActive = false },
+            new BreadcrumbItemViewModel { Title = "Articles", Url = "/blog", IsActive = false },
             new BreadcrumbItemViewModel { Title = blogTitle, Url = null, IsActive = true }
         ];
     }

@@ -10,6 +10,8 @@ namespace EcologicInnovations.Web.Areas.Admin.Controllers;
 
 /// <summary>
 /// Admin controller for reviewing and managing all unified contact messages.
+/// Supports status workflow (New, Read, Unread, Replied, Closed),
+/// important flag, red-mark flag, and quick-toggle actions from the list.
 /// </summary>
 public class MessagesController : AdminControllerBase
 {
@@ -29,6 +31,8 @@ public class MessagesController : AdminControllerBase
         ContactMessageStatus? status,
         ContactSourceType? sourceType,
         string? sortBy,
+        bool? important,
+        bool? flagged,
         int pageNumber = 1,
         int pageSize = 15,
         CancellationToken cancellationToken = default)
@@ -42,6 +46,8 @@ public class MessagesController : AdminControllerBase
             Status = status,
             SourceType = sourceType,
             SortBy = string.IsNullOrWhiteSpace(sortBy) ? "newest" : sortBy,
+            Important = important,
+            Flagged = flagged,
             PageNumber = pageNumber,
             PageSize = pageSize
         };
@@ -74,6 +80,16 @@ public class MessagesController : AdminControllerBase
             query = query.Where(x => x.SourceType == filter.SourceType.Value);
         }
 
+        if (filter.Important == true)
+        {
+            query = query.Where(x => x.IsImportant);
+        }
+
+        if (filter.Flagged == true)
+        {
+            query = query.Where(x => x.IsFlagged);
+        }
+
         query = filter.SortBy switch
         {
             "oldest" => query.OrderBy(x => x.CreatedAt).ThenBy(x => x.Id),
@@ -81,6 +97,7 @@ public class MessagesController : AdminControllerBase
             "status_desc" => query.OrderByDescending(x => x.Status).ThenByDescending(x => x.CreatedAt),
             "name_asc" => query.OrderBy(x => x.Name).ThenByDescending(x => x.CreatedAt),
             "name_desc" => query.OrderByDescending(x => x.Name).ThenByDescending(x => x.CreatedAt),
+            "flagged" => query.OrderByDescending(x => x.IsFlagged).ThenByDescending(x => x.IsImportant).ThenByDescending(x => x.CreatedAt),
             _ => query.OrderByDescending(x => x.CreatedAt).ThenByDescending(x => x.Id)
         };
 
@@ -90,6 +107,18 @@ public class MessagesController : AdminControllerBase
         var newCount = await _dbContext.ContactMessages
             .AsNoTracking()
             .CountAsync(x => x.Status == ContactMessageStatus.New, cancellationToken);
+
+        var unreadCount = await _dbContext.ContactMessages
+            .AsNoTracking()
+            .CountAsync(x => x.Status == ContactMessageStatus.New || x.Status == ContactMessageStatus.Unread, cancellationToken);
+
+        var importantCount = await _dbContext.ContactMessages
+            .AsNoTracking()
+            .CountAsync(x => x.IsImportant, cancellationToken);
+
+        var flaggedCount = await _dbContext.ContactMessages
+            .AsNoTracking()
+            .CountAsync(x => x.IsFlagged, cancellationToken);
 
         var items = await query
             .Skip((pageNumber - 1) * pageSize)
@@ -104,6 +133,8 @@ public class MessagesController : AdminControllerBase
                 SourceType = x.SourceType,
                 SourceTitle = x.SourceTitle,
                 Status = x.Status,
+                IsImportant = x.IsImportant,
+                IsFlagged = x.IsFlagged,
                 CreatedAt = x.CreatedAt,
                 MessagePreview = x.Message.Length > 140
                     ? x.Message.Substring(0, 140) + "..."
@@ -117,6 +148,9 @@ public class MessagesController : AdminControllerBase
             Items = items,
             TotalCount = totalCount,
             NewCount = newCount,
+            UnreadCount = unreadCount,
+            ImportantCount = importantCount,
+            FlaggedCount = flaggedCount,
             Pagination = new PaginationViewModel
             {
                 PageNumber = pageNumber,
@@ -138,7 +172,7 @@ public class MessagesController : AdminControllerBase
         };
 
         ViewData["AdminPageTitle"] = "Messages";
-        ViewData["AdminPageDescription"] = "Review inquiries submitted from the contact page, product pages, and blog pages.";
+        ViewData["AdminPageDescription"] = "Review inquiries submitted from the contact page, product pages, and article pages.";
         ViewData["AdminBreadcrumbs"] = new List<BreadcrumbItemViewModel>
         {
             new() { Title = "Admin", Url = Url.Action("Index", "Dashboard", new { area = "Admin" }), IsActive = false },
@@ -149,18 +183,24 @@ public class MessagesController : AdminControllerBase
     }
 
     /// <summary>
-    /// Admin detail page for one message.
+    /// Admin detail page for one message. Auto-marks New messages as Read.
     /// </summary>
     [HttpGet]
     public async Task<IActionResult> Details(int id, CancellationToken cancellationToken = default)
     {
         var message = await _dbContext.ContactMessages
-            .AsNoTracking()
             .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
 
         if (message is null)
         {
             return NotFound();
+        }
+
+        // Auto-mark as Read when an admin opens the message for the first time.
+        if (message.Status == ContactMessageStatus.New)
+        {
+            message.Status = ContactMessageStatus.Read;
+            await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
         var model = new MessageAdminDetailViewModel
@@ -179,6 +219,8 @@ public class MessagesController : AdminControllerBase
             PageUrl = message.PageUrl,
             Status = message.Status,
             AdminNote = message.AdminNote,
+            IsImportant = message.IsImportant,
+            IsFlagged = message.IsFlagged,
             SubmitterIpAddress = message.SubmitterIpAddress,
             SubmitterUserAgent = message.SubmitterUserAgent,
             CreatedAt = message.CreatedAt,
@@ -188,7 +230,9 @@ public class MessagesController : AdminControllerBase
             {
                 Id = message.Id,
                 Status = message.Status,
-                AdminNote = message.AdminNote
+                AdminNote = message.AdminNote,
+                IsImportant = message.IsImportant,
+                IsFlagged = message.IsFlagged
             },
             Breadcrumbs = new List<BreadcrumbItemViewModel>
             {
@@ -206,7 +250,7 @@ public class MessagesController : AdminControllerBase
     }
 
     /// <summary>
-    /// Updates workflow status and internal note for a message.
+    /// Updates workflow status, flags, and internal note for a message.
     /// </summary>
     [HttpPost]
     [ValidateAntiForgeryToken]
@@ -229,6 +273,8 @@ public class MessagesController : AdminControllerBase
 
         message.Status = input.Status;
         message.AdminNote = string.IsNullOrWhiteSpace(input.AdminNote) ? null : input.AdminNote.Trim();
+        message.IsImportant = input.IsImportant;
+        message.IsFlagged = input.IsFlagged;
 
         await _dbContext.SaveChangesAsync(cancellationToken);
 
@@ -236,6 +282,101 @@ public class MessagesController : AdminControllerBase
         TempData["AdminToastSuccess"] = "Message updated.";
 
         return RedirectToAction(nameof(Details), new { id = input.Id });
+    }
+
+    /// <summary>
+    /// Quick-toggle read/unread status from the list page.
+    /// </summary>
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> ToggleRead(int id, string? returnUrl, CancellationToken cancellationToken = default)
+    {
+        var message = await _dbContext.ContactMessages
+            .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+
+        if (message is null)
+        {
+            return NotFound();
+        }
+
+        message.Status = message.Status is ContactMessageStatus.Read or ContactMessageStatus.Replied or ContactMessageStatus.Closed
+            ? ContactMessageStatus.Unread
+            : ContactMessageStatus.Read;
+
+        await _dbContext.SaveChangesAsync(cancellationToken);
+
+        TempData["AdminToastSuccess"] = message.Status == ContactMessageStatus.Read
+            ? "Marked as read."
+            : "Marked as unread.";
+
+        if (!string.IsNullOrWhiteSpace(returnUrl) && Url.IsLocalUrl(returnUrl))
+        {
+            return Redirect(returnUrl);
+        }
+
+        return RedirectToAction(nameof(Index));
+    }
+
+    /// <summary>
+    /// Quick-toggle important flag from the list page.
+    /// </summary>
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> ToggleImportant(int id, string? returnUrl, CancellationToken cancellationToken = default)
+    {
+        var message = await _dbContext.ContactMessages
+            .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+
+        if (message is null)
+        {
+            return NotFound();
+        }
+
+        message.IsImportant = !message.IsImportant;
+
+        await _dbContext.SaveChangesAsync(cancellationToken);
+
+        TempData["AdminToastSuccess"] = message.IsImportant
+            ? "Marked as important."
+            : "Removed important mark.";
+
+        if (!string.IsNullOrWhiteSpace(returnUrl) && Url.IsLocalUrl(returnUrl))
+        {
+            return Redirect(returnUrl);
+        }
+
+        return RedirectToAction(nameof(Index));
+    }
+
+    /// <summary>
+    /// Quick-toggle red-mark / flagged from the list page.
+    /// </summary>
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> ToggleFlag(int id, string? returnUrl, CancellationToken cancellationToken = default)
+    {
+        var message = await _dbContext.ContactMessages
+            .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+
+        if (message is null)
+        {
+            return NotFound();
+        }
+
+        message.IsFlagged = !message.IsFlagged;
+
+        await _dbContext.SaveChangesAsync(cancellationToken);
+
+        TempData["AdminToastSuccess"] = message.IsFlagged
+            ? "Red mark applied."
+            : "Red mark removed.";
+
+        if (!string.IsNullOrWhiteSpace(returnUrl) && Url.IsLocalUrl(returnUrl))
+        {
+            return Redirect(returnUrl);
+        }
+
+        return RedirectToAction(nameof(Index));
     }
 
     private static List<SelectListItem> BuildStatusOptions(ContactMessageStatus? selected)

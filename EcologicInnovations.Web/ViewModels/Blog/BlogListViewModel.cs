@@ -11,7 +11,7 @@ public class BlogListViewModel
     /// <summary>
     /// Public page heading.
     /// </summary>
-    public string PageTitle { get; set; } = "Blog";
+    public string PageTitle { get; set; } = "Articles";
 
     /// <summary>
     /// Optional intro text shown under the heading.

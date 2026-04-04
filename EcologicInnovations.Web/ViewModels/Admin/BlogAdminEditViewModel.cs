@@ -18,7 +18,7 @@ public class BlogAdminEditViewModel
     /// </summary>
     [Required]
     [StringLength(200)]
-    [Display(Name = "Blog Title")]
+    [Display(Name = "Article Title")]
     public string Title { get; set; } = string.Empty;
 
     /// <summary>

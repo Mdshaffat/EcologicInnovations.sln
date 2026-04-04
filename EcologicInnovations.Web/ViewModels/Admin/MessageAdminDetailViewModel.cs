@@ -80,6 +80,16 @@ public class MessageAdminDetailViewModel
     public string? AdminNote { get; set; }
 
     /// <summary>
+    /// Whether admin has marked this message as important.
+    /// </summary>
+    public bool IsImportant { get; set; }
+
+    /// <summary>
+    /// Whether admin has flagged this message (red mark).
+    /// </summary>
+    public bool IsFlagged { get; set; }
+
+    /// <summary>
     /// IP address of the client that submitted the form.
     /// </summary>
     public string? SubmitterIpAddress { get; set; }

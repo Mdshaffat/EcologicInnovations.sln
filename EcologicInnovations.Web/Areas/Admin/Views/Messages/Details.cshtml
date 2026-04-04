@@ -14,12 +14,35 @@
             <div class="card-body p-4 p-lg-5">
                 <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-start gap-3 mb-4">
                     <div>
-                        <h2 class="h3 mb-1">@Model.Name</h2>
+                        <h2 class="h3 mb-1">
+                            @Model.Name
+                            @if (Model.IsImportant)
+                            {
+                                <i class="bi bi-star-fill text-warning ms-2" title="Important"></i>
+                            }
+                            @if (Model.IsFlagged)
+                            {
+                                <i class="bi bi-flag-fill text-danger ms-2" title="Red Mark"></i>
+                            }
+                        </h2>
                         <p class="text-secondary mb-0">Message received on @Model.CreatedAt.ToLocalTime().ToString("dd MMM yyyy, hh:mm tt")</p>
                     </div>
 
-                    <div>
+                    <div class="d-flex align-items-center gap-2">
                         <partial name="_MessageStatusBadge" model="Model.Status" />
+
+                        <form asp-action="ToggleRead" asp-controller="Messages" asp-area="Admin" method="post" class="d-inline">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="id" value="@Model.Id" />
+                            @{
+                                var isUnread = Model.Status is EcologicInnovations.Web.Models.Enums.ContactMessageStatus.New
+                                    or EcologicInnovations.Web.Models.Enums.ContactMessageStatus.Unread;
+                            }
+                            <button type="submit" class="btn btn-sm @(isUnread ? "btn-outline-success" : "btn-outline-secondary")" title="@(isUnread ? "Mark as read" : "Mark as unread")">
+                                <i class="bi @(isUnread ? "bi-envelope-open" : "bi-envelope-fill") me-1"></i>
+                                @(isUnread ? "Mark Read" : "Mark Unread")
+                            </button>
+                        </form>
                     </div>
                 </div>
 
@@ -120,6 +143,32 @@
     </div>
 
     <div class="col-xl-4">
+        <div class="card border-0 shadow-sm rounded-4 mb-4">
+            <div class="card-body p-4">
+                <h3 class="h5 mb-3">Quick Actions</h3>
+
+                <div class="d-flex gap-2 mb-3">
+                    <form asp-action="ToggleImportant" asp-controller="Messages" asp-area="Admin" method="post" class="flex-fill">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" value="@Model.Id" />
+                        <button type="submit" class="btn w-100 @(Model.IsImportant ? "btn-warning" : "btn-outline-warning")">
+                            <i class="bi @(Model.IsImportant ? "bi-star-fill" : "bi-star") me-1"></i>
+                            @(Model.IsImportant ? "Important" : "Mark Important")
+                        </button>
+                    </form>
+
+                    <form asp-action="ToggleFlag" asp-controller="Messages" asp-area="Admin" method="post" class="flex-fill">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" value="@Model.Id" />
+                        <button type="submit" class="btn w-100 @(Model.IsFlagged ? "btn-danger" : "btn-outline-danger")">
+                            <i class="bi @(Model.IsFlagged ? "bi-flag-fill" : "bi-flag") me-1"></i>
+                            @(Model.IsFlagged ? "Red Mark" : "Add Red Mark")
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
         <div class="card border-0 shadow-sm rounded-4">
             <div class="card-body p-4">
                 <h3 class="h5 mb-3">Update Workflow</h3>
@@ -127,6 +176,8 @@
                 <form asp-action="UpdateStatus" asp-controller="Messages" asp-area="Admin" method="post">
                     @Html.AntiForgeryToken()
                     <input asp-for="UpdateForm.Id" type="hidden" />
+                    <input asp-for="UpdateForm.IsImportant" type="hidden" />
+                    <input asp-for="UpdateForm.IsFlagged" type="hidden" />
 
                     <div class="mb-3">
                         <label asp-for="UpdateForm.Status" class="form-label"></label>

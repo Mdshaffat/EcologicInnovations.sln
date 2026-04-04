@@ -48,6 +48,16 @@ public class MessageAdminListItemViewModel
     public ContactMessageStatus Status { get; set; }
 
     /// <summary>
+    /// Whether admin has marked this message as important.
+    /// </summary>
+    public bool IsImportant { get; set; }
+
+    /// <summary>
+    /// Whether admin has flagged this message (red mark).
+    /// </summary>
+    public bool IsFlagged { get; set; }
+
+    /// <summary>
     /// UTC creation timestamp.
     /// </summary>
     public DateTime CreatedAt { get; set; }

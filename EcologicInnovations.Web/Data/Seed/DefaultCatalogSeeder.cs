@@ -270,31 +270,31 @@ public static class DefaultCatalogSeeder
             return;
         }
 
-        var sustainabilityCategoryId = await dbContext.BlogCategories
-            .Where(x => x.Slug == "sustainability-insights")
+        var softwareTechCategoryId = await dbContext.BlogCategories
+            .Where(x => x.Slug == "software-tech")
             .Select(x => x.Id)
             .FirstOrDefaultAsync(cancellationToken);
 
-        var energyCategoryId = await dbContext.BlogCategories
-            .Where(x => x.Slug == "energy-management")
+        var smartSystemsCategoryId = await dbContext.BlogCategories
+            .Where(x => x.Slug == "smart-systems-iot")
             .Select(x => x.Id)
             .FirstOrDefaultAsync(cancellationToken);
 
         var blogPosts = new List<BlogPost>();
 
-        if (sustainabilityCategoryId > 0)
+        if (softwareTechCategoryId > 0)
         {
             blogPosts.Add(new BlogPost
             {
                 Title = "How Sustainability Technology Supports Business Decisions",
                 Slug = "how-sustainability-technology-supports-business-decisions",
-                BlogCategoryId = sustainabilityCategoryId,
+                BlogCategoryId = softwareTechCategoryId,
                 FeatureImageUrl = "/images/placeholders/blog-sustainability.jpg",
-                Excerpt = "A starter article showing how blog content can be structured and presented for Ecologic Innovations.",
+                Excerpt = "A starter article showing how article content can be structured and presented for Ecologic Innovations.",
                 HtmlContent = @"
 <section class='content-block'>
     <h2>Introduction</h2>
-    <p>This starter article demonstrates how rich HTML blog content can be managed from the admin panel.</p>
+    <p>This starter article demonstrates how rich HTML article content can be managed from the admin panel.</p>
 </section>",
                 ShowContactForm = true,
                 ContactFormTitle = "Talk to Us About This Topic",
@@ -302,31 +302,31 @@ public static class DefaultCatalogSeeder
                 IsPublished = true,
                 PublishedAt = DateTime.UtcNow,
                 MetaTitle = "How Sustainability Technology Supports Business Decisions | Ecologic Innovations",
-                MetaDescription = "Starter sustainability blog content for the Ecologic Innovations website.",
+                MetaDescription = "Starter sustainability article content for the Ecologic Innovations website.",
                 OgImageUrl = "/images/placeholders/blog-sustainability.jpg"
             });
         }
 
-        if (energyCategoryId > 0)
+        if (smartSystemsCategoryId > 0)
         {
             blogPosts.Add(new BlogPost
             {
                 Title = "Practical Energy Monitoring for Modern Operations",
                 Slug = "practical-energy-monitoring-for-modern-operations",
-                BlogCategoryId = energyCategoryId,
+                BlogCategoryId = smartSystemsCategoryId,
                 FeatureImageUrl = "/images/placeholders/blog-energy.jpg",
-                Excerpt = "A sample energy management blog post used to populate the latest blog section on first run.",
+                Excerpt = "A sample energy management article used to populate the latest articles section on first run.",
                 HtmlContent = @"
 <section class='content-block'>
     <h2>Overview</h2>
-    <p>This starter blog post helps demonstrate the public blog list, detail page, and optional inquiry form.</p>
+    <p>This starter article helps demonstrate the public article list, detail page, and optional inquiry form.</p>
 </section>",
                 ShowContactForm = false,
                 IsFeatured = true,
                 IsPublished = true,
                 PublishedAt = DateTime.UtcNow.AddMinutes(-5),
                 MetaTitle = "Practical Energy Monitoring for Modern Operations | Ecologic Innovations",
-                MetaDescription = "Starter energy management blog content for the Ecologic Innovations website.",
+                MetaDescription = "Starter energy management article content for the Ecologic Innovations website.",
                 OgImageUrl = "/images/placeholders/blog-energy.jpg"
             });
         }

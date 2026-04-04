@@ -167,17 +167,17 @@ public class BlogsController : AdminControllerBase
             EmptyState = items.Count == 0
                 ? new EmptyStateViewModel
                 {
-                    Title = "No blog posts found",
-                    Message = "Try changing the search or filter options, or create a new blog post.",
-                    ButtonText = "Create Blog",
+                    Title = "No articles found",
+                    Message = "Try changing the search or filter options, or create a new article.",
+                    ButtonText = "Create Article",
                     ButtonUrl = Url.Action(nameof(Create), "Blogs", new { area = "Admin" })
                 }
                 : null
         };
 
-        ViewData["AdminPageTitle"] = "Blogs";
-        ViewData["AdminPageDescription"] = "Manage blog articles, HTML content, publication, and SEO data.";
-        ViewData["AdminBreadcrumbs"] = BuildAdminBreadcrumbs("Blogs");
+        ViewData["AdminPageTitle"] = "Articles";
+        ViewData["AdminPageDescription"] = "Manage articles, HTML content, publication, and SEO data.";
+        ViewData["AdminBreadcrumbs"] = BuildAdminBreadcrumbs("Articles");
 
         return View(model);
     }
@@ -194,9 +194,9 @@ public class BlogsController : AdminControllerBase
             CategoryOptions = await BuildCategorySelectListAsync(cancellationToken)
         };
 
-        ViewData["AdminPageTitle"] = "Create Blog";
-        ViewData["AdminPageDescription"] = "Add a new blog post with HTML content and SEO metadata.";
-        ViewData["AdminBreadcrumbs"] = BuildAdminBreadcrumbs("Blogs", "Create");
+        ViewData["AdminPageTitle"] = "Create Article";
+        ViewData["AdminPageDescription"] = "Add a new article with HTML content and SEO metadata.";
+        ViewData["AdminBreadcrumbs"] = BuildAdminBreadcrumbs("Articles", "Create");
 
         return View(model);
     }
@@ -213,9 +213,9 @@ public class BlogsController : AdminControllerBase
         {
             model.HtmlContentPreview = _htmlSanitizationService.SanitizeRichHtml(model.HtmlContent);
 
-            ViewData["AdminPageTitle"] = "Create Blog";
-            ViewData["AdminPageDescription"] = "Add a new blog post with HTML content and SEO metadata.";
-            ViewData["AdminBreadcrumbs"] = BuildAdminBreadcrumbs("Blogs", "Create");
+            ViewData["AdminPageTitle"] = "Create Article";
+            ViewData["AdminPageDescription"] = "Add a new article with HTML content and SEO metadata.";
+            ViewData["AdminBreadcrumbs"] = BuildAdminBreadcrumbs("Articles", "Create");
 
             return View(model);
         }
@@ -262,8 +262,8 @@ public class BlogsController : AdminControllerBase
         _dbContext.BlogPosts.Add(entity);
         await _dbContext.SaveChangesAsync(cancellationToken);
 
-        TempData["AdminSuccessMessage"] = "Blog post created successfully.";
-        TempData["AdminToastSuccess"] = "Blog created.";
+        TempData["AdminSuccessMessage"] = "Article created successfully.";
+        TempData["AdminToastSuccess"] = "Article created.";
 
         return RedirectToAction(nameof(Index));
     }
@@ -301,9 +301,9 @@ public class BlogsController : AdminControllerBase
             HtmlContentPreview = _htmlSanitizationService.SanitizeRichHtml(entity.HtmlContent)
         };
 
-        ViewData["AdminPageTitle"] = "Edit Blog";
-        ViewData["AdminPageDescription"] = "Update the blog post content, publication, and SEO data.";
-        ViewData["AdminBreadcrumbs"] = BuildAdminBreadcrumbs("Blogs", "Edit");
+        ViewData["AdminPageTitle"] = "Edit Article";
+        ViewData["AdminPageDescription"] = "Update the article content, publication, and SEO data.";
+        ViewData["AdminBreadcrumbs"] = BuildAdminBreadcrumbs("Articles", "Edit");
 
         return View(model);
     }
@@ -334,9 +334,9 @@ public class BlogsController : AdminControllerBase
         {
             model.HtmlContentPreview = _htmlSanitizationService.SanitizeRichHtml(model.HtmlContent);
 
-            ViewData["AdminPageTitle"] = "Edit Blog";
-            ViewData["AdminPageDescription"] = "Update the blog post content, publication, and SEO data.";
-            ViewData["AdminBreadcrumbs"] = BuildAdminBreadcrumbs("Blogs", "Edit");
+            ViewData["AdminPageTitle"] = "Edit Article";
+            ViewData["AdminPageDescription"] = "Update the article content, publication, and SEO data.";
+            ViewData["AdminBreadcrumbs"] = BuildAdminBreadcrumbs("Articles", "Edit");
 
             return View(model);
         }
@@ -375,8 +375,8 @@ public class BlogsController : AdminControllerBase
 
         await _dbContext.SaveChangesAsync(cancellationToken);
 
-        TempData["AdminSuccessMessage"] = "Blog post updated successfully.";
-        TempData["AdminToastSuccess"] = "Blog updated.";
+        TempData["AdminSuccessMessage"] = "Article updated successfully.";
+        TempData["AdminToastSuccess"] = "Article updated.";
 
         return RedirectToAction(nameof(Index));
     }
@@ -417,9 +417,9 @@ public class BlogsController : AdminControllerBase
 
         model.HtmlContentPreview = _htmlSanitizationService.SanitizeRichHtml(model.HtmlContentPreview);
 
-        ViewData["AdminPageTitle"] = "Blog Details";
-        ViewData["AdminPageDescription"] = "Review the saved blog content and metadata.";
-        ViewData["AdminBreadcrumbs"] = BuildAdminBreadcrumbs("Blogs", "Details");
+        ViewData["AdminPageTitle"] = "Article Details";
+        ViewData["AdminPageDescription"] = "Review the saved article content and metadata.";
+        ViewData["AdminBreadcrumbs"] = BuildAdminBreadcrumbs("Articles", "Details");
 
         return View(model);
     }
@@ -457,9 +457,9 @@ public class BlogsController : AdminControllerBase
             return NotFound();
         }
 
-        ViewData["AdminPageTitle"] = "Delete Blog";
-        ViewData["AdminPageDescription"] = "Delete a blog post after reviewing its details.";
-        ViewData["AdminBreadcrumbs"] = BuildAdminBreadcrumbs("Blogs", "Delete");
+        ViewData["AdminPageTitle"] = "Delete Article";
+        ViewData["AdminPageDescription"] = "Delete an article after reviewing its details.";
+        ViewData["AdminBreadcrumbs"] = BuildAdminBreadcrumbs("Articles", "Delete");
 
         return View(model);
     }
@@ -479,8 +479,8 @@ public class BlogsController : AdminControllerBase
         _dbContext.BlogPosts.Remove(entity);
         await _dbContext.SaveChangesAsync(cancellationToken);
 
-        TempData["AdminSuccessMessage"] = "Blog post deleted successfully.";
-        TempData["AdminToastSuccess"] = "Blog deleted.";
+        TempData["AdminSuccessMessage"] = "Article deleted successfully.";
+        TempData["AdminToastSuccess"] = "Article deleted.";
 
         return RedirectToAction(nameof(Index));
     }

@@ -97,6 +97,16 @@ public class ContactMessage : BaseEntity
     public string? AdminNote { get; set; }
 
     /// <summary>
+    /// Admin flag indicating the message is marked as important.
+    /// </summary>
+    public bool IsImportant { get; set; }
+
+    /// <summary>
+    /// Admin flag indicating the message has a red-mark / priority flag.
+    /// </summary>
+    public bool IsFlagged { get; set; }
+
+    /// <summary>
     /// IP address of the client that submitted the form.
     /// Used for security auditing and spam/abuse detection.
     /// </summary>

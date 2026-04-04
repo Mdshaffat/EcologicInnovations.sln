@@ -167,7 +167,7 @@ public class HomeController : Controller
             model.EmptyState = new EmptyStateViewModel
             {
                 Title = "The website is ready for content",
-                Message = "Your home page structure is working. Add products, blogs, and page content from the admin panel to fully populate this landing page.",
+                Message = "Your home page structure is working. Add products, articles, and page content from the admin panel to fully populate this landing page.",
                 ButtonText = "Contact Us",
                 ButtonUrl = Url.Action("Index", "Contact")
             };
