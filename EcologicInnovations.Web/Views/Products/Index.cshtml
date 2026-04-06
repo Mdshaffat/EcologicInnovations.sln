@@ -8,10 +8,10 @@
     <link rel="stylesheet" href="~/css/products-list.css" asp-append-version="true" />
 }
 
-<div class="products-page py-5">
+<section class="page-hero">
     <div class="container">
-        <nav aria-label="breadcrumb" class="mb-4">
-            <ol class="breadcrumb small mb-0">
+        <nav aria-label="breadcrumb" class="mb-3">
+            <ol class="breadcrumb mb-0">
                 @for (var i = 0; i < Model.Breadcrumbs.Count; i++)
                 {
                     var item = Model.Breadcrumbs[i];
@@ -35,36 +35,17 @@
             </ol>
         </nav>
 
-        <div class="products-hero card border-0 shadow-sm mb-4">
-            <div class="card-body p-4 p-lg-5">
-                <div class="row align-items-center g-4">
-                    <div class="col-lg-8">
-                        <span class="products-hero-kicker">Our Products</span>
-                        <h1 class="display-6 fw-bold mb-3">@Model.PageTitle</h1>
-                        @if (!string.IsNullOrWhiteSpace(Model.IntroText))
-                        {
-                            <p class="lead text-muted mb-0">@Model.IntroText</p>
-                        }
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="products-hero-stats">
-                            <div class="products-hero-stat-card">
-                                <span class="products-hero-stat-number">@Model.ResultCount</span>
-                                @if (!string.IsNullOrWhiteSpace(Model.SelectedCategoryName) || !string.IsNullOrWhiteSpace(Model.Sidebar.SearchTerm))
-                                {
-                                    <span class="products-hero-stat-label">Matching Products</span>
-                                }
-                                else
-                                {
-                                    <span class="products-hero-stat-label">Products</span>
-                                }
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <span class="page-hero-kicker">Our Products</span>
+        <h1 class="display-5 fw-bold text-white mb-2">@Model.PageTitle</h1>
+        @if (!string.IsNullOrWhiteSpace(Model.IntroText))
+        {
+            <p class="lead text-white-50 mb-0">@Model.IntroText</p>
+        }
+    </div>
+</section>
 
+<div class="products-page py-5">
+    <div class="container">
         <div class="row g-4">
             <aside class="col-lg-3">
                 <div class="card border-0 shadow-sm filter-sidebar-card sticky-lg-top">
@@ -115,7 +96,7 @@
                             </div>
 
                             <div class="col-md-2 d-grid">
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" class="btn btn-success">
                                     Apply
                                 </button>
                             </div>
@@ -167,7 +148,7 @@
 
                             @if (!string.IsNullOrWhiteSpace(Model.EmptyState.ButtonText) && !string.IsNullOrWhiteSpace(Model.EmptyState.ButtonUrl))
                             {
-                                <a href="@Model.EmptyState.ButtonUrl" class="btn btn-outline-primary">
+                                <a href="@Model.EmptyState.ButtonUrl" class="btn btn-outline-success">
                                     @Model.EmptyState.ButtonText
                                 </a>
                             }

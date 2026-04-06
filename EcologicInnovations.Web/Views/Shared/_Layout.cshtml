@@ -19,10 +19,8 @@
         @await Component.InvokeAsync("PublicNavigation")
     </header>
 
-    <main class="public-main py-4">
-        <div class="container">
-            <partial name="_PublicAlerts" />
-        </div>
+    <main class="public-main">
+        <partial name="_PublicAlerts" />
 
         @RenderBody()
     </main>

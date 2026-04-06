@@ -1,3 +1,7 @@
+.product-details-page {
+    background: var(--eco-page-bg);
+}
+
 .product-main-image {
     width: 100%;
     max-height: 520px;
@@ -7,6 +11,19 @@
 
 .product-image-placeholder {
     min-height: 320px;
+}
+
+.product-contact-icon {
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: var(--eco-radius);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(25, 135, 84, 0.10);
+    color: var(--eco-secondary);
+    font-size: 1.1rem;
+    flex-shrink: 0;
 }
 
 .product-category-badge {
@@ -34,6 +51,8 @@
 .product-html-content h4 {
     margin-top: 2rem;
     margin-bottom: 1rem;
+    color: var(--eco-heading);
+    font-weight: 700;
 }
 
 .product-sticky-summary {
@@ -51,6 +70,33 @@
 
 .inquiry-card {
     border-radius: var(--eco-radius);
+}
+
+.related-product-link {
+    padding: 0.75rem;
+    border-radius: var(--eco-radius);
+    transition: background 0.2s ease;
+}
+
+.related-product-link:hover {
+    background: var(--eco-bg-green-soft);
+}
+
+.related-product-link:hover .fw-semibold {
+    color: var(--eco-secondary) !important;
+}
+
+.related-product-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: var(--eco-radius);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--eco-bg-green-soft);
+    color: var(--eco-secondary);
+    font-size: 1rem;
+    flex-shrink: 0;
 }
 
 .related-product-image,

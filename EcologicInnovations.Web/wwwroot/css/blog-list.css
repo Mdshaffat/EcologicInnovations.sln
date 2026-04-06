@@ -13,8 +13,8 @@
 }
 
 .blog-category-list .list-group-item.active {
-    background: #0d6efd;
-    border-color: #0d6efd;
+    background: var(--eco-secondary);
+    border-color: var(--eco-secondary);
 }
 
 .blog-card {
@@ -35,7 +35,7 @@
 }
 
 .blog-card-title a:hover {
-    color: #0d6efd !important;
+    color: var(--eco-secondary) !important;
 }
 
 .blog-card-excerpt {

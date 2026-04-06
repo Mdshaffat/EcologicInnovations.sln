@@ -8,10 +8,10 @@
     <link rel="stylesheet" href="~/css/contact.css" asp-append-version="true" />
 }
 
-<section class="contact-page py-5">
+<section class="page-hero">
     <div class="container">
         <nav aria-label="breadcrumb" class="mb-3">
-            <ol class="breadcrumb small">
+            <ol class="breadcrumb mb-0">
                 @foreach (var crumb in Model.Breadcrumbs)
                 {
                     if (crumb.IsActive)
@@ -28,6 +28,17 @@
             </ol>
         </nav>
 
+        <span class="page-hero-kicker">Ecologic Innovations</span>
+        <h1 class="display-5 fw-bold text-white mb-2">@Model.PageTitle</h1>
+        @if (!string.IsNullOrWhiteSpace(Model.IntroText))
+        {
+            <p class="lead text-white-50 mb-0">@Model.IntroText</p>
+        }
+    </div>
+</section>
+
+<section class="contact-page py-5">
+    <div class="container">
         <div class="row g-4 align-items-start">
             <div class="col-lg-5">
                 <div class="contact-hero-card card border-0 shadow-sm overflow-hidden">
@@ -36,12 +47,7 @@
                             <i class="bi bi-leaf me-1"></i>Ecologic Innovations
                         </span>
 
-                        <h1 class="display-6 fw-bold mb-3">@Model.PageTitle</h1>
-
-                        @if (!string.IsNullOrWhiteSpace(Model.IntroText))
-                        {
-                            <p class="lead text-secondary mb-4">@Model.IntroText</p>
-                        }
+                        <h2 class="h3 fw-bold mb-3">Get in Touch</h2>
 
                         <div class="contact-info-grid d-grid gap-3">
                             @if (!string.IsNullOrWhiteSpace(Model.SupportEmail))
@@ -218,7 +224,7 @@
                             </div>
 
                             <div class="mt-4 d-flex flex-column flex-sm-row gap-3 align-items-sm-center">
-                                <button type="submit" class="btn btn-primary btn-lg px-4">
+                                <button type="submit" class="btn btn-success btn-lg px-4">
                                     <i class="bi bi-send me-2"></i>Send Message
                                 </button>
                                 <span class="text-secondary small">

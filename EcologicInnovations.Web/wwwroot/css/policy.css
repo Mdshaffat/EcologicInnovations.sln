@@ -2,42 +2,7 @@
     background: var(--eco-bg-soft);
 }
 
-.policy-hero {
-    min-height: 360px;
-    display: flex;
-    align-items: end;
-    isolation: isolate;
-    background: linear-gradient(135deg, #0f172a 0%, #1f2937 100%);
-}
-
-.policy-hero-image {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: -2;
-}
-
-.policy-hero-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(180deg, rgba(15, 23, 42, 0.2) 0%, rgba(15, 23, 42, 0.82) 100%);
-    z-index: -1;
-}
-
-.policy-hero-content {
-    padding: 4.5rem 0 3rem;
-}
-
-.policy-breadcrumb .breadcrumb-item,
-.policy-breadcrumb .breadcrumb-item a {
-    color: rgba(255, 255, 255, 0.9);
-}
-
-.policy-breadcrumb .breadcrumb-item.active {
-    color: #ffffff;
-}
+/* Hero styles now handled by shared .page-hero in site.css */
 
 .policy-updated-pill {
     display: inline-flex;
@@ -56,16 +21,6 @@
     border: 1px solid rgba(15, 23, 42, 0.08);
 }
 
-.policy-intro-card {
-    background: #ffffff;
-    border-radius: var(--eco-radius-lg);
-    border: 1px solid rgba(15, 23, 42, 0.06);
-}
-
-.policy-intro-card-body {
-    padding: 1.5rem 1.5rem;
-}
-
 .policy-content {
     background: #ffffff;
     border-radius: var(--eco-radius-lg);
@@ -80,9 +35,5 @@
 @media (min-width: 992px) {
     .policy-content-body {
         padding: 2.5rem;
-    }
-
-    .policy-hero {
-        min-height: 420px;
     }
 }

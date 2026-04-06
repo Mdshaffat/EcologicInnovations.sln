@@ -2,53 +2,7 @@
     background: var(--eco-page-bg);
 }
 
-.products-hero {
-    overflow: hidden;
-    background:
-        radial-gradient(circle at top right, rgba(13, 110, 253, 0.08), transparent 30%),
-        radial-gradient(circle at bottom left, rgba(25, 135, 84, 0.08), transparent 30%),
-        #ffffff;
-    border-radius: var(--eco-radius-lg);
-}
-
-.products-hero-kicker {
-    display: inline-block;
-    margin-bottom: 0.75rem;
-    color: #198754;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    font-size: 0.8rem;
-}
-
-.products-hero-stats {
-    display: flex;
-    justify-content: flex-end;
-}
-
-.products-hero-stat-card {
-    min-width: 180px;
-    border-radius: var(--eco-radius);
-    background: #0d6efd;
-    color: #fff;
-    padding: 1.25rem 1rem;
-    text-align: center;
-    box-shadow: 0 0.75rem 1.75rem rgba(13, 110, 253, 0.18);
-}
-
-.products-hero-stat-number {
-    display: block;
-    font-size: 2rem;
-    font-weight: 800;
-    line-height: 1;
-}
-
-.products-hero-stat-label {
-    display: block;
-    margin-top: 0.45rem;
-    font-size: 0.95rem;
-    opacity: 0.92;
-}
+/* Hero styles now handled by shared .page-hero in site.css */
 
 .filter-sidebar-card {
     border-radius: var(--eco-radius);
@@ -72,9 +26,9 @@
 }
 
 .category-filter-list .list-group-item.active {
-    background: rgba(13, 110, 253, 0.08);
-    border-color: rgba(13, 110, 253, 0.15);
-    color: #0d6efd;
+    background: rgba(25, 135, 84, 0.08);
+    border-color: rgba(25, 135, 84, 0.15);
+    color: var(--eco-secondary);
 }
 
 .product-card {
@@ -110,7 +64,7 @@
 }
 
 .product-card-title-link:hover {
-    color: #0d6efd;
+    color: var(--eco-secondary);
 }
 
 .product-card-text {
@@ -133,12 +87,12 @@
 }
 
 .pagination .page-item.active .page-link {
-    background-color: #0d6efd;
-    border-color: #0d6efd;
+    background-color: var(--eco-secondary);
+    border-color: var(--eco-secondary);
 }
 
 @media (max-width: 991.98px) {
-    .products-hero-stats {
-        justify-content: flex-start;
+    .filter-sidebar-card {
+        position: static !important;
     }
 }

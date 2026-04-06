@@ -8,10 +8,10 @@
     <link rel="stylesheet" href="~/css/blog-list.css" asp-append-version="true" />
 }
 
-<section class="blog-page py-5">
+<section class="page-hero">
     <div class="container">
-        <nav aria-label="breadcrumb" class="mb-4">
-            <ol class="breadcrumb small">
+        <nav aria-label="breadcrumb" class="mb-3">
+            <ol class="breadcrumb mb-0">
                 @foreach (var item in Model.Breadcrumbs)
                 {
                     if (item.IsActive)
@@ -26,6 +26,17 @@
             </ol>
         </nav>
 
+        <span class="page-hero-kicker">Ecologic Innovations</span>
+        <h1 class="display-5 fw-bold text-white mb-2">@Model.PageTitle</h1>
+        @if (!string.IsNullOrWhiteSpace(Model.IntroText))
+        {
+            <p class="lead text-white-50 mb-0">@Model.IntroText</p>
+        }
+    </div>
+</section>
+
+<section class="blog-page py-5">
+    <div class="container">
         <div class="row g-4 g-xl-5">
             <aside class="col-lg-4 col-xl-3">
                 <div class="blog-sidebar card border-0 shadow-sm rounded-4 sticky-lg-top sidebar-sticky-offset">
@@ -49,7 +60,7 @@
                             }
 
                             <div class="d-flex gap-2 flex-wrap">
-                                <button type="submit" class="btn btn-primary rounded-pill px-4">Apply</button>
+                                <button type="submit" class="btn btn-success rounded-pill px-4">Apply</button>
                                 <a href="@Model.Sidebar.ClearFilterUrl" class="btn btn-outline-secondary rounded-pill px-4">Reset</a>
                             </div>
                         </form>
@@ -83,13 +94,8 @@
             </aside>
 
             <div class="col-lg-8 col-xl-9">
-                <div class="blog-page-header mb-4">
-                    <h1 class="display-6 fw-bold mb-3">@Model.PageTitle</h1>
-                    @if (!string.IsNullOrWhiteSpace(Model.IntroText))
-                    {
-                        <p class="lead text-muted mb-3">@Model.IntroText</p>
-                    }
-                    <p class="small text-muted mb-0">@Model.ResultCount article(s) found</p>
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <p class="text-muted mb-0">@Model.ResultCount article(s) found</p>
                 </div>
 
                 @if (Model.EmptyState is not null)
@@ -100,7 +106,7 @@
                             <p class="text-muted mb-4">@Model.EmptyState.Message</p>
                             @if (!string.IsNullOrWhiteSpace(Model.EmptyState.ButtonText) && !string.IsNullOrWhiteSpace(Model.EmptyState.ButtonUrl))
                             {
-                                <a href="@Model.EmptyState.ButtonUrl" class="btn btn-primary rounded-pill px-4">@Model.EmptyState.ButtonText</a>
+                                <a href="@Model.EmptyState.ButtonUrl" class="btn btn-success rounded-pill px-4">@Model.EmptyState.ButtonText</a>
                             }
                         </div>
                     </div>

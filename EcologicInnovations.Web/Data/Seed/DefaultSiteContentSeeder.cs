@@ -31,7 +31,7 @@ public static class DefaultSiteContentSeeder
         var siteSetting = new SiteSetting
         {
             CompanyName = "Ecologic Innovations",
-            Tagline = "Software development, smart systems, training & development, and impact-driven technology.",
+            Tagline = "Empowering businesses through purpose-built technology and professional development.",
             SupportEmail = "support@ecologicinnovations.com",
             SalesEmail = "sales@ecologicinnovations.com",
             Phone = "+8801517831132",
@@ -41,7 +41,7 @@ public static class DefaultSiteContentSeeder
             LinkedInUrl = "https://linkedin.com/",
             YouTubeUrl = "https://youtube.com/",
             MetaTitleDefault = "Ecologic Innovations",
-            MetaDescriptionDefault = "Ecologic Innovations builds custom software, smart IoT and drone systems, training programs, and impact-driven technology for businesses and communities."
+            MetaDescriptionDefault = "Ecologic Innovations partners with organizations to deliver custom software, intelligent connected systems, and professional development programs that drive measurable results."
         };
 
         dbContext.SiteSettings.Add(siteSetting);
@@ -64,7 +64,7 @@ public static class DefaultSiteContentSeeder
             PageKey = SitePageKey.AboutUs,
             Title = "About Us",
             Slug = "about-us",
-            ShortIntro = "Ecologic Innovations helps organizations grow through custom software, smart systems, training programs, and impact-driven solutions.",
+            ShortIntro = "We partner with organizations to build technology that solves real problems — from custom platforms and connected devices to hands-on skills development.",
             BannerImageUrl = "/images/placeholders/about-banner.jpg",
             HtmlContent = @"
 <section class='content-block'>

@@ -1,41 +1,5 @@
-.about-hero {
-    min-height: 360px;
-    display: flex;
-    align-items: center;
-    background:
-        linear-gradient(135deg, rgba(8, 41, 72, 0.92), rgba(7, 113, 106, 0.85));
-}
+/* Hero styles now handled by shared .page-hero in site.css */
 
-.about-hero-bg {
-    position: absolute;
-    inset: 0;
-    opacity: 0.32;
-}
-
-.about-hero-overlay {
-    position: absolute;
-    inset: 0;
-    background:
-        radial-gradient(circle at top right, rgba(255, 255, 255, 0.18), transparent 28%),
-        linear-gradient(180deg, rgba(0, 0, 0, 0.10), rgba(0, 0, 0, 0.18));
-}
-
-.min-vh-50 {
-    min-height: 50vh;
-}
-
-.breadcrumb-light .breadcrumb-item,
-.breadcrumb-light .breadcrumb-item.active,
-.breadcrumb-light .breadcrumb-item a {
-    color: rgba(255, 255, 255, 0.90);
-    text-decoration: none;
-}
-
-.breadcrumb-light .breadcrumb-item + .breadcrumb-item::before {
-    color: rgba(255, 255, 255, 0.65);
-}
-
-.about-hero-kicker,
 .about-side-kicker {
     display: inline-block;
     margin-bottom: 0.85rem;
@@ -121,7 +85,7 @@
 .about-rich-content blockquote {
     margin: 1.5rem 0;
     padding: 1rem 1.25rem;
-    border-left: 4px solid #0d6efd;
+    border-left: 4px solid var(--eco-secondary);
     background: #f8fafc;
     color: #334155;
 }
@@ -130,8 +94,8 @@
     padding: 2.5rem 2.5rem;
     border-radius: var(--eco-radius-lg);
     background:
-        radial-gradient(circle at top right, rgba(13, 110, 253, 0.06), transparent 50%),
-        radial-gradient(circle at bottom left, rgba(25, 135, 84, 0.06), transparent 50%),
+        radial-gradient(circle at top right, rgba(25, 135, 84, 0.06), transparent 50%),
+        radial-gradient(circle at bottom left, rgba(15, 118, 110, 0.06), transparent 50%),
         #ffffff;
     border: 1px solid rgba(15, 23, 42, 0.08);
     box-shadow:
@@ -148,7 +112,7 @@
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(90deg, var(--eco-primary, #0d6efd), var(--eco-secondary, #198754));
+    background: linear-gradient(90deg, var(--eco-secondary, #198754), var(--eco-teal, #0f766e));
     border-radius: var(--eco-radius-lg) var(--eco-radius-lg) 0 0;
 }
 
@@ -158,10 +122,6 @@
 }
 
 @media (max-width: 991.98px) {
-    .about-hero {
-        min-height: 300px;
-    }
-
     .about-cta-panel {
         padding: 1.5rem;
         text-align: center;

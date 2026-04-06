@@ -4,51 +4,36 @@
     <link rel="stylesheet" href="~/css/about.css" asp-append-version="true" />
 }
 
-<section class="about-hero position-relative overflow-hidden">
-    @if (!string.IsNullOrWhiteSpace(Model.BannerImageUrl))
-    {
-        <div class="about-hero-bg">
-            <img src="@Model.BannerImageUrl"
-                 alt="@Model.Title banner"
-                 class="w-100 h-100 object-fit-cover" />
-        </div>
-    }
+<section class="page-hero">
+    <div class="container">
+        @if (Model.Breadcrumbs?.Count > 0)
+        {
+            <nav aria-label="breadcrumb" class="mb-3">
+                <ol class="breadcrumb mb-0">
+                    @foreach (var crumb in Model.Breadcrumbs)
+                    {
+                        if (crumb.IsActive || string.IsNullOrWhiteSpace(crumb.Url))
+                        {
+                            <li class="breadcrumb-item active" aria-current="page">@crumb.Title</li>
+                        }
+                        else
+                        {
+                            <li class="breadcrumb-item">
+                                <a href="@crumb.Url">@crumb.Title</a>
+                            </li>
+                        }
+                    }
+                </ol>
+            </nav>
+        }
 
-    <div class="about-hero-overlay"></div>
+        <span class="page-hero-kicker">Ecologic Innovations</span>
+        <h1 class="display-5 fw-bold text-white mb-2">@Model.Title</h1>
 
-    <div class="container position-relative">
-        <div class="row min-vh-50 align-items-center">
-            <div class="col-12 col-lg-8">
-                @if (Model.Breadcrumbs?.Count > 0)
-                {
-                    <nav aria-label="breadcrumb" class="mb-3">
-                        <ol class="breadcrumb breadcrumb-light mb-0">
-                            @foreach (var crumb in Model.Breadcrumbs)
-                            {
-                                if (crumb.IsActive || string.IsNullOrWhiteSpace(crumb.Url))
-                                {
-                                    <li class="breadcrumb-item active" aria-current="page">@crumb.Title</li>
-                                }
-                                else
-                                {
-                                    <li class="breadcrumb-item">
-                                        <a href="@crumb.Url">@crumb.Title</a>
-                                    </li>
-                                }
-                            }
-                        </ol>
-                    </nav>
-                }
-
-                <span class="about-hero-kicker">Ecologic Innovations</span>
-                <h1 class="display-5 fw-bold text-white mb-3">@Model.Title</h1>
-
-                @if (!string.IsNullOrWhiteSpace(Model.ShortIntro))
-                {
-                    <p class="lead text-white-50 mb-0">@Model.ShortIntro</p>
-                }
-            </div>
-        </div>
+        @if (!string.IsNullOrWhiteSpace(Model.ShortIntro))
+        {
+            <p class="lead text-white-50 mb-0">@Model.ShortIntro</p>
+        }
     </div>
 </section>
 
@@ -118,10 +103,10 @@
                         </div>
                         <div class="col-lg-4">
                             <div class="d-flex flex-wrap gap-3 justify-content-lg-end">
-                                <a asp-controller="Products" asp-action="Index" class="btn btn-primary btn-lg px-4">
+                                <a asp-controller="Products" asp-action="Index" class="btn btn-success btn-lg px-4">
                                     <i class="bi bi-box-seam me-1"></i> View Products
                                 </a>
-                                <a asp-controller="Contact" asp-action="Index" class="btn btn-outline-dark btn-lg px-4">
+                                <a asp-controller="Contact" asp-action="Index" class="btn btn-outline-success btn-lg px-4">
                                     <i class="bi bi-chat-dots me-1"></i> Contact Us
                                 </a>
                             </div>

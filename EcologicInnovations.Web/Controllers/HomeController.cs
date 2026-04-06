@@ -96,9 +96,9 @@ public class HomeController : Controller
             .ToListAsync(cancellationToken);
 
         var seo = await _seoMetadataService.BuildDefaultAsync(
-            title: siteSettings.MetaTitleDefault ?? "Ecologic Innovations | Software Development, Smart Systems, Training & Impact",
+            title: siteSettings.MetaTitleDefault ?? "Ecologic Innovations | Purpose-Built Technology for Businesses & Communities",
             description: siteSettings.MetaDescriptionDefault ??
-                         "Ecologic Innovations builds custom software, smart IoT and drone systems, training programs, and impact-driven technology for businesses and communities.",
+                         "Ecologic Innovations partners with organizations to deliver custom software, intelligent connected systems, and professional development programs that drive measurable results.",
             canonicalPath: "/",
             ogImageUrl: siteSettings.LogoUrl,
             cancellationToken: cancellationToken);
@@ -107,9 +107,9 @@ public class HomeController : Controller
         {
             Hero = new HomeHeroViewModel
             {
-                Title = "Software, Smart Systems, Training, and Real-World Impact",
+                Title = "Engineering Tomorrow's Solutions, Today",
                 Subtitle = siteSettings.Tagline ??
-                           "We're a team of builders and problem-solvers. From web and mobile apps to IoT, drones, and hands-on training — we help businesses and communities grow smarter.",
+                           "We partner with businesses and communities to design, build, and scale technology that turns complex challenges into competitive advantages.",
                 ImageUrl = siteSettings.LogoUrl,
                 PrimaryButtonText = "Explore Products",
                 PrimaryButtonUrl = Url.Action("Index", "Products"),
@@ -118,7 +118,7 @@ public class HomeController : Controller
             },
             AboutTitle = aboutPage?.Title ?? "About Ecologic Innovations",
             AboutSummary = aboutPage?.ShortIntro ??
-                           "We're passionate about using technology to make a difference. Our team specializes in software development, smart IoT and drone systems, professional training, and building tools that create lasting impact.",
+                           "We combine deep technical expertise with a hands-on, outcome-driven approach — delivering solutions that work today and scale for tomorrow.",
             AboutImageUrl = aboutPage?.BannerImageUrl,
             FeaturedProducts = featuredProducts,
             LatestBlogs = latestBlogs,
@@ -127,30 +127,30 @@ public class HomeController : Controller
                 new HomeValuePointViewModel
                 {
                     IconCssClass = "bi bi-code-slash",
-                    Title = "Software Development",
-                    Description = "Web, desktop, and mobile applications — we design and build software from scratch to fit exactly what your business needs."
+                    Title = "Custom Software",
+                    Description = "Tailored web, desktop, and mobile applications engineered to streamline your operations and accelerate growth."
                 },
                 new HomeValuePointViewModel
                 {
                     IconCssClass = "bi bi-cpu",
-                    Title = "Smart Systems",
-                    Description = "IoT sensors, drones, and connected devices for real-time monitoring, data collection, and intelligent automation."
+                    Title = "Intelligent Systems",
+                    Description = "Connected IoT sensors, drone platforms, and edge devices that deliver real-time insights and automation at scale."
                 },
                 new HomeValuePointViewModel
                 {
                     IconCssClass = "bi bi-mortarboard",
-                    Title = "Training & Development",
-                    Description = "Practical workshops, technical courses, and skill-building programs that empower teams and individuals to grow."
+                    Title = "Professional Training",
+                    Description = "Hands-on workshops and structured programs designed to upskill your team and close critical knowledge gaps."
                 },
                 new HomeValuePointViewModel
                 {
                     IconCssClass = "bi bi-globe-americas",
-                    Title = "Impact",
-                    Description = "Everything we build is rooted in making a positive difference — for businesses, communities, and the environment."
+                    Title = "Lasting Impact",
+                    Description = "Every solution we deliver is measured by the real-world difference it makes — for your business, your customers, and the wider community."
                 }
             ],
-            CtaTitle = "Got a project idea? Let's make it happen.",
-            CtaText = "Whether you need a web app, a mobile solution, a smart monitoring system, or a training program for your team — we'd love to hear from you.",
+            CtaTitle = "Ready to bring your next idea to life?",
+            CtaText = "Tell us about the challenge you're facing and let's explore how the right technology can solve it — no obligation, just a conversation.",
             CtaButtonText = "Send an Inquiry",
             CtaButtonUrl = Url.Action("Index", "Contact"),
             SiteName = siteSettings.CompanyName ?? "Ecologic Innovations",
