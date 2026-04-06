@@ -23,16 +23,15 @@ document.addEventListener("DOMContentLoaded", function () {
         toast.show();
     });
 
-    // Media library selector button (simple behavior: prompt for URL)
-    const openMediaBtn = document.getElementById('openMediaLibrary');
-    if (openMediaBtn) {
-        openMediaBtn.addEventListener('click', function (e) {
-            // Find the adjacent input (previous sibling)
-            const input = openMediaBtn.parentElement.querySelector('input');
-            const url = prompt('Enter media URL (absolute or site-relative, e.g. /uploads/media/...):', input.value || '');
+    // Media library selector buttons (simple behavior: prompt for URL)
+    // Supports multiple buttons per page via a shared CSS class.
+    document.querySelectorAll('.btn-select-media').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            var input = btn.closest('.input-group').querySelector('input');
+            var url = prompt('Enter media URL (absolute or site-relative, e.g. /uploads/media/...):', input.value || '');
             if (url !== null) {
                 input.value = url.trim();
             }
         });
-    }
+    });
 });

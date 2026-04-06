@@ -39,9 +39,12 @@
 
                 <div class="mt-4">
                     <label asp-for="MainImageUrl" class="form-label fw-semibold"></label>
-                    <input asp-for="MainImageUrl" class="form-control" placeholder="/uploads/media/product/example.jpg" />
+                    <div class="input-group">
+                        <input asp-for="MainImageUrl" class="form-control" placeholder="/uploads/media/product/example.jpg or https://..." />
+                        <button type="button" class="btn btn-outline-secondary btn-select-media"><i class="bi bi-folder2-open me-1"></i>Select</button>
+                    </div>
                     <div class="form-text">
-                        Upload the image from Media / Uploads, copy the public URL, and paste it here.
+                        Paste an internal path (e.g. <code>/uploads/media/product/image.jpg</code>) or a full external URL (e.g. <code>https://example.com/image.jpg</code>).
                     </div>
                     <span asp-validation-for="MainImageUrl" class="text-danger small"></span>
                 </div>
@@ -155,9 +158,12 @@
 
                 <div>
                     <label asp-for="OgImageUrl" class="form-label fw-semibold"></label>
-                    <input asp-for="OgImageUrl" class="form-control" placeholder="/uploads/media/product/example-og.jpg" />
+                    <div class="input-group">
+                        <input asp-for="OgImageUrl" class="form-control" placeholder="/uploads/media/product/example-og.jpg or https://..." />
+                        <button type="button" class="btn btn-outline-secondary btn-select-media"><i class="bi bi-folder2-open me-1"></i>Select</button>
+                    </div>
                     <div class="form-text">
-                        Optional Open Graph image. Leave blank to allow fallback behavior later.
+                        Optional Open Graph image for social sharing. Paste an internal path or full external URL.
                     </div>
                     <span asp-validation-for="OgImageUrl" class="text-danger small"></span>
                 </div>

@@ -29,10 +29,10 @@
                 <div class="mt-3">
                     <label asp-for="FeatureImageUrl" class="form-label fw-semibold"></label>
                     <div class="input-group">
-                        <input asp-for="FeatureImageUrl" type="text" class="form-control" placeholder="/uploads/media/example.jpg" />
-                        <button type="button" class="btn btn-outline-secondary" id="openMediaLibrary">Select</button>
+                        <input asp-for="FeatureImageUrl" type="text" class="form-control" placeholder="/uploads/media/example.jpg or https://..." />
+                        <button type="button" class="btn btn-outline-secondary btn-select-media"><i class="bi bi-folder2-open me-1"></i>Select</button>
                     </div>
-                    <div class="form-text">Use a Media / Uploads URL or a trusted public image URL.</div>
+                    <div class="form-text">Paste an internal path (e.g. <code>/uploads/media/image.jpg</code>) or a full external URL (e.g. <code>https://example.com/image.jpg</code>).</div>
                     <span asp-validation-for="FeatureImageUrl" class="text-danger small"></span>
                 </div>
 
@@ -132,9 +132,21 @@
 
                 <div>
                     <label asp-for="OgImageUrl" class="form-label fw-semibold"></label>
-                    <input asp-for="OgImageUrl" type="text" class="form-control" />
+                    <div class="input-group">
+                        <input asp-for="OgImageUrl" type="text" class="form-control" placeholder="/uploads/media/og-image.jpg or https://..." />
+                        <button type="button" class="btn btn-outline-secondary btn-select-media"><i class="bi bi-folder2-open me-1"></i>Select</button>
+                    </div>
+                    <div class="form-text">Optional Open Graph image for social sharing.</div>
                     <span asp-validation-for="OgImageUrl" class="text-danger small"></span>
                 </div>
+
+                @if (!string.IsNullOrWhiteSpace(Model.OgImageUrl))
+                {
+                    <div class="mt-3">
+                        <div class="small fw-semibold text-muted mb-2">OG Image Preview</div>
+                        <img src="@Model.OgImageUrl" alt="OG image preview" class="img-fluid rounded-3 border admin-image-preview" style="max-height:160px; object-fit:cover;" />
+                    </div>
+                }
             </div>
         </div>
 

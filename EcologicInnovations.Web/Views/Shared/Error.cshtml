@@ -8,28 +8,28 @@
     ViewData["Title"] = "Error";
 }
 
-<section class="status-page-shell py-5">
+<section class="status-page-shell">
     <div class="container">
         <div class="status-page-card p-4 p-lg-5 text-center mx-auto" style="max-width: 760px;">
+
             <div class="status-page-icon mb-4">
                 <i class="bi bi-exclamation-octagon"></i>
             </div>
 
-            <div class="text-uppercase small fw-semibold text-secondary mb-2">
-                Unexpected Error
-            </div>
+            <div class="status-page-code mb-2">500</div>
+            <div class="status-page-kicker mb-3">Unexpected Error</div>
 
-            <h1 class="display-6 fw-bold mb-3">Something went wrong</h1>
+            <h1 class="display-6 status-page-title mb-3">Something went wrong</h1>
 
-            <p class="lead text-secondary mb-4">
+            <p class="lead status-page-message mb-4">
                 We encountered an unexpected problem. Please try again in a moment or return to the home page.
             </p>
 
             <div class="d-flex flex-wrap justify-content-center gap-2">
-                <a href="/" class="btn btn-primary rounded-pill px-4">
+                <a href="/" class="btn status-btn-primary">
                     <i class="bi bi-house-door me-1"></i> Go to Home Page
                 </a>
-                <a href="/contact" class="btn btn-outline-secondary rounded-pill px-4">
+                <a href="/contact" class="btn status-btn-outline">
                     <i class="bi bi-envelope me-1"></i> Contact Support
                 </a>
             </div>

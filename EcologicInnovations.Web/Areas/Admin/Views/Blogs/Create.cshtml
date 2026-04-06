@@ -1,3 +1,14 @@
-@section Head {
+@model EcologicInnovations.Web.ViewModels.Admin.BlogAdminEditViewModel
+
+<form asp-action="Create" method="post">
+    @Html.AntiForgeryToken()
+    <partial name="_BlogForm" model="Model" />
+</form>
+
+@section Styles {
     <link rel="stylesheet" href="~/css/admin-blogs.css" asp-append-version="true" />
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
 }

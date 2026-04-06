@@ -125,27 +125,170 @@ textarea.form-control {
     background: rgba(13, 202, 240, 0.12);
 }
 
+/* ── Error / Status Pages ── */
+
 .status-page-shell {
-    min-height: calc(100vh - 180px);
+    position: relative;
+    min-height: calc(100vh - 160px);
     display: flex;
     align-items: center;
+    justify-content: center;
+    background:
+        radial-gradient(circle at 20% 30%, rgba(22, 163, 74, 0.18), transparent 40%),
+        radial-gradient(circle at 80% 70%, rgba(15, 118, 110, 0.14), transparent 40%),
+        linear-gradient(135deg, #0f172a 0%, #123524 55%, #0f766e 100%);
+    color: #fff;
+    overflow: hidden;
+    padding: 3rem 0;
+}
+
+.status-page-shell::before,
+.status-page-shell::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: 0.06;
+}
+
+.status-page-shell::before {
+    width: 420px;
+    height: 420px;
+    background: radial-gradient(circle, #22c55e, transparent 70%);
+    top: -120px;
+    right: -80px;
+}
+
+.status-page-shell::after {
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, #0f766e, transparent 70%);
+    bottom: -80px;
+    left: -60px;
 }
 
 .status-page-card {
+    position: relative;
+    z-index: 1;
     border-radius: var(--eco-radius-lg);
-    background: linear-gradient(180deg, #ffffff 0%, var(--eco-bg-soft) 100%);
-    border: 1px solid var(--eco-border);
-    box-shadow: var(--eco-shadow);
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+}
+
+.status-page-code {
+    font-size: clamp(5rem, 12vw, 9rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(34, 197, 94, 0.7) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 4px 24px rgba(34, 197, 94, 0.25));
 }
 
 .status-page-icon {
-    width: 5rem;
-    height: 5rem;
+    width: 5.5rem;
+    height: 5.5rem;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     border-radius: 999px;
-    background: rgba(25, 135, 84, 0.08);
-    color: var(--eco-secondary);
-    font-size: 2rem;
+    background: rgba(34, 197, 94, 0.12);
+    border: 1px solid rgba(34, 197, 94, 0.2);
+    color: #4ade80;
+    font-size: 2.25rem;
+    box-shadow: 0 0 40px rgba(34, 197, 94, 0.15);
+    animation: statusIconPulse 3s ease-in-out infinite;
+}
+
+@keyframes statusIconPulse {
+    0%, 100% { box-shadow: 0 0 40px rgba(34, 197, 94, 0.15); }
+    50%      { box-shadow: 0 0 60px rgba(34, 197, 94, 0.25); }
+}
+
+.status-page-title {
+    color: #fff;
+    font-weight: 700;
+}
+
+.status-page-message {
+    color: rgba(255, 255, 255, 0.7);
+    max-width: 48ch;
+    margin-inline: auto;
+}
+
+.status-page-divider {
+    border-color: rgba(255, 255, 255, 0.1);
+    max-width: 200px;
+    margin-inline: auto;
+}
+
+.status-page-tips {
+    text-align: left;
+    max-width: 420px;
+    margin-inline: auto;
+}
+
+.status-page-tips li {
+    padding: 0.3rem 0;
+    color: rgba(255, 255, 255, 0.55);
+}
+
+.status-page-tips li i {
+    color: #4ade80;
+}
+
+.status-page-tips a {
+    color: #4ade80;
+    text-decoration: none;
+}
+
+.status-page-tips a:hover {
+    color: #86efac;
+    text-decoration: underline;
+}
+
+.status-btn-primary {
+    background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+    color: #fff;
+    border: none;
+    border-radius: 999px;
+    padding: 0.6rem 1.75rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 16px rgba(22, 163, 74, 0.3);
+}
+
+.status-btn-primary:hover {
+    background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 24px rgba(22, 163, 74, 0.4);
+}
+
+.status-btn-outline {
+    background: transparent;
+    color: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 999px;
+    padding: 0.6rem 1.75rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.status-btn-outline:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.status-page-kicker {
+    letter-spacing: 0.15em;
+    font-size: 0.78rem;
+    color: #4ade80;
+    font-weight: 600;
+    text-transform: uppercase;
 }
