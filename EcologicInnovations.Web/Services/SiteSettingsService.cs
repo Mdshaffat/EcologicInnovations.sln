@@ -15,6 +15,7 @@ namespace EcologicInnovations.Web.Services;
 public class SiteSettingsService : ISiteSettingsService
 {
     private const string CacheKey = "site-settings-primary";
+    private const string DefaultLogoUrl = "/uploads/logo.png";
 
     private readonly ApplicationDbContext _dbContext;
     private readonly IMemoryCache _memoryCache;
@@ -52,6 +53,11 @@ public class SiteSettingsService : ISiteSettingsService
 
         if (record is not null)
         {
+            if (string.IsNullOrWhiteSpace(record.LogoUrl))
+            {
+                record.LogoUrl = DefaultLogoUrl;
+            }
+
             return record;
         }
 
@@ -60,7 +66,7 @@ public class SiteSettingsService : ISiteSettingsService
             CompanyName = _seoOptions.OrganizationName,
             MetaTitleDefault = _seoOptions.DefaultTitle,
             MetaDescriptionDefault = _seoOptions.DefaultDescription,
-            LogoUrl = _seoOptions.DefaultOgImage,
+            LogoUrl = DefaultLogoUrl,
             FooterHtml = $"<p>&copy; {DateTime.UtcNow.Year} {_seoOptions.OrganizationName}. All rights reserved.</p>"
         };
     }

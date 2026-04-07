@@ -116,3 +116,8 @@
     border-top: 1px solid var(--eco-border);
     margin: 1.75rem 0;
 }
+
+.html-content p:empty,
+.html-content p > br:only-child {
+    display: none;
+}

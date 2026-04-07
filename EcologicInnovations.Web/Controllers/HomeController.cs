@@ -110,7 +110,7 @@ public class HomeController : Controller
                 Title = "Engineering Tomorrow's Solutions, Today",
                 Subtitle = siteSettings.Tagline ??
                            "We partner with businesses and communities to design, build, and scale technology that turns complex challenges into competitive advantages.",
-                ImageUrl = siteSettings.LogoUrl,
+                ImageUrl = null,
                 PrimaryButtonText = "Explore Products",
                 PrimaryButtonUrl = Url.Action("Index", "Products"),
                 SecondaryButtonText = "Contact Us",
