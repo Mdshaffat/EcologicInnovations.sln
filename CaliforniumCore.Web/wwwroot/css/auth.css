@@ -1,0 +1,222 @@
+.auth-shell {
+    position: relative;
+    overflow: hidden;
+    min-height: calc(100vh - 86px);
+    display: flex;
+    align-items: center;
+    padding: clamp(3rem, 6vw, 5rem) 0;
+    color: #ffffff;
+    background:
+        linear-gradient(90deg, rgba(2, 6, 23, 0.96) 0%, rgba(5, 43, 114, 0.84) 48%, rgba(8, 174, 202, 0.42) 100%),
+        url("/images/hero-earth-network.png") center bottom / cover no-repeat;
+}
+
+.auth-shell::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(90deg, rgba(22, 217, 232, 0.09) 1px, transparent 1px),
+        linear-gradient(180deg, rgba(22, 217, 232, 0.07) 1px, transparent 1px);
+    background-size: 72px 72px;
+    mask-image: linear-gradient(90deg, transparent 0%, #000 48%, #000 100%);
+    opacity: 0.46;
+    pointer-events: none;
+}
+
+.auth-container {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(22rem, 28rem);
+    gap: clamp(2rem, 6vw, 5rem);
+    align-items: center;
+}
+
+.auth-container-compact {
+    grid-template-columns: minmax(20rem, 28rem);
+    justify-content: center;
+}
+
+.auth-copy h1 {
+    max-width: 42rem;
+    margin: 1rem 0;
+    font-size: clamp(2.4rem, 4.8vw, 5rem);
+    font-weight: 900;
+    line-height: 1.02;
+}
+
+.auth-copy p {
+    max-width: 37rem;
+    margin: 0;
+    color: rgba(226, 232, 240, 0.86);
+    font-size: 1.08rem;
+    line-height: 1.75;
+}
+
+.auth-panel {
+    position: relative;
+    border: 1px solid rgba(22, 217, 232, 0.26);
+    border-radius: 0.95rem;
+    padding: clamp(1.4rem, 3vw, 2rem);
+    background: rgba(255, 255, 255, 0.94);
+    box-shadow: 0 24px 70px rgba(2, 6, 23, 0.34);
+    color: var(--core-text);
+}
+
+.auth-panel::before {
+    content: "";
+    position: absolute;
+    inset: 0.65rem;
+    z-index: -1;
+    border-radius: 0.95rem;
+    border: 1px solid rgba(8, 174, 202, 0.18);
+}
+
+.auth-panel-header {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    margin-bottom: 1.5rem;
+}
+
+.auth-panel-compact .auth-panel-header {
+    flex-direction: column;
+    text-align: center;
+}
+
+.auth-panel-header img {
+    width: 3.9rem;
+    height: 3.9rem;
+    object-fit: contain;
+    filter: drop-shadow(0 10px 18px rgba(7, 87, 184, 0.18));
+}
+
+.auth-panel-header span {
+    display: block;
+    color: var(--core-accent-strong);
+    font-size: 0.75rem;
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.auth-panel-header h2 {
+    margin: 0.12rem 0 0;
+    color: var(--core-heading);
+    font-size: 1.75rem;
+    font-weight: 900;
+}
+
+.auth-form .form-label {
+    color: var(--core-heading);
+    font-weight: 800;
+}
+
+.auth-form .form-control {
+    min-height: 3rem;
+    border-color: rgba(8, 174, 202, 0.22);
+    border-radius: 0.7rem;
+}
+
+.auth-form .form-control:focus {
+    border-color: var(--core-accent);
+    box-shadow: 0 0 0 0.2rem rgba(8, 174, 202, 0.14);
+}
+
+.auth-form .input-group .btn {
+    border-color: rgba(8, 174, 202, 0.22);
+    border-radius: 0 0.7rem 0.7rem 0;
+}
+
+.auth-validation:empty {
+    display: none;
+}
+
+.auth-submit {
+    width: 100%;
+    min-height: 3.15rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    border: 0;
+    border-radius: 999px;
+    color: #fff;
+    font-weight: 900;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    background: linear-gradient(90deg, #12cadd, #0757b8);
+    box-shadow: 0 16px 30px rgba(7, 87, 184, 0.27);
+}
+
+.auth-submit:hover {
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 20px 38px rgba(7, 87, 184, 0.34);
+}
+
+.auth-network span {
+    position: absolute;
+    z-index: 1;
+    border-radius: 50%;
+    background: #16d9e8;
+    box-shadow: 0 0 18px rgba(22, 217, 232, 0.88);
+    animation: authFloat 8s ease-in-out infinite;
+}
+
+.auth-network span:nth-child(1) {
+    width: 0.62rem;
+    height: 0.62rem;
+    top: 24%;
+    right: 19%;
+}
+
+.auth-network span:nth-child(2) {
+    width: 0.5rem;
+    height: 0.5rem;
+    bottom: 22%;
+    right: 32%;
+    animation-delay: -2.5s;
+}
+
+.auth-network span:nth-child(3) {
+    width: 0.42rem;
+    height: 0.42rem;
+    top: 42%;
+    right: 8%;
+    animation-delay: -4s;
+}
+
+@keyframes authFloat {
+    0%,
+    100% {
+        transform: translate3d(0, 0, 0);
+        opacity: 0.62;
+    }
+
+    50% {
+        transform: translate3d(0, -14px, 0);
+        opacity: 1;
+    }
+}
+
+@media (max-width: 991.98px) {
+    .auth-container {
+        grid-template-columns: 1fr;
+    }
+
+    .auth-copy {
+        text-align: center;
+    }
+
+    .auth-copy .section-kicker {
+        justify-content: center !important;
+    }
+
+    .auth-copy p,
+    .auth-copy h1 {
+        margin-left: auto;
+        margin-right: auto;
+    }
+}

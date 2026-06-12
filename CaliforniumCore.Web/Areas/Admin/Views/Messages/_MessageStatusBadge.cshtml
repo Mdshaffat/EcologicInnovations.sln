@@ -1,0 +1,15 @@
+@model CaliforniumCore.Web.Models.Enums.ContactMessageStatus
+
+@{
+    var (cssClass, icon) = Model switch
+    {
+        CaliforniumCore.Web.Models.Enums.ContactMessageStatus.New => ("text-bg-danger", "bi-envelope-fill"),
+        CaliforniumCore.Web.Models.Enums.ContactMessageStatus.Unread => ("text-bg-warning", "bi-envelope-fill"),
+        CaliforniumCore.Web.Models.Enums.ContactMessageStatus.Read => ("text-bg-primary", "bi-envelope-open"),
+        CaliforniumCore.Web.Models.Enums.ContactMessageStatus.Replied => ("text-bg-success", "bi-reply"),
+        CaliforniumCore.Web.Models.Enums.ContactMessageStatus.Closed => ("text-bg-secondary", "bi-check-circle"),
+        _ => ("text-bg-light", "bi-question-circle")
+    };
+}
+
+<span class="badge rounded-pill @cssClass"><i class="bi @icon me-1"></i>@Model</span>

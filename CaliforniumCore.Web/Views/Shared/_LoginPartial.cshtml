@@ -1,0 +1,31 @@
+@using CaliforniumCore.Web.Security
+
+<ul class="navbar-nav align-items-lg-center">
+    @if (User.IsSignedIn())
+    {
+        <li class="nav-item d-flex align-items-center gap-2">
+            <form asp-area="Identity"
+                  asp-page="/Account/Logout"
+                  asp-page-handler="Logout"
+                  asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })"
+                  method="post"
+                  class="d-inline">
+                @Html.AntiForgeryToken()
+                <button type="submit" class="btn public-navbar-login btn-sm rounded-pill px-3" aria-label="Sign out">
+                    <i class="bi bi-box-arrow-right"></i>
+                </button>
+            </form>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item">
+            <a class="btn public-navbar-login btn-sm rounded-pill px-3"
+                   asp-area="Identity"
+                   asp-page="/Account/Login"
+                   aria-label="Sign in">
+                    <i class="bi bi-shield-lock"></i>
+                </a>
+        </li>
+    }
+</ul>

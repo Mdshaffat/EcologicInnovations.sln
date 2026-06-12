@@ -1,0 +1,81 @@
+@page
+@model CaliforniumCore.Web.Areas.Identity.Pages.Account.LoginModel
+@{
+    ViewData["Title"] = "Admin Login";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/auth.css" asp-append-version="true" />
+}
+
+<section class="auth-shell">
+    <div class="auth-network" aria-hidden="true">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+    <div class="container auth-container auth-container-compact">
+        <div class="auth-panel auth-panel-compact">
+            <div class="auth-panel-header">
+                <img src="~/uploads/californium-core-logo-atom.svg" alt="Californium Core" />
+                <h2>Sign in</h2>
+            </div>
+
+            <form method="post" class="auth-form">
+                @Html.AntiForgeryToken()
+                <div asp-validation-summary="ModelOnly" class="text-danger auth-validation"></div>
+
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label">Email</label>
+                    <input asp-for="Email" class="form-control" autocomplete="username" />
+                    <span asp-validation-for="Email" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Password" class="form-label">Password</label>
+                    <div class="input-group">
+                        <input asp-for="Password" class="form-control" type="password" id="password" autocomplete="current-password" />
+                        <button type="button" class="btn btn-outline-secondary" id="togglePassword" aria-label="Show or hide password">
+                            <i class="bi bi-eye" id="toggleIcon"></i>
+                        </button>
+                    </div>
+                    <span asp-validation-for="Password" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-4 form-check">
+                    <input asp-for="RememberMe" class="form-check-input" />
+                    <label asp-for="RememberMe" class="form-check-label">Remember this device</label>
+                </div>
+
+                <button type="submit" class="btn auth-submit">
+                    <i class="bi bi-shield-lock"></i>
+                    <span>Log in</span>
+                </button>
+            </form>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        (function(){
+            const pwd = document.getElementById('password');
+            const btn = document.getElementById('togglePassword');
+            const icon = document.getElementById('toggleIcon');
+            if (!pwd || !btn) return;
+            btn.addEventListener('click', function(){
+                if (pwd.type === 'password'){
+                    pwd.type = 'text';
+                    icon.classList.remove('bi-eye');
+                    icon.classList.add('bi-eye-slash');
+                } else {
+                    pwd.type = 'password';
+                    icon.classList.remove('bi-eye-slash');
+                    icon.classList.add('bi-eye');
+                }
+            });
+        })();
+    </script>
+}

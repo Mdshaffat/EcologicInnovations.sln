@@ -1,0 +1,43 @@
+@model CaliforniumCore.Web.ViewModels.Shared.VideoEmbedViewModel
+
+<div class="public-video-panel">
+    <div class="public-video-header">
+        <span class="public-video-provider">
+            <i class="@Model.IconCssClass" aria-hidden="true"></i>
+            @Model.ProviderName
+        </span>
+    </div>
+
+    @if (Model.IsEmbeddedPlayer)
+    {
+        <div class="public-video-frame">
+            <iframe src="@Model.EmbedUrl"
+                    title="@Model.ProviderName video"
+                    loading="lazy"
+                    referrerpolicy="strict-origin-when-cross-origin"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowfullscreen></iframe>
+        </div>
+    }
+    else if (Model.IsDirectVideoFile)
+    {
+        <div class="public-video-frame">
+            <video controls preload="metadata">
+                <source src="@Model.DirectVideoUrl" type="@Model.MimeType" />
+            </video>
+        </div>
+    }
+    else
+    {
+        <div class="public-video-external">
+            <i class="bi bi-play-circle" aria-hidden="true"></i>
+            <div>
+                <strong>Video link</strong>
+                <p>This platform does not provide a safe automatic embed here.</p>
+            </div>
+            <a href="@Model.ExternalUrl" target="_blank" rel="noopener noreferrer" class="btn btn-success rounded-pill px-3">
+                Open Video
+            </a>
+        </div>
+    }
+</div>

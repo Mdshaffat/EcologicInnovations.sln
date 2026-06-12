@@ -1,0 +1,12 @@
+@using CaliforniumCore.Web.Security
+
+@if (User.IsAdmin())
+{
+    <a class="btn btn-sm public-navbar-admin rounded-pill px-3"
+       asp-area="Admin"
+       asp-controller="Dashboard"
+       asp-action="Index"
+       aria-label="Admin dashboard">
+        <i class="bi bi-speedometer2"></i>
+    </a>
+}

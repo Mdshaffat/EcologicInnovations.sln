@@ -1,0 +1,38 @@
+@using CaliforniumCore.Web.Security
+
+<div class="public-footer-access" aria-label="Restricted access">
+    @if (User.IsAdmin())
+    {
+        <a class="public-footer-access-button"
+           asp-area="Admin"
+           asp-controller="Dashboard"
+           asp-action="Index"
+           aria-label="Admin dashboard">
+            <i class="bi bi-speedometer2" aria-hidden="true"></i>
+        </a>
+    }
+
+    @if (User.IsSignedIn())
+    {
+        <form asp-area="Identity"
+              asp-page="/Account/Logout"
+              asp-page-handler="Logout"
+              asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })"
+              method="post"
+              class="d-inline">
+            @Html.AntiForgeryToken()
+            <button type="submit" class="public-footer-access-button" aria-label="Sign out">
+                <i class="bi bi-box-arrow-right" aria-hidden="true"></i>
+            </button>
+        </form>
+    }
+    else
+    {
+        <a class="public-footer-access-button"
+           asp-area="Identity"
+           asp-page="/Account/Login"
+           aria-label="Sign in">
+            <i class="bi bi-shield-lock" aria-hidden="true"></i>
+        </a>
+    }
+</div>

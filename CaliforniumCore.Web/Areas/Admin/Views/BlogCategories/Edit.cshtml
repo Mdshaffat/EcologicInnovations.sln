@@ -1,0 +1,11 @@
+@model CaliforniumCore.Web.ViewModels.Admin.BlogCategoryAdminEditViewModel
+
+<form asp-area="Admin" asp-controller="BlogCategories" asp-action="Edit" asp-route-id="@Model.Id" method="post">
+    @Html.AntiForgeryToken()
+    <input asp-for="Id" type="hidden" />
+    <partial name="_CategoryForm" model="Model" />
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

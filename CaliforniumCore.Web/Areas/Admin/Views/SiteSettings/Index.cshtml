@@ -1,0 +1,148 @@
+@model CaliforniumCore.Web.ViewModels.Admin.SiteSettingsEditViewModel
+
+<form asp-area="Admin" asp-controller="SiteSettings" asp-action="Index" method="post" novalidate>
+    @Html.AntiForgeryToken()
+
+    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+    <div class="row g-4">
+        <div class="col-xl-6">
+            <div class="card border-0 shadow-sm admin-form-card h-100">
+                <div class="card-body p-4">
+                    <h2 class="h5 mb-3">Branding & Contact</h2>
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label asp-for="CompanyName" class="form-label"></label>
+                            <input asp-for="CompanyName" class="form-control" />
+                            <span asp-validation-for="CompanyName" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Tagline" class="form-label"></label>
+                            <input asp-for="Tagline" class="form-control" />
+                            <span asp-validation-for="Tagline" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="LogoUrl" class="form-label"></label>
+                            <input asp-for="LogoUrl" class="form-control" />
+                            <span asp-validation-for="LogoUrl" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="FaviconUrl" class="form-label"></label>
+                            <input asp-for="FaviconUrl" class="form-control" />
+                            <span asp-validation-for="FaviconUrl" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="SupportEmail" class="form-label"></label>
+                            <input asp-for="SupportEmail" class="form-control" />
+                            <span asp-validation-for="SupportEmail" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="SalesEmail" class="form-label"></label>
+                            <input asp-for="SalesEmail" class="form-control" />
+                            <span asp-validation-for="SalesEmail" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Phone" class="form-label"></label>
+                            <input asp-for="Phone" class="form-control" />
+                            <span asp-validation-for="Phone" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Address" class="form-label"></label>
+                            <input asp-for="Address" class="form-control" />
+                            <span asp-validation-for="Address" class="text-danger small"></span>
+                        </div>
+                        <div class="col-12">
+                            <label asp-for="GoogleMapEmbedUrl" class="form-label"></label>
+                            <input asp-for="GoogleMapEmbedUrl" class="form-control" placeholder="https://www.google.com/maps/embed?pb=..." />
+                            <div class="form-text">Controls the public About Us map. Paste the Google Maps iframe src URL or the full embed iframe code.</div>
+                            <span asp-validation-for="GoogleMapEmbedUrl" class="text-danger small"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-6">
+            <div class="card border-0 shadow-sm admin-form-card h-100">
+                <div class="card-body p-4">
+                    <h2 class="h5 mb-3">SEO & Footer</h2>
+
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <label asp-for="MetaTitleDefault" class="form-label"></label>
+                            <input asp-for="MetaTitleDefault" class="form-control" />
+                            <span asp-validation-for="MetaTitleDefault" class="text-danger small"></span>
+                        </div>
+                        <div class="col-12">
+                            <label asp-for="MetaDescriptionDefault" class="form-label"></label>
+                            <textarea asp-for="MetaDescriptionDefault" class="form-control" rows="3"></textarea>
+                            <span asp-validation-for="MetaDescriptionDefault" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-4">
+                            <label asp-for="FacebookUrl" class="form-label"></label>
+                            <input asp-for="FacebookUrl" class="form-control" />
+                            <span asp-validation-for="FacebookUrl" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-4">
+                            <label asp-for="LinkedInUrl" class="form-label"></label>
+                            <input asp-for="LinkedInUrl" class="form-control" />
+                            <span asp-validation-for="LinkedInUrl" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-4">
+                            <label asp-for="YouTubeUrl" class="form-label"></label>
+                            <input asp-for="YouTubeUrl" class="form-control" />
+                            <span asp-validation-for="YouTubeUrl" class="text-danger small"></span>
+                        </div>
+                        <div class="col-12">
+                            <label asp-for="FooterHtml" class="form-label"></label>
+                            <textarea asp-for="FooterHtml" class="form-control" rows="5"></textarea>
+                            <span asp-validation-for="FooterHtml" class="text-danger small"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="card border-0 shadow-sm admin-form-card">
+                <div class="card-body p-4">
+                    <h2 class="h5 mb-3">Home: Why Choose Us Section</h2>
+
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-3">
+                            <label asp-for="HomeValueKicker" class="form-label"></label>
+                            <input asp-for="HomeValueKicker" class="form-control" />
+                        </div>
+                        <div class="col-md-5">
+                            <label asp-for="HomeValueTitle" class="form-label"></label>
+                            <input asp-for="HomeValueTitle" class="form-control" />
+                        </div>
+                        <div class="col-md-4">
+                            <label asp-for="HomeValueIntro" class="form-label"></label>
+                            <textarea asp-for="HomeValueIntro" class="form-control" rows="2"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="row g-3">
+                        <partial name="_HomeValueCardFields" model='("1", nameof(Model.HomeValue1IconCssClass), nameof(Model.HomeValue1Title), nameof(Model.HomeValue1Description))' />
+                        <partial name="_HomeValueCardFields" model='("2", nameof(Model.HomeValue2IconCssClass), nameof(Model.HomeValue2Title), nameof(Model.HomeValue2Description))' />
+                        <partial name="_HomeValueCardFields" model='("3", nameof(Model.HomeValue3IconCssClass), nameof(Model.HomeValue3Title), nameof(Model.HomeValue3Description))' />
+                        <partial name="_HomeValueCardFields" model='("4", nameof(Model.HomeValue4IconCssClass), nameof(Model.HomeValue4Title), nameof(Model.HomeValue4Description))' />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-end gap-2 mt-4">
+        <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+        <button type="submit" class="btn btn-success">
+            <i class="bi bi-save me-1"></i> Save Settings
+        </button>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

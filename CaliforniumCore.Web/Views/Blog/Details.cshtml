@@ -1,0 +1,162 @@
+@model CaliforniumCore.Web.ViewModels.Blog.BlogDetailsViewModel
+
+@{
+    ViewData["Title"] = Model.Seo.Title ?? Model.Title;
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/blog-details.css" asp-append-version="true" />
+}
+
+<section class="page-hero">
+    <div class="container">
+        <nav aria-label="breadcrumb" class="mb-3">
+            <ol class="breadcrumb mb-0">
+                @foreach (var item in Model.Breadcrumbs)
+                {
+                    if (item.IsActive)
+                    {
+                        <li class="breadcrumb-item active" aria-current="page">@item.Title</li>
+                    }
+                    else
+                    {
+                        <li class="breadcrumb-item"><a href="@item.Url">@item.Title</a></li>
+                    }
+                }
+            </ol>
+        </nav>
+
+        <h1 class="display-5 fw-bold text-white mb-2">@Model.Title</h1>
+        @if (!string.IsNullOrWhiteSpace(Model.Excerpt))
+        {
+            <p class="lead text-white-50 mb-0">@Model.Excerpt</p>
+        }
+    </div>
+</section>
+
+<section class="blog-details-page py-5">
+    <div class="container">
+        <article class="blog-article blog-article-full">
+            @if (!string.IsNullOrWhiteSpace(Model.CategoryName) || Model.PublishedAt.HasValue)
+            {
+                <div class="blog-article-meta d-flex flex-wrap align-items-center gap-2 mb-4">
+                    @if (!string.IsNullOrWhiteSpace(Model.CategoryName))
+                    {
+                        <span class="badge rounded-pill blog-category-badge">@Model.CategoryName</span>
+                    }
+                    @if (Model.PublishedAt.HasValue)
+                    {
+                        <span class="text-muted small">Published on @Model.PublishedAt.Value.ToString("dd MMM yyyy")</span>
+                    }
+                </div>
+            }
+
+            @if (Model.VideoEmbed is not null)
+            {
+                <div class="mb-4">
+                    <partial name="_VideoEmbedPanel" model="Model.VideoEmbed" />
+                </div>
+            }
+            else if (!string.IsNullOrWhiteSpace(Model.FeatureImageUrl))
+            {
+                <div class="blog-feature-image-wrapper mb-4">
+                    <img src="@Model.FeatureImageUrl" alt="@Model.Title" class="img-fluid w-100 blog-feature-image" />
+                </div>
+            }
+
+            <div class="blog-article-body cms-content">
+                @Html.Raw(Model.HtmlContent)
+            </div>
+        </article>
+
+        @if (Model.ShowContactForm)
+        {
+            <section class="blog-inquiry-section mt-5" id="inquiry-form">
+                <div class="mb-4">
+                    <span class="section-kicker">Contact</span>
+                    <h2 class="h3 mb-2">@(string.IsNullOrWhiteSpace(Model.ContactFormTitle) ? "Contact Us About This Article" : Model.ContactFormTitle)</h2>
+                    <p class="text-muted mb-0">Send us your question, discussion point, or service inquiry related to this article.</p>
+                </div>
+
+                @if (Model.InquirySubmittedSuccessfully)
+                {
+                    <div class="alert alert-success core-success-callout d-flex align-items-start gap-3 rounded-4 shadow-sm border-0 py-3 px-4 mb-4" id="successMessage">
+                        <div class="flex-shrink-0 mt-1">
+                            <i class="bi bi-check-circle-fill fs-4 core-success-icon"></i>
+                        </div>
+                        <div>
+                            <strong class="d-block mb-1">Message Sent!</strong>
+                            <span>@Model.SuccessMessage</span>
+                        </div>
+                    </div>
+                }
+
+                <form asp-controller="Blog" asp-action="Inquiry" asp-route-slug="@Model.Slug" method="post" novalidate>
+                    @Html.AntiForgeryToken()
+                    <partial name="_BlogInquiryForm" model="Model.InquiryForm" />
+                </form>
+            </section>
+        }
+
+        @if (Model.RelatedPosts.Any())
+        {
+            <section class="related-articles-section mt-5 pt-5 border-top">
+                <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-end gap-3 mb-4">
+                    <div>
+                        <span class="section-kicker">Continue Reading</span>
+                        <h2 class="section-title mt-2 mb-2">Related Articles</h2>
+                    </div>
+                    <a asp-controller="Blog" asp-action="Index" class="btn btn-outline-success">
+                        View All Articles
+                    </a>
+                </div>
+
+                <div class="row g-4">
+                    @foreach (var item in Model.RelatedPosts)
+                    {
+                        <div class="col-md-6 col-xl-4">
+                            <a asp-controller="Blog" asp-action="Details" asp-route-slug="@item.Slug" class="related-article-card text-decoration-none h-100">
+                                @if (!string.IsNullOrWhiteSpace(item.FeatureImageUrl))
+                                {
+                                    <img src="@item.FeatureImageUrl" alt="@item.Title" class="related-article-image" />
+                                }
+                                else
+                                {
+                                    <div class="related-article-placeholder d-flex align-items-center justify-content-center">
+                                        <i class="bi bi-journal-richtext"></i>
+                                    </div>
+                                }
+
+                                <div class="related-article-body">
+                                    @if (item.PublishedAt.HasValue)
+                                    {
+                                        <div class="small text-muted mb-2">@item.PublishedAt.Value.ToString("dd MMM yyyy")</div>
+                                    }
+                                    <h3 class="h5 related-article-title">@item.Title</h3>
+                                    @if (!string.IsNullOrWhiteSpace(item.Excerpt))
+                                    {
+                                        <p class="related-article-excerpt mb-0">@item.Excerpt</p>
+                                    }
+                                </div>
+                            </a>
+                        </div>
+                    }
+                </div>
+            </section>
+        }
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    @if (Model.InquirySubmittedSuccessfully || !ViewData.ModelState.IsValid)
+    {
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                var el = document.getElementById('@(Model.InquirySubmittedSuccessfully ? "successMessage" : "inquiry-form")');
+                if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        </script>
+    }
+}

@@ -1,0 +1,43 @@
+@using CaliforniumCore.Web.ViewModels.Shared
+@{
+    // This compatibility partial accepts either a PaginationRenderViewModel (new) or a
+    // PaginationViewModel (older admin views) and forwards an appropriate
+    // PaginationRenderViewModel to the primary _Pagination partial.
+    object incomingModel = Model;
+
+    PaginationRenderViewModel renderModel;
+
+    if (incomingModel is PaginationRenderViewModel prm)
+    {
+        renderModel = prm;
+    }
+    else if (incomingModel is PaginationViewModel pvm)
+    {
+        // Build a minimal render model from the older pagination model.
+        var query = new Dictionary<string, string?>(StringComparer.OrdinalIgnoreCase);
+        foreach (var q in Context.Request.Query)
+        {
+            query[q.Key] = q.Value.ToString();
+        }
+
+        // Auto-detect the page parameter name: admin pages use "pageNumber", public pages use "page".
+        var currentPath = Context.Request.Path.HasValue ? Context.Request.Path.Value! : "/";
+        var isAdminPath = currentPath.StartsWith("/Admin", StringComparison.OrdinalIgnoreCase);
+        var pageParam = isAdminPath || query.ContainsKey("pageNumber") ? "pageNumber" : "page";
+
+        renderModel = new PaginationRenderViewModel
+        {
+            Pagination = pvm,
+            CurrentPath = Context.Request.Path.HasValue ? Context.Request.Path.Value! : "/",
+            Query = query,
+            PageParameterName = pageParam
+        };
+    }
+    else
+    {
+        // If no model or unknown model, render nothing.
+        renderModel = new PaginationRenderViewModel();
+    }
+}
+
+@await Html.PartialAsync("_Pagination", renderModel)

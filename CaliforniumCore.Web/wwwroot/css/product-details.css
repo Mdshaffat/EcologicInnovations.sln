@@ -1,0 +1,128 @@
+.product-details-page {
+    background: var(--core-page-bg);
+}
+
+.product-main-image {
+    width: 100%;
+    max-height: 520px;
+    object-fit: cover;
+    background: #f5f9fd;
+}
+
+.product-image-placeholder {
+    min-height: 320px;
+}
+
+.product-contact-icon {
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: var(--core-radius);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(22, 217, 232, 0.14), rgba(7, 87, 184, 0.09));
+    color: var(--core-primary);
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
+
+.product-category-badge {
+    font-weight: 600;
+    color: var(--core-primary);
+}
+
+.product-html-content {
+    font-size: 1rem;
+    line-height: 1.75;
+}
+
+.product-html-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 1rem;
+}
+
+.product-html-content table {
+    width: 100%;
+}
+
+.product-html-content h2,
+.product-html-content h3,
+.product-html-content h4 {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    color: var(--core-heading);
+    font-weight: 700;
+}
+
+.product-sticky-summary {
+    top: 6rem;
+}
+
+.product-summary-list dt {
+    color: #5f6b7a;
+    font-weight: 600;
+}
+
+.product-summary-list dd {
+    color: #1f2a37;
+}
+
+.inquiry-card {
+    border-radius: var(--core-radius);
+}
+
+.related-product-link {
+    padding: 0.75rem;
+    border-radius: var(--core-radius);
+    border: 1px solid transparent;
+    transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.related-product-link:hover {
+    background: var(--core-bg-accent-soft);
+    border-color: rgba(8, 174, 202, 0.2);
+}
+
+.related-product-link:hover .fw-semibold {
+    color: var(--core-primary) !important;
+}
+
+.related-product-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: var(--core-radius);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(22, 217, 232, 0.14), rgba(7, 87, 184, 0.09));
+    color: var(--core-primary);
+    font-size: 1rem;
+    flex-shrink: 0;
+}
+
+.related-product-image,
+.related-product-placeholder {
+    height: 190px;
+    object-fit: cover;
+}
+
+.related-product-text {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.empty-product-content {
+    min-height: 120px;
+    display: flex;
+    align-items: center;
+}
+
+@media (max-width: 991.98px) {
+    .product-sticky-summary {
+        position: static !important;
+        top: auto;
+    }
+}

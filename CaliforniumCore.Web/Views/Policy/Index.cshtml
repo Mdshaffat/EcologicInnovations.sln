@@ -1,0 +1,62 @@
+@model CaliforniumCore.Web.ViewModels.Policy.PolicyPageViewModel
+
+@{
+    ViewData["Title"] = Model.Seo.Title ?? Model.Title;
+}
+
+<section class="policy-page">
+    <section class="page-hero">
+        <div class="container">
+            <nav aria-label="breadcrumb" class="mb-3">
+                <ol class="breadcrumb mb-0">
+                    @foreach (var breadcrumb in Model.Breadcrumbs)
+                    {
+                        if (breadcrumb.IsActive || string.IsNullOrWhiteSpace(breadcrumb.Url))
+                        {
+                            <li class="breadcrumb-item active" aria-current="page">@breadcrumb.Title</li>
+                        }
+                        else
+                        {
+                            <li class="breadcrumb-item">
+                                <a href="@breadcrumb.Url">@breadcrumb.Title</a>
+                            </li>
+                        }
+                    }
+                </ol>
+            </nav>
+
+            <h1 class="display-5 fw-bold text-white mb-2">@Model.Title</h1>
+
+            @if (!string.IsNullOrWhiteSpace(Model.ShortIntro))
+            {
+                <p class="lead text-white-50 mb-0">@Model.ShortIntro</p>
+            }
+
+            @if (!string.IsNullOrWhiteSpace(Model.UpdatedText))
+            {
+                <div class="policy-updated-pill mt-3">
+                    <i class="bi bi-clock-history me-2"></i>@Model.UpdatedText
+                </div>
+            }
+        </div>
+    </section>
+
+    <section class="py-5">
+        <div class="container">
+            <div class="row justify-content-center g-4">
+                <div class="col-12 col-xl-10">
+                    <article class="policy-content shadow-sm">
+                        <div class="policy-content-body html-content">
+                            @Html.Raw(Model.HtmlContent)
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </section>
+</section>
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/html-content.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/policy.css" asp-append-version="true" />
+}

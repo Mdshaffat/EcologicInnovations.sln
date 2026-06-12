@@ -1,0 +1,75 @@
+.contact-page {
+    background: var(--core-page-bg);
+}
+
+.contact-page-hero {
+    background-size: cover;
+    background-position: center;
+}
+
+.contact-managed-content {
+    max-width: 960px;
+}
+
+.contact-managed-content img {
+    max-width: 100%;
+    height: auto;
+}
+
+.contact-hero-card {
+    border-radius: var(--core-radius-lg);
+    background:
+        radial-gradient(circle at top right, rgba(22, 217, 232, 0.13), transparent 30%),
+        radial-gradient(circle at bottom left, rgba(7, 87, 184, 0.09), transparent 32%),
+        #ffffff;
+}
+
+.contact-info-item {
+    align-items: flex-start;
+}
+
+.contact-info-icon {
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: var(--core-radius);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(22, 217, 232, 0.14), rgba(7, 87, 184, 0.09));
+    color: var(--core-primary);
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
+
+.contact-hero-card .badge {
+    font-weight: 600;
+    font-size: 0.82rem;
+    letter-spacing: 0.03em;
+}
+
+.contact-page .form-control-lg {
+    border-radius: var(--core-radius);
+    border-color: var(--core-border);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.contact-page .form-control-lg:focus {
+    border-color: var(--core-accent);
+    box-shadow: 0 0 0 0.2rem rgba(8, 174, 202, 0.14);
+}
+
+.contact-page .form-control-lg.input-validation-error {
+    border-color: #dc3545;
+    box-shadow: none;
+}
+
+.contact-page .text-danger.small {
+    display: inline-block;
+    margin-top: 0.3rem;
+    font-size: 0.82rem;
+}
+
+.contact-page .btn-success.btn-lg {
+    border-radius: var(--core-radius);
+    font-weight: 600;
+}

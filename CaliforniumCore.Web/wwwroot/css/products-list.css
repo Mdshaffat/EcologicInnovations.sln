@@ -1,0 +1,111 @@
+.products-page {
+    background: var(--core-page-bg);
+}
+
+/* Hero styles now handled by shared .page-hero in site.css */
+
+.filter-sidebar-card {
+    border-radius: var(--core-radius-lg);
+    top: 1rem;
+    background:
+        linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+}
+
+.category-filter-list .list-group-item {
+    border: 1px solid transparent;
+    border-radius: var(--core-radius);
+    margin-bottom: 0.45rem;
+    padding-top: 0.9rem;
+    padding-bottom: 0.9rem;
+    font-weight: 500;
+}
+
+.category-filter-list .list-group-item:first-child {
+    border-top: 0;
+}
+
+.category-filter-list .list-group-item:last-child {
+    border-bottom: 0;
+}
+
+.category-filter-list .list-group-item.active {
+    background: linear-gradient(90deg, rgba(22, 217, 232, 0.13), rgba(7, 87, 184, 0.08));
+    border-color: rgba(8, 174, 202, 0.22);
+    color: var(--core-primary);
+}
+
+.category-filter-list .list-group-item:hover {
+    background: #f4fbfd;
+    border-color: rgba(8, 174, 202, 0.16);
+}
+
+.product-card {
+    border-radius: var(--core-radius-lg);
+    overflow: hidden;
+    background:
+        linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(8, 174, 202, 0.28) !important;
+    box-shadow: var(--core-shadow-hover) !important;
+}
+
+.product-card-image-wrap {
+    background:
+        linear-gradient(135deg, rgba(22, 217, 232, 0.08), rgba(7, 87, 184, 0.08)),
+        #f5f9fd;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+}
+
+.product-card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.product-card-title {
+    line-height: 1.35;
+}
+
+.product-card-title-link {
+    color: var(--core-heading);
+}
+
+.product-card-title-link:hover {
+    color: var(--core-primary);
+}
+
+.product-card-text {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: 4.5rem;
+}
+
+.product-card-badge {
+    font-weight: 600;
+}
+
+.pagination .page-link {
+    border-radius: 0.6rem;
+    border: 1px solid #dfe5ec;
+    min-width: 2.75rem;
+    text-align: center;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: var(--core-primary);
+    border-color: var(--core-primary);
+}
+
+@media (max-width: 991.98px) {
+    .filter-sidebar-card {
+        position: static !important;
+    }
+}

@@ -1,0 +1,260 @@
+@model CaliforniumCore.Web.ViewModels.Contact.ContactPageViewModel
+
+@{
+    ViewData["Title"] = Model.Seo.Title ?? Model.PageTitle;
+    var heroStyle = string.IsNullOrWhiteSpace(Model.BannerImageUrl)
+        ? null
+        : $"background-image: linear-gradient(135deg, rgba(2, 6, 23, 0.9), rgba(7, 87, 184, 0.72)), url('{Model.BannerImageUrl}');";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/contact.css" asp-append-version="true" />
+}
+
+<section class="page-hero contact-page-hero" style="@heroStyle">
+    <div class="container">
+        <nav aria-label="breadcrumb" class="mb-3">
+            <ol class="breadcrumb mb-0">
+                @foreach (var crumb in Model.Breadcrumbs)
+                {
+                    if (crumb.IsActive)
+                    {
+                        <li class="breadcrumb-item active" aria-current="page">@crumb.Title</li>
+                    }
+                    else
+                    {
+                        <li class="breadcrumb-item">
+                            <a href="@crumb.Url">@crumb.Title</a>
+                        </li>
+                    }
+                }
+            </ol>
+        </nav>
+
+        <span class="page-hero-kicker">Californium Core</span>
+        <h1 class="display-5 fw-bold text-white mb-2">@Model.PageTitle</h1>
+        @if (!string.IsNullOrWhiteSpace(Model.IntroText))
+        {
+            <p class="lead text-white-50 mb-0">@Model.IntroText</p>
+        }
+    </div>
+</section>
+
+<section class="contact-page py-5">
+    <div class="container">
+        @if (!string.IsNullOrWhiteSpace(Model.HtmlContent))
+        {
+            <div class="contact-managed-content content-html mb-5">
+                @Html.Raw(Model.HtmlContent)
+            </div>
+        }
+
+        <div class="row g-4 align-items-start">
+            <div class="col-lg-5">
+                <div class="contact-hero-card card border-0 shadow-sm overflow-hidden">
+                    <div class="card-body p-4 p-lg-5">
+                        <span class="badge rounded-pill border core-brand-pill mb-3">
+                            <i class="bi bi-cpu me-1"></i>Californium Core
+                        </span>
+
+                        <h2 class="h3 fw-bold mb-3">Get in Touch</h2>
+
+                        <div class="contact-info-grid d-grid gap-3">
+                            @if (!string.IsNullOrWhiteSpace(Model.SupportEmail))
+                            {
+                                <div class="contact-info-item d-flex gap-3">
+                                    <div class="contact-info-icon">
+                                        <i class="bi bi-envelope"></i>
+                                    </div>
+                                    <div>
+                                        <div class="small text-secondary text-uppercase">Support Email</div>
+                                        <div class="fw-semibold">@Model.SupportEmail</div>
+                                    </div>
+                                </div>
+                            }
+
+                            @if (!string.IsNullOrWhiteSpace(Model.SalesEmail))
+                            {
+                                <div class="contact-info-item d-flex gap-3">
+                                    <div class="contact-info-icon">
+                                        <i class="bi bi-briefcase"></i>
+                                    </div>
+                                    <div>
+                                        <div class="small text-secondary text-uppercase">Sales Email</div>
+                                        <div class="fw-semibold">@Model.SalesEmail</div>
+                                    </div>
+                                </div>
+                            }
+
+                            @if (!string.IsNullOrWhiteSpace(Model.Phone))
+                            {
+                                <div class="contact-info-item d-flex gap-3">
+                                    <div class="contact-info-icon">
+                                        <i class="bi bi-telephone"></i>
+                                    </div>
+                                    <div>
+                                        <div class="small text-secondary text-uppercase">Phone</div>
+                                        <div class="fw-semibold">@Model.Phone</div>
+                                    </div>
+                                </div>
+                            }
+
+                            @if (!string.IsNullOrWhiteSpace(Model.Address))
+                            {
+                                <div class="contact-info-item d-flex gap-3">
+                                    <div class="contact-info-icon">
+                                        <i class="bi bi-geo-alt"></i>
+                                    </div>
+                                    <div>
+                                        <div class="small text-secondary text-uppercase">Address</div>
+                                        <div class="fw-semibold">@Model.Address</div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+
+                        @if (!string.IsNullOrWhiteSpace(Model.SourceDisplayTitle))
+                        {
+                            <div class="alert alert-info mt-4 mb-0 rounded-4 border-0">
+                                <div class="small text-uppercase fw-semibold mb-1">
+                                    @(Model.SourceHeading ?? "Reference")
+                                </div>
+                                <div class="fw-semibold">@Model.SourceDisplayTitle</div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-7">
+                <div id="contact-form" class="card border-0 shadow-sm rounded-4 overflow-hidden">
+                    <div class="card-body p-4 p-lg-5">
+                        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mb-4">
+                            <div>
+                                <h2 class="h3 mb-1">Send a Message</h2>
+                                <p class="text-secondary mb-0">We'd love to hear from you. Drop us a message and we'll get back to you shortly.</p>
+                            </div>
+                        </div>
+
+                        @if (Model.SubmittedSuccessfully && !string.IsNullOrWhiteSpace(Model.SuccessMessage))
+                        {
+                            <div class="alert alert-success core-success-callout d-flex align-items-start gap-3 rounded-4 shadow-sm border-0 mb-4" id="successMessage">
+                                <div class="flex-shrink-0 mt-1">
+                                    <i class="bi bi-check-circle-fill fs-4 core-success-icon"></i>
+                                </div>
+                                <div>
+                                    <strong class="d-block mb-1">Message Sent!</strong>
+                                    <span>@Model.SuccessMessage</span>
+                                </div>
+                            </div>
+                        }
+
+                        @if (!Model.SubmittedSuccessfully && !ViewData.ModelState.IsValid && ViewData.ModelState.Any(m => m.Value?.Errors.Count > 0))
+                        {
+                            <div class="alert alert-danger d-flex align-items-start gap-3 rounded-4 border-0 py-3 px-4 mb-4" role="alert">
+                                <div class="flex-shrink-0 mt-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+                                        <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.436-.99.98-1.767zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5m.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <strong>Please fix the errors below.</strong>
+                                    <div class="small mt-1">One or more fields need your attention before submitting.</div>
+                                </div>
+                            </div>
+                        }
+
+                        <form asp-action="Index" asp-controller="Contact" method="post" novalidate>
+                            @Html.AntiForgeryToken()
+
+                            <div asp-validation-summary="ModelOnly" class="text-danger small mb-3"></div>
+
+                            <input asp-for="Form.SourceType" type="hidden" />
+                            <input asp-for="Form.ProductId" type="hidden" />
+                            <input asp-for="Form.BlogPostId" type="hidden" />
+                            <input asp-for="Form.SourceTitle" type="hidden" />
+                            <input asp-for="Form.PageUrl" type="hidden" />
+
+                            @if (!string.IsNullOrWhiteSpace(Model.Form.RegardingProductTitle))
+                            {
+                                <div class="mb-3">
+                                    <label asp-for="Form.RegardingProductTitle" class="form-label"></label>
+                                    <input asp-for="Form.RegardingProductTitle" class="form-control form-control-lg" readonly />
+                                </div>
+                            }
+
+                            @if (Model.SourceType == CaliforniumCore.Web.Models.Enums.ContactSourceType.Blog &&
+                                 !string.IsNullOrWhiteSpace(Model.SourceDisplayTitle))
+                            {
+                                <div class="mb-3">
+                                    <label class="form-label">Regarding Article</label>
+                                    <input type="text" class="form-control form-control-lg" value="@Model.SourceDisplayTitle" readonly />
+                                </div>
+                            }
+
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label asp-for="Form.Name" class="form-label"></label>
+                                    <input asp-for="Form.Name" class="form-control form-control-lg" />
+                                    <span asp-validation-for="Form.Name" class="text-danger small"></span>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label asp-for="Form.Email" class="form-label"></label>
+                                    <input asp-for="Form.Email" class="form-control form-control-lg" />
+                                    <span asp-validation-for="Form.Email" class="text-danger small"></span>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label asp-for="Form.Phone" class="form-label"></label>
+                                    <input asp-for="Form.Phone" class="form-control form-control-lg" />
+                                    <span asp-validation-for="Form.Phone" class="text-danger small"></span>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label asp-for="Form.Company" class="form-label"></label>
+                                    <input asp-for="Form.Company" class="form-control form-control-lg" />
+                                    <span asp-validation-for="Form.Company" class="text-danger small"></span>
+                                </div>
+
+                                <div class="col-12">
+                                    <label asp-for="Form.Subject" class="form-label"></label>
+                                    <input asp-for="Form.Subject" class="form-control form-control-lg" />
+                                    <span asp-validation-for="Form.Subject" class="text-danger small"></span>
+                                </div>
+
+                                <div class="col-12">
+                                    <label asp-for="Form.Message" class="form-label"></label>
+                                    <textarea asp-for="Form.Message" class="form-control" rows="7"></textarea>
+                                    <span asp-validation-for="Form.Message" class="text-danger small"></span>
+                                </div>
+                            </div>
+
+                            <div class="mt-4 d-flex flex-column flex-sm-row gap-3 align-items-sm-center">
+                                <button type="submit" class="btn btn-success btn-lg px-4">
+                                    <i class="bi bi-send me-2"></i>Send Message
+                                </button>
+                                <span class="text-secondary small">
+                                    Your message goes straight to our team. We typically respond within 24 hours.
+                                </span>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    @if (Model.SubmittedSuccessfully || !ViewData.ModelState.IsValid)
+    {
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                var el = document.getElementById('@(Model.SubmittedSuccessfully ? "successMessage" : "contact-form")');
+                if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            });
+        </script>
+    }
+}

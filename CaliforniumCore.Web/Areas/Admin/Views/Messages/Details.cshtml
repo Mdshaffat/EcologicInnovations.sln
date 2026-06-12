@@ -1,0 +1,212 @@
+@model CaliforniumCore.Web.ViewModels.Admin.MessageAdminDetailViewModel
+
+@{
+    ViewData["Title"] = $"Message #{Model.Id}";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/admin-messages.css" asp-append-version="true" />
+}
+
+<div class="row g-4">
+    <div class="col-xl-8">
+        <div class="card border-0 shadow-sm rounded-4">
+            <div class="card-body p-4 p-lg-5">
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-start gap-3 mb-4">
+                    <div>
+                        <h2 class="h3 mb-1">
+                            @Model.Name
+                            @if (Model.IsImportant)
+                            {
+                                <i class="bi bi-star-fill text-warning ms-2" title="Important"></i>
+                            }
+                            @if (Model.IsFlagged)
+                            {
+                                <i class="bi bi-flag-fill text-danger ms-2" title="Red Mark"></i>
+                            }
+                        </h2>
+                        <p class="text-secondary mb-0">Message received on @Model.CreatedAt.ToLocalTime().ToString("dd MMM yyyy, hh:mm tt")</p>
+                    </div>
+
+                    <div class="d-flex align-items-center gap-2">
+                        <partial name="_MessageStatusBadge" model="Model.Status" />
+
+                        <form asp-action="ToggleRead" asp-controller="Messages" asp-area="Admin" method="post" class="d-inline">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="id" value="@Model.Id" />
+                            @{
+                                var isUnread = Model.Status is CaliforniumCore.Web.Models.Enums.ContactMessageStatus.New
+                                    or CaliforniumCore.Web.Models.Enums.ContactMessageStatus.Unread;
+                            }
+                            <button type="submit" class="btn btn-sm @(isUnread ? "btn-outline-success" : "btn-outline-secondary")" title="@(isUnread ? "Mark as read" : "Mark as unread")">
+                                <i class="bi @(isUnread ? "bi-envelope-open" : "bi-envelope-fill") me-1"></i>
+                                @(isUnread ? "Mark Read" : "Mark Unread")
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="row g-3 mb-4">
+                    <div class="col-md-6">
+                        <div class="small text-uppercase text-secondary">Email</div>
+                        <div class="fw-semibold">@Model.Email</div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="small text-uppercase text-secondary">Phone</div>
+                        <div class="fw-semibold">@Model.Phone</div>
+                    </div>
+
+                    @if (!string.IsNullOrWhiteSpace(Model.Company))
+                    {
+                        <div class="col-md-6">
+                            <div class="small text-uppercase text-secondary">Company</div>
+                            <div class="fw-semibold">@Model.Company</div>
+                        </div>
+                    }
+
+                    @if (!string.IsNullOrWhiteSpace(Model.Subject))
+                    {
+                        <div class="col-md-6">
+                            <div class="small text-uppercase text-secondary">Subject</div>
+                            <div class="fw-semibold">@Model.Subject</div>
+                        </div>
+                    }
+
+                    <div class="col-md-6">
+                        <div class="small text-uppercase text-secondary">Source Type</div>
+                        <div class="fw-semibold">@Model.SourceType</div>
+                    </div>
+
+                    @if (!string.IsNullOrWhiteSpace(Model.SourceTitle))
+                    {
+                        <div class="col-md-6">
+                            <div class="small text-uppercase text-secondary">Source Title</div>
+                            <div class="fw-semibold">@Model.SourceTitle</div>
+                        </div>
+                    }
+
+                    @if (!string.IsNullOrWhiteSpace(Model.PageUrl))
+                    {
+                        <div class="col-12">
+                            <div class="small text-uppercase text-secondary">Source Page URL</div>
+                            <div class="fw-semibold">
+                                <a href="@Model.PageUrl" target="_blank" rel="noopener noreferrer">@Model.PageUrl</a>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <hr class="my-4" />
+
+                <div>
+                    <h3 class="h5 mb-3">Message Body</h3>
+                    <div class="message-body-box rounded-4 p-4 bg-light-subtle border">
+                        @Html.Raw(Html.Encode(Model.Message).Replace("\n", "<br />"))
+                    </div>
+                </div>
+
+                @if (!string.IsNullOrWhiteSpace(Model.SubmitterIpAddress) || !string.IsNullOrWhiteSpace(Model.SubmitterUserAgent))
+                {
+                    <hr class="my-4" />
+
+                    <div>
+                        <h3 class="h5 mb-3">
+                            <i class="bi bi-shield-lock me-2 text-secondary"></i>Submitter Device &amp; Security Info
+                        </h3>
+                        <div class="rounded-4 p-4 border" style="background: #fef9ef;">
+                            <div class="row g-3">
+                                @if (!string.IsNullOrWhiteSpace(Model.SubmitterIpAddress))
+                                {
+                                    <div class="col-md-6">
+                                        <div class="small text-uppercase text-secondary fw-semibold mb-1">
+                                            <i class="bi bi-globe me-1"></i>IP Address
+                                        </div>
+                                        <div class="fw-semibold font-monospace">@Model.SubmitterIpAddress</div>
+                                    </div>
+                                }
+
+                                @if (!string.IsNullOrWhiteSpace(Model.SubmitterUserAgent))
+                                {
+                                    <div class="col-12">
+                                        <div class="small text-uppercase text-secondary fw-semibold mb-1">
+                                            <i class="bi bi-pc-display me-1"></i>User Agent / Device
+                                        </div>
+                                        <div class="small font-monospace text-break" style="line-height: 1.6;">@Model.SubmitterUserAgent</div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-4">
+        <div class="card border-0 shadow-sm rounded-4 mb-4">
+            <div class="card-body p-4">
+                <h3 class="h5 mb-3">Quick Actions</h3>
+
+                <div class="d-flex gap-2 mb-3">
+                    <form asp-action="ToggleImportant" asp-controller="Messages" asp-area="Admin" method="post" class="flex-fill">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" value="@Model.Id" />
+                        <button type="submit" class="btn w-100 @(Model.IsImportant ? "btn-warning" : "btn-outline-warning")">
+                            <i class="bi @(Model.IsImportant ? "bi-star-fill" : "bi-star") me-1"></i>
+                            @(Model.IsImportant ? "Important" : "Mark Important")
+                        </button>
+                    </form>
+
+                    <form asp-action="ToggleFlag" asp-controller="Messages" asp-area="Admin" method="post" class="flex-fill">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" value="@Model.Id" />
+                        <button type="submit" class="btn w-100 @(Model.IsFlagged ? "btn-danger" : "btn-outline-danger")">
+                            <i class="bi @(Model.IsFlagged ? "bi-flag-fill" : "bi-flag") me-1"></i>
+                            @(Model.IsFlagged ? "Red Mark" : "Add Red Mark")
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="card border-0 shadow-sm rounded-4">
+            <div class="card-body p-4">
+                <h3 class="h5 mb-3">Update Workflow</h3>
+
+                <form asp-action="UpdateStatus" asp-controller="Messages" asp-area="Admin" method="post">
+                    @Html.AntiForgeryToken()
+                    <input asp-for="UpdateForm.Id" type="hidden" />
+                    <input asp-for="UpdateForm.IsImportant" type="hidden" />
+                    <input asp-for="UpdateForm.IsFlagged" type="hidden" />
+
+                    <div class="mb-3">
+                        <label asp-for="UpdateForm.Status" class="form-label"></label>
+                        <select asp-for="UpdateForm.Status" asp-items="Model.StatusOptions" class="form-select"></select>
+                        <span asp-validation-for="UpdateForm.Status" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="UpdateForm.AdminNote" class="form-label"></label>
+                        <textarea asp-for="UpdateForm.AdminNote" rows="8" class="form-control"></textarea>
+                        <span asp-validation-for="UpdateForm.AdminNote" class="text-danger small"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100">
+                        Save Status & Note
+                    </button>
+                </form>
+
+                <hr class="my-4" />
+
+                <div class="small text-secondary mb-2">Last Updated</div>
+                <div class="fw-semibold">
+                    @(Model.UpdatedAt.HasValue ? Model.UpdatedAt.Value.ToLocalTime().ToString("dd MMM yyyy, hh:mm tt") : "Not updated yet")
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
