@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>aspnet-CaliforniumCore.Web-251925ce-502a-4d69-8b7b-e753a4202e86</UserSecretsId>
+    <NoWarn>NU1902</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
