@@ -40,38 +40,7 @@
 <section class="about-main-section py-5 py-lg-6">
     <div class="container">
         <div class="row g-4 g-xl-5">
-            <div class="col-12 col-lg-4">
-                <div class="about-side-card card border-0 shadow-sm h-100">
-                    <div class="card-body p-4 p-xl-5">
-                        <span class="about-side-kicker">Who we are</span>
-                        <h2 class="h3 fw-bold mb-3">Scientific technology for complex work</h2>
-                        <p class="text-secondary mb-4">
-                            We build reliable software and applied systems for medical, chemical, materials, and technical operations where accuracy matters.
-                        </p>
-
-                        <div class="about-side-stat-list">
-                            <div class="about-side-stat">
-                                <strong>Scientific Software</strong>
-                                <span>Web, desktop, and workflow applications</span>
-                            </div>
-                            <div class="about-side-stat">
-                                <strong>Medical Systems</strong>
-                                <span>Clinic, lab, record, and operational tools</span>
-                            </div>
-                            <div class="about-side-stat">
-                                <strong>Chemical Workflows</strong>
-                                <span>Formula, quality, sample, and lab data support</span>
-                            </div>
-                            <div class="about-side-stat">
-                                <strong>Materials Intelligence</strong>
-                                <span>Structured systems for materials and experiments</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-12 col-lg-8">
+            <div class="col-12">
                 <div class="card border-0 shadow-sm about-content-card">
                     <div class="card-body p-4 p-xl-5">
                         @if (!string.IsNullOrWhiteSpace(Model.HtmlContent))
@@ -89,28 +58,6 @@
                                 </p>
                             </div>
                         }
-                    </div>
-                </div>
-
-                <div class="about-cta-panel mt-4 mt-xl-5">
-                    <div class="row g-3 align-items-center">
-                        <div class="col-lg-8">
-                            <span class="about-side-kicker">Let’s work together</span>
-                            <h2 class="h3 fw-bold mb-2">Looking for scientific software or operational systems?</h2>
-                            <p class="text-secondary mb-0">
-                                Explore what we offer or get in touch for a new product, workflow, research, or technical operations project.
-                            </p>
-                        </div>
-                        <div class="col-lg-4">
-                            <div class="d-flex flex-wrap gap-3 justify-content-lg-end">
-                                <a asp-controller="Products" asp-action="Index" class="btn btn-success btn-lg px-4">
-                                    <i class="bi bi-box-seam me-1"></i> View Products
-                                </a>
-                                <a asp-controller="Contact" asp-action="Index" class="btn btn-outline-success btn-lg px-4">
-                                    <i class="bi bi-chat-dots me-1"></i> Contact Us
-                                </a>
-                            </div>
-                        </div>
                     </div>
                 </div>
 

@@ -1,15 +1,15 @@
-@model (string Number, string IconName, string TitleName, string DescriptionName)
+@model (string Number, string IconName, string? IconValue, string TitleName, string? TitleValue, string DescriptionName, string? DescriptionValue)
 
 @{
-    string FieldValue(string key)
+    string FieldValue(string key, string? currentValue)
     {
         if (ViewData.ModelState.TryGetValue(key, out var entry) &&
-            entry.AttemptedValue is { Length: > 0 } attempted)
+            entry.AttemptedValue is not null)
         {
-            return attempted;
+            return entry.AttemptedValue;
         }
 
-        return Convert.ToString(ViewData.Eval(key)) ?? string.Empty;
+        return currentValue ?? string.Empty;
     }
 }
 
@@ -18,15 +18,15 @@
         <h3 class="h6 mb-3">Card @Model.Number</h3>
         <div class="mb-3">
             <label for="@Model.IconName" class="form-label">Icon CSS</label>
-            <input id="@Model.IconName" name="@Model.IconName" value="@FieldValue(Model.IconName)" class="form-control" placeholder="bi bi-cpu" />
+            <input id="@Model.IconName" name="@Model.IconName" value="@FieldValue(Model.IconName, Model.IconValue)" class="form-control" placeholder="bi bi-cpu" />
         </div>
         <div class="mb-3">
             <label for="@Model.TitleName" class="form-label">Title</label>
-            <input id="@Model.TitleName" name="@Model.TitleName" value="@FieldValue(Model.TitleName)" class="form-control" />
+            <input id="@Model.TitleName" name="@Model.TitleName" value="@FieldValue(Model.TitleName, Model.TitleValue)" class="form-control" />
         </div>
         <div>
             <label for="@Model.DescriptionName" class="form-label">Description</label>
-            <textarea id="@Model.DescriptionName" name="@Model.DescriptionName" class="form-control" rows="4">@FieldValue(Model.DescriptionName)</textarea>
+            <textarea id="@Model.DescriptionName" name="@Model.DescriptionName" class="form-control" rows="4">@FieldValue(Model.DescriptionName, Model.DescriptionValue)</textarea>
         </div>
     </div>
 </div>
